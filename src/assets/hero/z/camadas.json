@@ -1,0 +1,7 @@
+{
+  "largura": 1641,
+  "altura": 1318,
+  "ordem": ["1-corpo-fundo", "2-lamina-sup", "3-lamina-inf", "4-corpo-frente"],
+  "abertura_px": 180,
+  "nota": "lamina-sup abre para a esquerda (-x), lamina-inf para a direita (+x)"
+}
