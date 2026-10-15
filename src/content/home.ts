@@ -50,3 +50,40 @@ export const hero = {
       "Ilustração em dois capítulos: primeiro um perfil de rede social se montando dentro de um celular, cercado por um radar, com as marcações posicionamento, empresário e João Pessoa; depois barras de crescimento subindo, testes sendo validados e moedas caindo numa carteira.",
   },
 } as const;
+
+/**
+ * 02 · Resultados: só números aprovados (+8 anos, +R$700 mil, +20 mi). Nunca inventar outros.
+ * O número fica no HTML (SEO/acessibilidade); a animação só conta de 0 até ele.
+ * Cada número tem uma mini cena vetorial (MOTION.md §3): tempo · moedas · views.
+ */
+export const resultados = {
+  sobretitulo: "Resultados",
+  titulo: { conectivo: "Resultado a gente mostra em", sentido: "número." },
+  numeros: [
+    {
+      cena: "tempo",
+      rotulo: "Mercado",
+      prefixo: "+",
+      valor: 8,
+      sufixo: "anos",
+      legenda: "de mercado, em João Pessoa",
+    },
+    // PENDENTE: confirmar se é faturamento gerado para os clientes ou da própria REZZU (legenda do Figma)
+    {
+      cena: "moedas",
+      rotulo: "Faturamento",
+      prefixo: "+R$",
+      valor: 700,
+      sufixo: "mil",
+      legenda: "faturados pelos nossos clientes",
+    },
+    {
+      cena: "views",
+      rotulo: "Alcance",
+      prefixo: "+",
+      valor: 20,
+      sufixo: "mi",
+      legenda: "de visualizações geradas",
+    },
+  ],
+} as const;
