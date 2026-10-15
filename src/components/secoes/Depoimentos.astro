@@ -1,0 +1,235 @@
+---
+/**
+ * 03 · Depoimentos: prova social com rosto. Cada card conta antes → virada → resultado e anima
+ * do P&B para a cor, como a dor × solução do vídeo (MOTION.md §1.4). Desktop: 3 colunas;
+ * celular: carrossel com arraste (scroll-snap nativo). Animação: src/scripts/anim-depoimentos.ts.
+ * Conteúdo em src/content/depoimentos.ts (por enquanto PROVISÓRIO, com selo visível no card).
+ */
+import { Image } from "astro:assets";
+import CabecalhoSecao from "../ui/CabecalhoSecao.astro";
+import { depoimentos, depoimentosCabecalho } from "../../content/depoimentos";
+
+const iniciais = (nome: string) =>
+  nome
+    .split(" ")
+    .filter((p) => p.length > 2)
+    .slice(0, 2)
+    .map((p) => p[0].toUpperCase())
+    .join("");
+---
+
+<section id="depoimentos" class="depoimentos" data-depoimentos aria-labelledby="depoimentos-titulo">
+  <div class="container">
+    <CabecalhoSecao
+      id="depoimentos-titulo"
+      sobretitulo={depoimentosCabecalho.sobretitulo}
+      {...depoimentosCabecalho.titulo}
+    />
+  </div>
+
+  <ul class="depoimentos__lista container" role="list">
+    {depoimentos.map((d) => (
+      <li class="dep" data-dep>
+        <figure class="dep__corpo">
+          <div class="dep__topo" aria-hidden="true">
+            <span class="dep__aspas" data-dep-aspas>
+              “
+            </span>
+            <span class="dep__selo">{d.selo}</span>
+          </div>
+          <blockquote class="dep__texto">
+            <p>
+              <span class="dep__antes" data-dep-parte>
+                {d.antes}
+              </span>{" "}
+              <span class="dep__virada" data-dep-parte>
+                {d.virada}
+              </span>{" "}
+              <span class="dep__resultado" data-dep-parte data-dep-resultado>
+                {d.resultado}
+              </span>
+            </p>
+          </blockquote>
+          <figcaption class="dep__pessoa" data-dep-pessoa>
+            {d.foto ? (
+              <Image src={d.foto} alt="" width={104} height={104} class="dep__foto" />
+            ) : (
+              <span class="dep__foto dep__foto--iniciais" aria-hidden="true">
+                {iniciais(d.nome) || "?"}
+              </span>
+            )}
+            <span class="dep__quem">
+              <span class="dep__nome">{d.nome}</span>
+              <span class="dep__negocio">{d.negocio}</span>
+            </span>
+          </figcaption>
+          {d.provisorio && <span class="dep__provisorio">Provisório · trocar pelo real</span>}
+        </figure>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<script>
+  import "../../scripts/anim-depoimentos";
+</script>
+
+<style>
+  .depoimentos {
+    position: relative;
+    padding-block: var(--secao-respiro);
+  }
+
+  .depoimentos__lista {
+    list-style: none;
+    padding: 14px 0 0; /* espaço para o selo "provisório" que fica sobre a borda */
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(14px, 1.6vw, 24px);
+  }
+
+  .dep {
+    display: flex;
+  }
+  .dep__corpo {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    margin: 0;
+    padding: clamp(24px, 2.4vw, 36px);
+    border: 1px solid rgb(255 255 255 / 0.1);
+    border-radius: 24px;
+    background:
+      radial-gradient(120% 60% at 0% 0%, rgb(168 204 21 / 0.06), transparent 70%), rgb(255 255 255 / 0.02);
+    transition:
+      border-color 0.3s var(--ease),
+      box-shadow 0.3s var(--ease);
+  }
+  /* borda acende no hover (ARQUITETURA §6) */
+  .dep__corpo:hover {
+    border-color: rgb(168 204 21 / 0.55);
+    box-shadow:
+      0 0 0 1px rgb(168 204 21 / 0.15),
+      0 0 32px rgb(168 204 21 / 0.12);
+  }
+
+  .dep__topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .dep__aspas {
+    display: inline-block;
+    font-family: var(--f-display);
+    font-size: 5.5rem;
+    line-height: 0.7;
+    height: 0.5em;
+    color: var(--lima);
+    filter: var(--brilho);
+  }
+  .dep__selo {
+    font-family: var(--f-display);
+    font-size: 1.25rem;
+    letter-spacing: 0.16em;
+    color: var(--lima);
+  }
+
+  /* antes (dor, apagado) → virada → resultado (branco, sublinhado lima) */
+  .dep__texto {
+    margin: 0;
+    flex: 1;
+    font-size: var(--t-apoio);
+    line-height: 1.6;
+  }
+  .dep__antes {
+    color: var(--texto-2);
+  }
+  .dep__virada {
+    color: var(--texto);
+  }
+  .dep__resultado {
+    color: var(--branco);
+    font-weight: 600;
+    background: linear-gradient(var(--lima), var(--lima)) 0 100% / 100% 2px no-repeat;
+    padding-bottom: 2px;
+  }
+
+  .dep__pessoa {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .dep__foto {
+    width: 52px;
+    height: 52px;
+    flex: none;
+    border-radius: 50%;
+    border: 2px solid var(--lima);
+    object-fit: cover;
+  }
+  .dep__foto--iniciais {
+    display: grid;
+    place-items: center;
+    background: #1a1a1a;
+    color: var(--lima);
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  .dep__quem {
+    display: grid;
+    gap: 2px;
+  }
+  .dep__nome {
+    color: var(--branco);
+    font-weight: 700;
+  }
+  .dep__negocio {
+    font-size: 0.875rem;
+    color: var(--texto-2);
+  }
+
+  /* aviso de conteúdo provisório: chamativo de propósito, para não ir ao ar assim */
+  .dep__provisorio {
+    position: absolute;
+    top: -11px;
+    left: 24px;
+    padding: 2px 10px;
+    border: 1px dashed #f5a524;
+    border-radius: 999px;
+    background: #1a1204;
+    color: #f5a524;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* celular: carrossel com arraste (scroll-snap nativo, sem biblioteca) */
+  @media (max-width: 900px) {
+    .depoimentos__lista {
+      display: flex;
+      width: auto;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: var(--gutter);
+      padding-inline: var(--gutter);
+      padding-block: 14px 8px;
+      scrollbar-width: none;
+    }
+    .depoimentos__lista::-webkit-scrollbar {
+      display: none;
+    }
+    .dep {
+      flex: 0 0 min(86%, 380px);
+      scroll-snap-align: start;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .dep__corpo {
+      transition: none;
+    }
+  }
+</style>
