@@ -1,0 +1,81 @@
+{
+ "canvas": [
+  2400,
+  1800
+ ],
+ "degraus": [
+  {
+   "etapa": 1,
+   "nome": "Diagnóstico",
+   "centro": [
+    528,
+    1440
+   ],
+   "bola_centro": [
+    552,
+    1377
+   ]
+  },
+  {
+   "etapa": 2,
+   "nome": "Imersão",
+   "centro": [
+    840,
+    1197
+   ],
+   "bola_centro": [
+    864,
+    1134
+   ]
+  },
+  {
+   "etapa": 3,
+   "nome": "Setup estratégico",
+   "centro": [
+    1152,
+    954
+   ],
+   "bola_centro": [
+    1176,
+    891
+   ]
+  },
+  {
+   "etapa": 4,
+   "nome": "Execução",
+   "centro": [
+    1464,
+    711
+   ],
+   "bola_centro": [
+    1488,
+    648
+   ]
+  },
+  {
+   "etapa": 5,
+   "nome": "Otimização",
+   "centro": [
+    1776,
+    468
+   ],
+   "bola_centro": [
+    1800,
+    405
+   ]
+  }
+ ],
+ "bola": {
+  "diametro": 101,
+  "sprite": [
+   352,
+   352
+  ]
+ },
+ "porta": {
+  "centro": [
+   1826,
+   287
+  ]
+ }
+}
