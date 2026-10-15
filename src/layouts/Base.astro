@@ -17,8 +17,12 @@ interface Props {
 }
 
 const { title, description = site.descricao, og = "/og/padrao.jpg", noindex = false } = Astro.props;
-const tituloCompleto = title ? `${title} | ${site.nome}` : `${site.nome} · Assessoria de marketing em ${site.cidade}`;
+const tituloCompleto = title
+  ? `${title} | ${site.nome}`
+  : `${site.nome} · Assessoria de marketing em ${site.cidade}`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+// Proxima Nova (licença web via Adobe Fonts). Vazio = usa a fonte local/Montserrat.
+const adobeKit = import.meta.env.PUBLIC_ADOBE_FONTS_KIT;
 const ogUrl = new URL(og, Astro.site);
 ---
 
@@ -34,6 +38,12 @@ const ogUrl = new URL(og, Astro.site);
     <meta name="theme-color" content="#030303" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    {adobeKit && (
+      <>
+        <link rel="preconnect" href="https://use.typekit.net" crossorigin />
+        <link rel="stylesheet" href={`https://use.typekit.net/${adobeKit}.css`} />
+      </>
+    )}
 
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="pt_BR" />
@@ -45,6 +55,19 @@ const ogUrl = new URL(og, Astro.site);
     <meta name="twitter:card" content="summary_large_image" />
 
     {site.metaVerificacao && <meta name="facebook-domain-verification" content={site.metaVerificacao} />}
+
+    <!-- Animações: esconde os elementos animáveis só se a animação vai rodar; destrava sozinho em 3 s se o JS falhar -->
+    <script is:inline>
+      (function () {
+        var h = document.documentElement;
+        if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          h.classList.add("anim-espera");
+          setTimeout(function () {
+            h.classList.remove("anim-espera");
+          }, 3000);
+        }
+      })();
+    </script>
     <slot name="head" />
   </head>
   <body>

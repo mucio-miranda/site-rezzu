@@ -11,14 +11,20 @@
   --vidro: rgb(255 255 255 / 0.03);
 
   /* tipografia: Gotham pendente de licença web; Montserrat é a substituta gratuita */
+  /* tipografia da marca: Bebas Neue (display) + Proxima Nova (texto e impacto).
+     Proxima Nova vem do Adobe Fonts (PUBLIC_ADOBE_FONTS_KIT, família "proxima-nova");
+     sem o kit, cai para a Proxima instalada na máquina e depois para a Montserrat. */
   --f-display: "Bebas Neue", Impact, "Arial Narrow", sans-serif;
-  --f-texto: "Montserrat Variable", "Montserrat", system-ui, sans-serif;
+  --f-texto: "proxima-nova", "Proxima Nova", "Montserrat Variable", "Montserrat", system-ui, sans-serif;
 
-  --t-hero: clamp(3.5rem, 2rem + 6.5vw, 7rem);
-  --t-h2: clamp(3rem, 2rem + 4vw, 5.5rem);
-  --t-apoio: clamp(1.0625rem, 1rem + 0.35vw, 1.25rem);
+  /* escala compacta: cresce com a largura, mas limitada pela altura da tela (min(vw, vh)) */
+  --t-hero: clamp(2.75rem, 1.4rem + 2.6vw + 1.6vh, 5rem); /* palavra-destaque da hero */
+  --t-impacto: clamp(2.25rem, 1.4rem + 1.9vw + 1vh, 3.75rem); /* CAIXA ALTA de impacto */
+  --t-h2: clamp(2.25rem, 1.5rem + 2.2vw, 3.75rem);
+  --t-apoio: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --t-conectivo: clamp(1.375rem, 1.05rem + 0.9vw, 1.875rem); /* Bebas: precisa de corpo maior que uma sans */
   --t-corpo: 1rem;
-  --t-sobretitulo: 0.875rem;
+  --t-sobretitulo: 0.8125rem;
 
   /* medidas */
   --container: 1280px;
@@ -27,7 +33,8 @@
   --raio: 24px;
   --raio-pilula: 999px;
 
-  /* movimento */
+  /* movimento (equivalentes GSAP em MOTION.md §2.1) */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --dur: 0.6s;
+  --brilho: drop-shadow(0 0 6px rgb(168 204 21 / 0.55)) drop-shadow(0 0 18px rgb(168 204 21 / 0.25));
 }

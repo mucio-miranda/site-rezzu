@@ -66,6 +66,10 @@ p {
   width: min(100% - 2 * var(--gutter), var(--container));
   margin-inline: auto;
 }
+h1,
+h2 {
+  font-weight: 400;
+}
 .titulo-display {
   font-family: var(--f-display);
   text-transform: uppercase;
@@ -74,6 +78,34 @@ p {
 }
 .destaque {
   color: var(--lima);
+}
+/* as 3 vozes da tipografia cinética (MOTION.md §1.2), todas em Bebas Neue (títulos);
+   Proxima Nova fica para parágrafos e interface.
+   conectivo = branca pequena · impacto = branca média · sentido = lima grande */
+.voz-conectivo {
+  font-family: var(--f-display);
+  font-weight: 400;
+  font-size: var(--t-conectivo);
+  text-transform: uppercase;
+  color: var(--branco);
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+.voz-sentido {
+  font-family: var(--f-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  color: var(--lima);
+  letter-spacing: 0.005em;
+  line-height: 0.88;
+}
+.voz-impacto {
+  font-family: var(--f-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  color: var(--branco);
+  letter-spacing: 0.01em;
+  line-height: 0.9;
 }
 .sr-only {
   position: absolute;
