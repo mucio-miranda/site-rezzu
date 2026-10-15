@@ -1,0 +1,32 @@
+---
+/** Sobretítulo: fio lima + texto em caixa alta espaçada. */
+interface Props {
+  class?: string;
+  [atributo: string]: unknown;
+}
+const { class: cls, ...resto } = Astro.props;
+---
+
+<p class:list={["sobretitulo", cls]} {...resto}>
+  <span class="sobretitulo__fio" aria-hidden="true"></span>
+  <slot />
+</p>
+
+<style>
+  .sobretitulo {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--lima);
+    font-size: var(--t-sobretitulo);
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .sobretitulo__fio {
+    width: 32px;
+    height: 2px;
+    background: var(--lima);
+    flex: none;
+  }
+</style>

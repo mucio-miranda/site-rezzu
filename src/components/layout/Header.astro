@@ -1,0 +1,196 @@
+---
+/** Header fixo: transparente sobre a hero, ganha fundo desfocado ao rolar. Menu vira gaveta no mobile. */
+import ZLogo from "../ui/ZLogo.astro";
+import Botao from "../ui/Botao.astro";
+import { navegacao, ctaPrincipal } from "../../content/home";
+---
+
+<header class="header" data-header>
+  <div class="header__barra container">
+    <a href="/" class="header__marca" aria-label="REZZU group, início">
+      <ZLogo size={30} lamina="var(--branco)" />
+      <span class="header__nome">REZZŪ</span>
+      <span class="header__group">group</span>
+    </a>
+
+    <nav class="header__nav" id="menu-principal" aria-label="Principal">
+      <ul>
+        {navegacao.map((item) => (
+          <li>
+            <a href={item.href}>{item.rotulo}</a>
+          </li>
+        ))}
+      </ul>
+      <Botao href={ctaPrincipal.href} evento="clique_cta" seta={false} class="header__cta-mobile">
+        {ctaPrincipal.rotulo}
+      </Botao>
+    </nav>
+
+    <Botao href={ctaPrincipal.href} evento="clique_cta" seta={false} class="header__cta">
+      {ctaPrincipal.rotulo}
+    </Botao>
+
+    <button class="header__menu" type="button" aria-expanded="false" aria-controls="menu-principal" data-menu>
+      <span class="sr-only">Abrir menu</span>
+      <span class="header__menu-linha"></span>
+      <span class="header__menu-linha"></span>
+    </button>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>("[data-header]");
+  const botao = document.querySelector<HTMLButtonElement>("[data-menu]");
+  if (header) {
+    const marcar = () => header.classList.toggle("header--rolado", window.scrollY > 24);
+    marcar();
+    window.addEventListener("scroll", marcar, { passive: true });
+  }
+  if (header && botao) {
+    const fechar = () => {
+      header.classList.remove("header--aberto");
+      botao.setAttribute("aria-expanded", "false");
+    };
+    botao.addEventListener("click", () => {
+      const aberto = header.classList.toggle("header--aberto");
+      botao.setAttribute("aria-expanded", String(aberto));
+    });
+    header.querySelectorAll("nav a").forEach((a) => a.addEventListener("click", fechar));
+    document.addEventListener("keydown", (e) => e.key === "Escape" && fechar());
+  }
+</script>
+
+<style>
+  .header {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 50;
+    transition:
+      background-color 0.35s var(--ease),
+      backdrop-filter 0.35s var(--ease),
+      border-color 0.35s var(--ease);
+    border-bottom: 1px solid transparent;
+  }
+  .header--rolado {
+    background: rgb(3 3 3 / 0.72);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    border-color: var(--linha);
+  }
+  .header__barra {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    height: 84px;
+  }
+  .header__marca {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .header__nome {
+    color: var(--branco);
+    font-weight: 700;
+    font-size: 1.375rem;
+    letter-spacing: 0.04em;
+  }
+  .header__group {
+    font-size: 0.875rem;
+    color: var(--texto);
+  }
+  .header__nav {
+    display: flex;
+    align-items: center;
+  }
+  .header__nav ul {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+    padding: 0;
+  }
+  .header__nav a:not(.botao) {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--texto);
+    transition: color 0.2s var(--ease);
+  }
+  .header__nav a:not(.botao):hover {
+    color: var(--branco);
+  }
+  /* seletores com o pai (.header__barra/.header__nav) para vencer o estilo do componente Botao */
+  .header__nav :global(.header__cta-mobile),
+  .header__menu {
+    display: none;
+  }
+  .header__barra :global(.header__cta) {
+    padding: 14px 24px;
+    font-size: 0.9375rem;
+  }
+
+  @media (max-width: 960px) {
+    .header__barra {
+      height: 72px;
+    }
+    .header__barra :global(.header__cta) {
+      display: none;
+    }
+    .header__menu {
+      display: grid;
+      gap: 6px;
+      place-content: center;
+      width: 44px;
+      height: 44px;
+      background: none;
+      border: 1px solid var(--linha);
+      border-radius: 12px;
+      cursor: pointer;
+    }
+    .header__menu-linha {
+      width: 18px;
+      height: 2px;
+      background: var(--branco);
+      transition: transform 0.3s var(--ease);
+    }
+    .header--aberto .header__menu-linha:first-of-type {
+      transform: translateY(4px) rotate(45deg);
+    }
+    .header--aberto .header__menu-linha:last-of-type {
+      transform: translateY(-4px) rotate(-45deg);
+    }
+    .header__nav {
+      position: fixed;
+      inset: 72px 0 auto;
+      display: grid;
+      justify-items: start;
+      gap: 28px;
+      padding: 32px var(--gutter) 40px;
+      background: rgb(3 3 3 / 0.96);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--linha);
+      transform: translateY(-8px);
+      opacity: 0;
+      visibility: hidden;
+      transition:
+        opacity 0.3s var(--ease),
+        transform 0.3s var(--ease),
+        visibility 0.3s;
+    }
+    .header--aberto .header__nav {
+      transform: none;
+      opacity: 1;
+      visibility: visible;
+    }
+    .header__nav ul {
+      flex-direction: column;
+      gap: 20px;
+    }
+    .header__nav a:not(.botao) {
+      font-size: 1.25rem;
+      color: var(--branco);
+    }
+    .header__nav :global(.header__cta-mobile) {
+      display: inline-flex;
+    }
+  }
+</style>

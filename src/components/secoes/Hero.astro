@@ -1,0 +1,194 @@
+---
+/**
+ * 01 · Hero (Impacto): a tese da REZZU em tipografia cinética (3 vozes) + cena do celular (capítulo 01).
+ * Linguagem de motion: MOTION.md. Animação: src/scripts/anim-hero.ts.
+ * Sem JS ou com "reduzir movimento", tudo aparece montado.
+ */
+import Botao from "../ui/Botao.astro";
+import Sobretitulo from "../ui/Sobretitulo.astro";
+import PisoGrade from "../motion/PisoGrade.astro";
+import CenaPosicionamento from "../motion/CenaPosicionamento.astro";
+import CenaFaturamento from "../motion/CenaFaturamento.astro";
+import CabecalhoCapitulo from "../motion/CabecalhoCapitulo.astro";
+import { hero } from "../../content/home";
+
+const conectivo = hero.tese.conectivo.split(" ");
+---
+
+<section class="hero" data-hero aria-labelledby="hero-titulo">
+  <PisoGrade horizonte={60} data-anim data-hero-piso />
+
+  <div class="hero__grade container">
+    <div class="hero__texto">
+      <Sobretitulo data-anim data-hero-fade>
+        {hero.sobretitulo}
+      </Sobretitulo>
+
+      <h1 id="hero-titulo" class="tese">
+        <span class="tese__linha">
+          {conectivo.map((p) => (
+            <span class="voz-conectivo" data-anim data-hero-batida>
+              {p}
+            </span>
+          ))}
+          <span class="voz-impacto" data-anim data-hero-pop>
+            {hero.tese.impacto}
+          </span>
+        </span>
+        <span class="tese__sentido voz-sentido" data-anim data-hero-pop>
+          {hero.tese.sentido1}
+        </span>
+        <span class="tese__linha">
+          <span class="voz-impacto" data-anim data-hero-batida>
+            {hero.tese.ligacao}
+          </span>
+          <span class="tese__sentido voz-sentido" data-anim data-hero-pop>
+            {hero.tese.sentido2}
+          </span>
+        </span>
+      </h1>
+
+      <p class="hero__apoio" data-anim data-hero-fade>
+        {hero.apoio}
+      </p>
+      <div class="hero__ctas" data-anim data-hero-fade>
+        <Botao href={hero.ctaPrimario.href} evento="clique_cta">
+          {hero.ctaPrimario.rotulo}
+        </Botao>
+        <Botao href={hero.ctaSecundario.href} variante="secundario" seta="baixo">
+          {hero.ctaSecundario.rotulo}
+        </Botao>
+      </div>
+    </div>
+
+    <!-- palco: capítulo 01 (celular) e 02 (barras) se alternando, como no vídeo -->
+    <div class="hero__cena palco" data-anim data-hero-cena role="img" aria-label={hero.cena.descricao}>
+      <CabecalhoCapitulo rotulos={hero.cena.capitulos} />
+      <div class="palco__cenas">
+        <CenaPosicionamento {...hero.cena.posicionamento} />
+        <CenaFaturamento {...hero.cena.faturamento} />
+        <div class="palco__clarao" data-palco-clarao aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import "../../scripts/anim-hero";
+</script>
+
+<style>
+  .hero {
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+    /* compacta: não estica até a tela toda em monitores altos */
+    min-height: clamp(600px, 88svh, 820px);
+    display: grid;
+    align-items: center;
+    padding-block: 104px 56px;
+  }
+  .hero > :global(.piso) {
+    z-index: -1;
+  }
+  .hero__grade {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    align-items: center;
+    gap: clamp(24px, 4vw, 64px);
+  }
+  .hero__texto {
+    display: grid;
+    gap: 24px;
+    justify-items: start;
+  }
+
+  /* tese em 3 vozes, toda em Bebas Neue e num tamanho só: a diferença é a cor (branco × lima) */
+  .tese {
+    display: grid;
+    justify-items: start;
+    color: var(--branco);
+    font-size: var(--t-hero);
+  }
+  .tese > * > *,
+  .tese > .tese__sentido {
+    font-size: inherit;
+    line-height: 0.92;
+  }
+  .tese__linha {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 0.2em;
+  }
+  .tese__linha > span {
+    display: inline-block;
+  }
+  .tese [data-hero-pop] {
+    display: inline-block;
+    transform-origin: 0 70%;
+  }
+
+  .hero__apoio {
+    font-size: var(--t-apoio);
+    line-height: 1.6;
+    max-width: 46ch;
+  }
+  .hero__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  /* palco das cenas: cabeçalho de capítulo + cenas empilhadas no mesmo lugar */
+  .palco {
+    display: grid;
+    gap: clamp(8px, 2vh, 20px);
+    width: 100%;
+    max-width: 560px;
+    justify-self: end;
+  }
+  .palco__cenas {
+    position: relative;
+    display: grid;
+  }
+  /* :global porque as cenas são outros componentes (o escopo do Astro não as alcança) */
+  .palco__cenas > :global(*) {
+    grid-area: 1 / 1;
+  }
+  /* sem JS, só o capítulo 01 aparece */
+  .palco__cenas > :global([data-cap="1"]) {
+    visibility: hidden;
+  }
+  /* clarão de troca de capítulo (como o film burn do vídeo) */
+  .palco__clarao {
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(
+      closest-side,
+      rgb(200 240 58 / 0.55),
+      rgb(168 204 21 / 0.12) 60%,
+      transparent
+    );
+    mix-blend-mode: screen;
+  }
+
+  @media (max-width: 900px) {
+    .hero {
+      min-height: auto;
+      padding-block: 96px 48px;
+    }
+    .hero__grade {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    .palco {
+      max-width: 440px;
+      justify-self: center;
+    }
+  }
+
+  /* esconde o que vai animar SÓ quando o JS de animação está ativo (classe posta no <head>) */
+  :global(.anim-espera) [data-anim] {
+    opacity: 0;
+  }
+</style>
