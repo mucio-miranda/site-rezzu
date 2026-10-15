@@ -1,0 +1,33 @@
+/* Design tokens do site REZZU group (ver ARQUITETURA.md §5). Altere aqui, não nos componentes. */
+:root {
+  /* cor */
+  --bg: #030303; /* fundo padrão do site */
+  --lima: #a8cc15; /* cor exata do logo */
+  --lima-luz: #c8f03a; /* só para brilhos e luz */
+  --branco: #ffffff;
+  --texto: #b8b8b8; /* texto corrido */
+  --texto-2: #8f8f8f; /* legendas */
+  --linha: rgb(255 255 255 / 0.1);
+  --vidro: rgb(255 255 255 / 0.03);
+
+  /* tipografia: Gotham pendente de licença web; Montserrat é a substituta gratuita */
+  --f-display: "Bebas Neue", Impact, "Arial Narrow", sans-serif;
+  --f-texto: "Montserrat Variable", "Montserrat", system-ui, sans-serif;
+
+  --t-hero: clamp(3.5rem, 2rem + 6.5vw, 7rem);
+  --t-h2: clamp(3rem, 2rem + 4vw, 5.5rem);
+  --t-apoio: clamp(1.0625rem, 1rem + 0.35vw, 1.25rem);
+  --t-corpo: 1rem;
+  --t-sobretitulo: 0.875rem;
+
+  /* medidas */
+  --container: 1280px;
+  --gutter: clamp(20px, 5.5vw, 80px);
+  --secao-y: clamp(80px, 10vw, 120px);
+  --raio: 24px;
+  --raio-pilula: 999px;
+
+  /* movimento */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur: 0.6s;
+}

@@ -1,0 +1,49 @@
+---
+/**
+ * Fase 0: página provisória (prova de que build e deploy funcionam).
+ * Na Fase 1 vira a home com as 7 seções do sitemap (ARQUITETURA.md §6).
+ */
+import Base from "../layouts/Base.astro";
+import ZLogo from "../components/ui/ZLogo.astro";
+import { site } from "../content/site";
+---
+
+<Base noindex>
+  <main class="em-breve">
+    <ZLogo size={88} lamina="var(--branco)" title="REZZU" />
+    <p class="sobretitulo">Assessoria de marketing 360° · {site.cidade}</p>
+    <h1 class="titulo-display">
+      O futuro da sua empresa começa na decisão que você toma <span class="destaque">agora.</span>
+    </h1>
+    <p class="apoio">Site em construção.</p>
+  </main>
+</Base>
+
+<style>
+  .em-breve {
+    min-height: 100dvh;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 28px;
+    padding: var(--gutter);
+    text-align: center;
+    background:
+      radial-gradient(60% 45% at 50% 100%, rgb(168 204 21 / 0.18), transparent 70%),
+      var(--bg);
+  }
+  .sobretitulo {
+    color: var(--lima);
+    font-size: var(--t-sobretitulo);
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  h1 {
+    font-size: var(--t-h2);
+    max-width: 14ch;
+  }
+  .apoio {
+    font-size: var(--t-apoio);
+  }
+</style>

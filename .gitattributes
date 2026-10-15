@@ -1,0 +1,7 @@
+# Normaliza fim de linha (Windows local x Linux no Netlify)
+* text=auto eol=lf
+*.ps1 text eol=crlf
+*.png binary
+*.jpg binary
+*.webp binary
+*.woff2 binary

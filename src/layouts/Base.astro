@@ -1,0 +1,53 @@
+---
+/**
+ * Layout base: <head> com SEO, fontes auto-hospedadas e estilos globais.
+ * Header, rodapé, banner LGPD e rastreamento entram nas próximas fases (ARQUITETURA.md §14).
+ */
+import "@fontsource/bebas-neue/400.css";
+import "@fontsource-variable/montserrat";
+import "../styles/global.css";
+import { site } from "../content/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** imagem de compartilhamento em /public/og/ (1200x630) */
+  og?: string;
+  noindex?: boolean;
+}
+
+const { title, description = site.descricao, og = "/og/padrao.jpg", noindex = false } = Astro.props;
+const tituloCompleto = title ? `${title} | ${site.nome}` : `${site.nome} · Assessoria de marketing em ${site.cidade}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogUrl = new URL(og, Astro.site);
+---
+
+<!doctype html>
+<html lang={site.idioma}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{tituloCompleto}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="theme-color" content="#030303" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content={site.nome} />
+    <meta property="og:title" content={tituloCompleto} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    {site.metaVerificacao && <meta name="facebook-domain-verification" content={site.metaVerificacao} />}
+    <slot name="head" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

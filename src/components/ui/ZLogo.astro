@@ -1,0 +1,42 @@
+---
+/**
+ * Símbolo Z da REZZU (vetor extraído do PDF oficial da marca).
+ * As peças têm classes próprias para animar: .z-corpo, .z-lamina-sup, .z-lamina-inf.
+ */
+interface Props {
+  size?: number; // altura em px
+  corpo?: string;
+  lamina?: string;
+  class?: string;
+  title?: string;
+}
+const { size = 32, corpo = "var(--lima)", lamina = "var(--lima)", class: cls, title } = Astro.props;
+const width = Math.round((size * 872.86) / 1040);
+---
+
+<svg
+  class:list={["z-logo", cls]}
+  width={width}
+  height={size}
+  viewBox="103.57 20.00 872.86 1040.00"
+  xmlns="http://www.w3.org/2000/svg"
+  role={title ? "img" : undefined}
+  aria-hidden={title ? undefined : "true"}
+  aria-label={title}
+>
+  <path
+    class="z-lamina-sup"
+    fill={lamina}
+    d="M386.64 325.50C360.70 300.49 351.89 268.10 356.28 237.94L155.05 237.94L431.53 504.68L495.37 430.40L386.64 325.50Z"
+  ></path>
+  <path
+    class="z-lamina-inf"
+    fill={lamina}
+    d="M924.95 842.05L648.47 575.29L584.64 649.57L655.35 717.80C692.04 753.20 700.37 800.87 687.91 842.05L924.95 842.05Z"
+  ></path>
+  <path
+    class="z-corpo"
+    fill={corpo}
+    d="M123.57 872.86L560.69 364.21C605.00 312.65 568.37 232.86 500.38 232.86L140.71 232.86L140.71 40.00L956.43 40.00L956.43 207.14L519.66 715.38C475.21 767.11 511.96 847.14 580.16 847.14L956.43 847.14L956.43 1040.00L123.57 1040.00L123.57 872.86Z"
+  ></path>
+</svg>
