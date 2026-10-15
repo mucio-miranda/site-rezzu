@@ -28,6 +28,7 @@
 | Camada | Escolha | Motivo |
 |---|---|---|
 | Framework | **Astro** (saída 100% estática) | HTML pronto no build = carregamento rápido e ótimo SEO; componentes reaproveitados entre home e LPs; zero JS por padrão |
+| Tipografia | **Bebas Neue** (títulos, auto-hospedada) + **Proxima Nova** (texto/impacto, via Adobe Fonts) | Fontes da marca (decisão do cliente) |
 | Estilo | **CSS próprio** com variáveis (`tokens.css`) + estilos com escopo nos componentes `.astro` | Controle total do visual premium, sem dependência pesada |
 | Animação | **GSAP + ScrollTrigger** | Padrão de mercado para animação por scroll (seção fixa da escada, contadores, revelações); gratuito para uso comercial |
 | Imagens | `astro:assets` (`<Image>` / `<Picture>`) | Gera AVIF/WebP em vários tamanhos no build, com `width/height` (sem "pulo" de layout) |
@@ -133,7 +134,7 @@ site-rezzu/
   --vidro: rgb(255 255 255 / .03);
   /* tipo */
   --f-display: "Bebas Neue", "Morganite", Impact, sans-serif;   /* títulos, caixa alta */
-  --f-texto: "Gotham", "Montserrat", system-ui, sans-serif;     /* ver pendência de licença */
+  --f-texto: "proxima-nova", "Proxima Nova", "Montserrat", system-ui, sans-serif; /* Proxima via Adobe Fonts */
   /* medidas */
   --container: 1280px;  --gutter: clamp(20px, 5.5vw, 80px);
   --raio: 24px;  --raio-pilula: 999px;
@@ -358,7 +359,7 @@ atualização e versão.
 | # | Pendência | Impacto |
 |---|---|---|
 | 1 | **Domínio** (ex.: rezzugroup.com.br?) | SEO, e-mails, Netlify |
-| 2 | **Licença web da Gotham** (Hoefler&Co). Sem licença → usar **Montserrat** (gratuita) no texto | Tipografia |
+| 2 | **Proxima Nova na web**: criar um *Web Project* no Adobe Fonts (incluso no Creative Cloud) com Proxima Nova (Regular, Semibold, Black) para o domínio e colar o ID em `PUBLIC_ADOBE_FONTS_KIT` no Netlify. Sem isso, o texto aparece em Montserrat | Tipografia |
 | 3 | Número de **WhatsApp** comercial e e-mail que recebe os leads | Conversão |
 | 4 | **Depoimentos reais** (texto + foto + autorização) | Seção 03 |
 | 5 | Confirmar a **história do Sobre** com Gabriel e Thyago | Seção 05 |
