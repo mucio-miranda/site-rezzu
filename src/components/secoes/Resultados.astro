@@ -4,12 +4,11 @@
  * cada um com uma mini cena vetorial (tempo · moedas · views). Acionada pelo scroll, sem fixar a seção.
  * O valor final está no HTML; a animação conta de 0 até ele. Animação: src/scripts/anim-resultados.ts.
  */
-import Sobretitulo from "../ui/Sobretitulo.astro";
+import CabecalhoSecao from "../ui/CabecalhoSecao.astro";
 import PisoGrade from "../motion/PisoGrade.astro";
 import CenaNumero from "../motion/CenaNumero.astro";
 import { resultados } from "../../content/home";
 
-const palavras = resultados.titulo.conectivo.split(" ");
 const total = String(resultados.numeros.length).padStart(2, "0");
 ---
 
@@ -17,19 +16,7 @@ const total = String(resultados.numeros.length).padStart(2, "0");
   <PisoGrade horizonte={68} class="resultados__piso" />
 
   <div class="container">
-    <header class="resultados__topo">
-      <Sobretitulo data-res-fade>{resultados.sobretitulo}</Sobretitulo>
-      <h2 id="resultados-titulo" class="resultados__titulo">
-        {palavras.map((p) => (
-          <span class="voz-impacto" data-res-batida>
-            {p}
-          </span>
-        ))}
-        <span class="voz-sentido" data-res-pop>
-          {resultados.titulo.sentido}
-        </span>
-      </h2>
-    </header>
+    <CabecalhoSecao id="resultados-titulo" sobretitulo={resultados.sobretitulo} {...resultados.titulo} />
 
     <ul class="resultados__lista" role="list">
       {resultados.numeros.map((n, i) => (
@@ -68,33 +55,12 @@ const total = String(resultados.numeros.length).padStart(2, "0");
     position: relative;
     isolation: isolate;
     overflow: clip;
-    padding-block: clamp(72px, 11vh, 128px);
+    padding-block: var(--secao-respiro);
   }
   .resultados > :global(.resultados__piso) {
     z-index: -1;
     opacity: 0.55;
   }
-  .resultados__topo {
-    display: grid;
-    gap: 18px;
-    justify-items: start;
-    margin-bottom: clamp(36px, 6vh, 64px);
-  }
-  /* título em Bebas, num tamanho só (MOTION.md §2.3) */
-  .resultados__titulo {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    column-gap: 0.2em;
-    max-width: 14em;
-    font-size: var(--t-h2);
-  }
-  .resultados__titulo > span {
-    display: inline-block;
-    font-size: inherit;
-    line-height: 0.92;
-  }
-
   .resultados__lista {
     list-style: none;
     padding: 0;

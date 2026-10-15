@@ -28,6 +28,7 @@
 
   /* medidas */
   --container: 1280px;
+  --secao-respiro: clamp(56px, 8vh, 96px); /* padding vertical das seções (soma ~2x entre duas) */
   --gutter: clamp(20px, 5.5vw, 80px);
   --secao-y: clamp(80px, 10vw, 120px);
   --raio: 24px;

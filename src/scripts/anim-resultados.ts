@@ -1,6 +1,5 @@
 /**
  * 02 · Resultados (MOTION.md §2–3), acionada pelo scroll, sem fixar a seção.
- *  título: palavras em corte seco → "NÚMERO." com pop
  *  cada card (ao entrar): sobe, a linha do capítulo enche, a mini cena se monta e o número conta de 0 até o valor
  *  contínuo (só com a seção na tela): pulso no último marco, brilhos das moedas, ondas e partículas do play
  * Sem JS ou com "reduzir movimento": tudo aparece montado, com o valor final (que já está no HTML).
@@ -26,16 +25,7 @@ if (raiz && !reduzir) {
     if (!naTela) a.pause();
   };
 
-  // ---------- título ----------
-  gsap
-    .timeline({ scrollTrigger: { trigger: raiz, start: "top 75%", once: true } })
-    .from(q("[data-res-fade]"), { opacity: 0, y: 12, ...ENTRA })
-    .from(q("[data-res-batida]"), { opacity: 0, duration: 0.01, stagger: 0.08 }, 0.15)
-    .from(
-      q("[data-res-pop]"),
-      { opacity: 0, scale: 0.88, y: 8, transformOrigin: "0% 70%", ...POP, duration: 0.45 },
-      ">0.05",
-    );
+  // (o título é animado pelo CabecalhoSecao: src/scripts/anim-cabecalho.ts)
 
   // ---------- mini cenas ----------
   function montarCena(svg: Element, tl: gsap.core.Timeline, t: number) {
