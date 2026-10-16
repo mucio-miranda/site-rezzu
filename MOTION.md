@@ -108,9 +108,9 @@ Proxima Nova na web via Adobe Fonts (`PUBLIC_ADOBE_FONTS_KIT`); sem o kit, fallb
 
 | Seção | Cena |
 |---|---|
-| Hero | **Tese da REZZU em texto cinético** ("ENTREGAMOS O QUE O EMPRESÁRIO PRECISA: POSICIONAMENTO E FATURAMENTO.") + **palco com os 2 capítulos em ciclo**: cap. 01 celular (ícones **orbitando** o anel do radar) → clarão → cap. 02 barras subindo + seta + TESTE → ✔ + moedas na carteira R$ → clarão → cap. 01… (feito: `CabecalhoCapitulo`, `CenaPosicionamento`, `CenaFaturamento`) |
+| Hero | **Tese da REZZU em texto cinético** ("ENTREGAMOS O QUE O EMPRESÁRIO PRECISA: POSICIONAMENTO E FATURAMENTO.") + **palco com os 2 capítulos em ciclo**: cap. 01 celular (ícones **orbitando** o anel do radar) → clarão → cap. 02 barras subindo + seta + TESTE → ✔ + moedas na carteira R$ → clarão → cap. 01… (sem cabeçalho de capítulo, removido a pedido; feito: `CenaPosicionamento`, `CenaFaturamento`) |
 | Resultados | Números +8 anos / +R$700 mil / +20 mi; pode reaproveitar `CenaFaturamento` acionada por scroll |
 | Dor (nova, opcional) | "Dinheiro fora em agência tradicional" em **P&B**, virando cor ao rolar |
-| Método | Cabeçalho de capítulo `01/05 … 05/05` acompanhando a escada |
+| Método | **Escada SVG neon** em palco *sticky* (não prende a rolagem): cada etapa que chega ao meio da tela acende o degrau, a bola salta em arco até ele e o capítulo troca `01/05 … 05/05`; no 5º, a porta acende. Celular: palco fixo no topo, etapas rolando por baixo (feito: `CenaEscada`, `Metodo`) |
 | Sobre | Foto dos fundadores; frase em texto cinético |
 | CTA | **Assinatura do logo** (raio + anel + partículas) + botão |
