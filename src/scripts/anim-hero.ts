@@ -46,9 +46,6 @@ if (!raiz || reduzir) {
   const c2 = (nome: string) => q(`[data-cap="1"] [data-fat="${nome}"]`);
 
   const cenas = [q('[data-cap="0"]')[0], q('[data-cap="1"]')[0]];
-  const rotulos = q("[data-capitulo-rotulo]");
-  const nums = q("[data-capitulo-num]");
-  const progresso = q("[data-capitulo-progresso]");
   const clarao = q("[data-palco-clarao]");
 
   const geo = (sel: string) => raiz.querySelector<SVGGeometryElement>(sel) ?? undefined;
@@ -157,8 +154,6 @@ if (!raiz || reduzir) {
       { opacity: 1, duration: 0.01, stagger: 0.07 },
       0.2,
     )
-    .fromTo(q("[data-capitulo]"), { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.25)
-    .fromTo(progresso, { scaleX: 0 }, { scaleX: 0.5, duration: 1.6, ease: "power1.inOut" }, 0.3)
     // tese: impacto → sentido
     .fromTo(q("[data-hero-pop]")[0], { opacity: 0, scale: 0.88 }, { opacity: 1, scale: 1, ...POP }, 0.9)
     .fromTo(
@@ -200,12 +195,7 @@ if (!raiz || reduzir) {
     tl.fromTo(clarao, { opacity: 0 }, { opacity: 1, duration: 0.1, ease: "power1.in" }, 0)
       .set(cenas[sai], { autoAlpha: 0 }, 0.1)
       .set(cenas[n], { autoAlpha: 1 }, 0.1)
-      .set([rotulos[sai], nums[sai]], { opacity: 0 }, 0.1)
-      .set([rotulos[n], nums[n]], { opacity: 1 }, 0.1)
       .to(clarao, { opacity: 0, duration: 0.45, ease: "power2.out" }, 0.1);
-    if (n === 0)
-      tl.fromTo(progresso, { scaleX: 0 }, { scaleX: 0.5, duration: 1.6, ease: "power1.inOut" }, 0.15);
-    else tl.fromTo(progresso, { scaleX: 0.5 }, { scaleX: 1, duration: 1.6, ease: "power1.inOut" }, 0.15);
     (n === 0 ? montarPosicionamento : montarFaturamento)(tl, 0.12);
     atual = tl;
   }

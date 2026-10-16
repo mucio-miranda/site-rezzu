@@ -1,14 +1,16 @@
 ---
-/** Sobretítulo: fio lima + texto em caixa alta espaçada. */
+/** Sobretítulo: fio lima (opcional) + texto em caixa alta espaçada. */
 interface Props {
   class?: string;
+  /** fio lima antes do texto (padrão: sim) */
+  fio?: boolean;
   [atributo: string]: unknown;
 }
-const { class: cls, ...resto } = Astro.props;
+const { class: cls, fio = true, ...resto } = Astro.props;
 ---
 
 <p class:list={["sobretitulo", cls]} {...resto}>
-  <span class="sobretitulo__fio" aria-hidden="true"></span>
+  {fio && <span class="sobretitulo__fio" aria-hidden="true" />}
   <slot />
 </p>
 

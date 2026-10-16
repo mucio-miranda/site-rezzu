@@ -9,7 +9,6 @@ import Sobretitulo from "../ui/Sobretitulo.astro";
 import PisoGrade from "../motion/PisoGrade.astro";
 import CenaPosicionamento from "../motion/CenaPosicionamento.astro";
 import CenaFaturamento from "../motion/CenaFaturamento.astro";
-import CabecalhoCapitulo from "../motion/CabecalhoCapitulo.astro";
 import { hero } from "../../content/home";
 
 const conectivo = hero.tese.conectivo.split(" ");
@@ -20,7 +19,7 @@ const conectivo = hero.tese.conectivo.split(" ");
 
   <div class="hero__grade container">
     <div class="hero__texto">
-      <Sobretitulo data-anim data-hero-fade>
+      <Sobretitulo fio={false} data-anim data-hero-fade>
         {hero.sobretitulo}
       </Sobretitulo>
 
@@ -63,7 +62,6 @@ const conectivo = hero.tese.conectivo.split(" ");
 
     <!-- palco: capítulo 01 (celular) e 02 (barras) se alternando, como no vídeo -->
     <div class="hero__cena palco" data-anim data-hero-cena role="img" aria-label={hero.cena.descricao}>
-      <CabecalhoCapitulo rotulos={hero.cena.capitulos} />
       <div class="palco__cenas">
         <CenaPosicionamento {...hero.cena.posicionamento} />
         <CenaFaturamento {...hero.cena.faturamento} />
@@ -139,7 +137,7 @@ const conectivo = hero.tese.conectivo.split(" ");
     flex-wrap: wrap;
     gap: 14px;
   }
-  /* palco das cenas: cabeçalho de capítulo + cenas empilhadas no mesmo lugar */
+  /* palco: cenas empilhadas no mesmo lugar */
   .palco {
     display: grid;
     gap: clamp(8px, 2vh, 20px);

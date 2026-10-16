@@ -36,7 +36,6 @@ export const hero = {
   ctaSecundario: { rotulo: "Ver o Método REZZU", href: "#metodo" },
   /** palco da hero: os 2 capítulos do vídeo se alternando (01 celular · 02 barras) */
   cena: {
-    capitulos: ["Posicionamento", "Faturamento"],
     posicionamento: {
       posicao: "Posicionamento",
       publico: "Empresário",
