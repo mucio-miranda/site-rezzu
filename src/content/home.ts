@@ -87,3 +87,30 @@ export const resultados = {
     },
   ],
 } as const;
+
+/**
+ * 04 · Método REZZU: o mecanismo único, em 5 degraus (MOTION.md §3).
+ * A escada é SVG neon; a bola (a marca do cliente) sobe um degrau por etapa conforme o scroll.
+ */
+export const metodo = {
+  sobretitulo: "Método REZZU",
+  titulo: { conectivo: "5 degraus entre o seu perfil e o", sentido: "seu caixa." },
+  etapas: [
+    {
+      nome: "Diagnóstico",
+      descricao: "Entender o que a marca realmente precisa antes de qualquer estratégia.",
+    },
+    {
+      nome: "Imersão",
+      descricao: "Deixar de ver um negócio e enxergar uma identidade: história, público, linguagem.",
+    },
+    {
+      nome: "Setup estratégico",
+      descricao: "Transformar informação em direção: linhas editoriais, visual, formatos.",
+    },
+    { nome: "Execução", descricao: "Vídeo, foto, design e tráfego, tudo produzido pelo nosso time." },
+    { nome: "Otimização", descricao: "Medir, ajustar e crescer de novo. O trabalho não acaba na entrega." },
+  ],
+  descricaoCena:
+    "Ilustração: escada de cinco degraus em neon verde; uma bola sobe degrau por degrau até uma porta iluminada no topo.",
+} as const;

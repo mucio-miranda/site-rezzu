@@ -1,0 +1,152 @@
+---
+/**
+ * 04 · Método REZZU: mecanismo único em 5 degraus. Scrollytelling com palco "sticky" (fica parado na tela
+ * enquanto o texto das etapas rola ao lado), em vez de prender a rolagem: o texto continua lido no ritmo
+ * do visitante e acessível. Cada etapa que chega ao meio da tela acende o seu degrau, a bola salta
+ * para ele e o capítulo troca (● DIAGNÓSTICO ——— 01 / 05). No 5º, a porta acende.
+ * Celular: o palco fica fixo no topo e as etapas rolam por baixo. Animação: src/scripts/anim-metodo.ts.
+ */
+import CabecalhoSecao from "../ui/CabecalhoSecao.astro";
+import PisoGrade from "../motion/PisoGrade.astro";
+import CabecalhoCapitulo from "../motion/CabecalhoCapitulo.astro";
+import CenaEscada from "../motion/CenaEscada.astro";
+import { metodo } from "../../content/home";
+
+const nomes = metodo.etapas.map((e) => e.nome);
+const dois = (n: number) => String(n).padStart(2, "0");
+---
+
+<section id="metodo" class="metodo" data-metodo aria-labelledby="metodo-titulo">
+  <PisoGrade horizonte={74} class="metodo__piso" />
+
+  <div class="container">
+    <CabecalhoSecao id="metodo-titulo" sobretitulo={metodo.sobretitulo} {...metodo.titulo} />
+
+    <div class="metodo__grade">
+      <ol class="metodo__etapas" data-metodo-etapas>
+        {metodo.etapas.map((e, i) => (
+          <li class="etapa" data-etapa={i}>
+            <span class="etapa__num" aria-hidden="true">
+              {dois(i + 1)}
+            </span>
+            <h3 class="etapa__nome">{e.nome}</h3>
+            <p class="etapa__desc">{e.descricao}</p>
+          </li>
+        ))}
+      </ol>
+
+      <div class="metodo__palco" role="img" aria-label={metodo.descricaoCena}>
+        <CabecalhoCapitulo rotulos={nomes} />
+        <CenaEscada total={metodo.etapas.length} />
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import "../../scripts/anim-metodo";
+</script>
+
+<style>
+  .metodo {
+    position: relative;
+    isolation: isolate;
+    padding-block: var(--secao-respiro);
+  }
+  .metodo > :global(.metodo__piso) {
+    z-index: -1;
+    opacity: 0.4;
+  }
+
+  .metodo__grade {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(24px, 4vw, 72px);
+    align-items: start;
+  }
+
+  /* palco: parado na tela enquanto as etapas rolam */
+  .metodo__palco {
+    position: sticky;
+    top: max(104px, calc(50svh - 250px));
+    display: grid;
+    gap: clamp(12px, 2vh, 24px);
+  }
+
+  .metodo__etapas {
+    list-style: none;
+    padding: 0;
+  }
+  .etapa {
+    min-height: 56svh;
+    display: grid;
+    align-content: center;
+    gap: 10px;
+    padding-left: 24px;
+    border-left: 1px solid rgb(255 255 255 / 0.1);
+    transition:
+      opacity 0.4s var(--ease),
+      border-color 0.4s var(--ease);
+  }
+  .etapa:first-child {
+    min-height: 40svh;
+    align-content: start;
+    padding-top: 8px;
+  }
+  .etapa__num {
+    font-family: var(--f-display);
+    font-size: 2.25rem;
+    line-height: 1;
+    color: var(--lima);
+  }
+  .etapa__nome {
+    font-family: var(--f-display);
+    font-size: clamp(2rem, 1.4rem + 1.6vw, 3rem);
+    line-height: 0.95;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+  }
+  .etapa__desc {
+    font-size: var(--t-apoio);
+    line-height: 1.6;
+    max-width: 34ch;
+  }
+  /* com JS: só a etapa atual em destaque */
+  .metodo[data-js] .etapa:not([data-ativa]) {
+    opacity: 0.28;
+  }
+  .metodo[data-js] .etapa[data-ativa] {
+    border-left-color: var(--lima);
+  }
+
+  @media (max-width: 900px) {
+    .metodo__grade {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    /* palco fixo no topo, as etapas passam por baixo */
+    .metodo__palco {
+      order: -1;
+      top: 72px;
+      z-index: 1;
+      padding-block: 12px 32px;
+      background: linear-gradient(#030303 88%, rgb(3 3 3 / 0));
+    }
+    /* escada menor: sobra tela para o texto da etapa */
+    .metodo__palco :global(.esc) {
+      max-width: min(100%, 300px, 34svh);
+      justify-self: center;
+    }
+    .etapa,
+    .etapa:first-child {
+      min-height: 46svh;
+      align-content: center;
+      padding-top: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .etapa {
+      transition: none;
+    }
+  }
+</style>
