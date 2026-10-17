@@ -1,0 +1,67 @@
+---
+/**
+ * Logo oficial REZZU: palavra "REZZŪ" com o Z de lâminas e o macron em lima.
+ * Vetor copiado do .ai da marca (IDENTIDADE VISUAL REZZU, prancheta 1) por SITE/scripts/14_logo_svg.py.
+ * Letras em currentColor (branco no fundo escuro, escuro no claro); detalhes sempre em lima.
+ */
+interface Props {
+  altura?: number; // px
+  class?: string;
+  title?: string;
+}
+const { altura = 24, class: cls, title = "REZZU" } = Astro.props;
+const largura = Math.round((altura * 1856.29) / 401.81);
+---
+
+<svg
+  class:list={["logo-rezzu", cls]}
+  width={largura}
+  height={altura}
+  viewBox="0 0 1856.29 401.81"
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-label={title}
+>
+  <path
+    class="logo-letra"
+    d="M175.68 192.68C218.18 192.68 242.55 170.01 242.55 136.57L242.55 135.44C242.55 98.04 216.48 78.77 173.98 78.77L87.27 78.77L87.27 192.68L175.68 192.68ZM0 0L181.34 0C231.78 0 270.88 14.17 296.95 40.24C319.05 62.34 330.95 93.51 330.95 130.91L330.95 132.04C330.95 196.08 296.38 236.31 245.95 255.01L342.85 396.69L240.85 396.69L155.84 269.75L87.27 269.75L87.27 396.69L0 396.69L0 0Z"
+  ></path>
+  <path
+    class="logo-letra"
+    d="M409.71 0L708.93 0L708.93 77.64L496.42 77.64L496.42 158.11L683.43 158.11L683.43 235.75L496.42 235.75L496.42 319.05L711.76 319.05L711.76 396.69L409.71 396.69L409.71 0Z"
+  ></path>
+  <path
+    class="logo-letra"
+    d="M777.49 330.38L995.67 76.5L784.29 76.5L784.29 0L1107.88 0L1107.88 66.3L889.7 320.18L1107.88 320.18L1107.88 396.69L777.49 396.69L777.49 330.38Z"
+  ></path>
+  <path
+    class="logo-letra"
+    d="M1173.04 330.38L1346.44 128.61C1364.02 108.16 1349.48 76.5 1322.51 76.5L1179.84 76.5L1179.84 0L1503.42 0L1503.42 66.3L1330.16 267.92C1312.53 288.44 1327.11 320.18 1354.16 320.18L1503.42 320.18L1503.42 396.69L1173.04 396.69L1173.04 330.38Z"
+  ></path>
+  <path
+    class="logo-letra"
+    d="M1572.51 257.13L1572.51 117.81L1644.15 117.81L1644.15 255.26C1644.15 308.3 1670.67 335.75 1714.4 335.75C1758.13 335.75 1784.65 309.23 1784.65 257.59L1784.65 117.81L1856.29 117.81L1856.29 254.8C1856.29 353.42 1800.93 401.81 1713.47 401.81C1626.01 401.81 1572.51 352.96 1572.51 257.13Z"
+  ></path>
+  <path
+    class="logo-lima"
+    d="M1277.39 113.26C1267.11 103.34 1263.61 90.49 1265.35 78.52L1185.53 78.52L1295.21 184.33L1320.53 154.87L1277.39 113.26Z"
+  ></path>
+  <path
+    class="logo-lima"
+    d="M1490.94 318.16L1381.26 212.34L1355.94 241.81L1383.99 268.87C1398.54 282.92 1401.85 301.83 1396.91 318.16L1490.94 318.16Z"
+  ></path>
+  <path class="logo-lima" d="M1572.51 0H1856.29V76.5H1572.51Z"></path>
+</svg>
+
+<style>
+  .logo-rezzu {
+    display: block;
+    flex: none;
+  }
+  .logo-letra {
+    fill: currentColor;
+  }
+  .logo-lima {
+    fill: var(--lima);
+  }
+</style>
