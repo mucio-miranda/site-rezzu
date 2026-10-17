@@ -12,6 +12,7 @@
  * Contínuo: ícones orbitam o radar e o anel tracejado gira devagar.
  *
  * Sem JS, com "reduzir movimento" ou em falha: capítulo 01 montado e parado (ver .anim-espera no Base.astro).
+ * Celular/tablet (até 900 px): sem motion; o palco some e entra o vídeo institucional (Hero.astro).
  */
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -19,6 +20,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 const raiz = document.querySelector<HTMLElement>("[data-hero]");
 const html = document.documentElement;
 const reduzir = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+// celular/tablet: hero sem motion (o palco dá lugar ao vídeo institucional; o texto aparece pronto)
+const celular = window.matchMedia("(max-width: 900px)").matches;
 const liberar = () => html.classList.remove("anim-espera");
 
 // tokens de motion (MOTION.md §2.1)
@@ -37,7 +40,7 @@ function tracejar(el: SVGGeometryElement | undefined) {
   return L;
 }
 
-if (!raiz || reduzir) {
+if (!raiz || reduzir || celular) {
   liberar();
 } else {
   gsap.registerPlugin(ScrollTrigger);

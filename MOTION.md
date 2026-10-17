@@ -1,6 +1,6 @@
 # Linguagem de motion do site REZZU
 
-Base: vídeo institucional da REZZU (`SITE\ASSETS\referencias\SaveClip…mp4`, 45 s, 720×1280, 30 fps),
+Base: vídeo institucional da REZZU (`SITE\ASSETS\referencias\rezzu-group-institucional.mp4`, 45 s, 720×1280, 30 fps; versão web em `public/video/rezzu-institucional.mp4`),
 analisado quadro a quadro (a cada 0,5 s e a 10 fps nos momentos-chave) em 15/10/2026.
 Quadros em `SITE\_trabalho\video-ref\`. Este documento manda em toda animação do site.
 
@@ -108,7 +108,7 @@ Proxima Nova na web via Adobe Fonts (`PUBLIC_ADOBE_FONTS_KIT`); sem o kit, fallb
 
 | Seção | Cena |
 |---|---|
-| Hero | **Tese da REZZU em texto cinético** ("ENTREGAMOS O QUE O EMPRESÁRIO PRECISA: POSICIONAMENTO E FATURAMENTO.") + **palco com os 2 capítulos em ciclo**: cap. 01 celular (ícones **orbitando** o anel do radar) → clarão → cap. 02 barras subindo + seta + TESTE → ✔ + moedas na carteira R$ → clarão → cap. 01… (sem cabeçalho de capítulo, removido a pedido; feito: `CenaPosicionamento`, `CenaFaturamento`) |
+| Hero | **Tese da REZZU em texto cinético** ("ENTREGAMOS O QUE O EMPRESÁRIO PRECISA: POSICIONAMENTO E FATURAMENTO.") + **palco com os 2 capítulos em ciclo**: cap. 01 celular (ícones **orbitando** o anel do radar) → clarão → cap. 02 barras subindo + seta + TESTE → ✔ + moedas na carteira R$ → clarão → cap. 01… (sem cabeçalho de capítulo, removido a pedido; feito: `CenaPosicionamento`, `CenaFaturamento`).<br>**Celular/tablet (até 900 px): sem motion.** O texto aparece pronto e o palco dá lugar ao vídeo institucional num quadro igual aos cards de Resultados (toca ao tocar no play; `preload=none`) |
 | Resultados | Números +8 anos / +R$700 mil / +20 mi; pode reaproveitar `CenaFaturamento` acionada por scroll |
 | Dor (nova, opcional) | "Dinheiro fora em agência tradicional" em **P&B**, virando cor ao rolar |
 | Método | **Escada SVG neon** em palco *sticky* (não prende a rolagem): cada etapa que chega ao meio da tela acende o degrau, a bola salta em arco até ele e o capítulo troca `01/05 … 05/05`; no 5º, a porta acende. Celular: palco fixo no topo, etapas rolando por baixo (feito: `CenaEscada`, `Metodo`) |

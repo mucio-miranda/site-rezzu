@@ -68,11 +68,56 @@ const conectivo = hero.tese.conectivo.split(" ");
         <div class="palco__clarao" data-palco-clarao aria-hidden="true"></div>
       </div>
     </div>
+
+    <!-- celular: vídeo institucional no lugar do palco (quadro no estilo dos cards de Resultados) -->
+    <figure class="hero__video" data-hero-video>
+      <figcaption class="video__cap">
+        <span class="video__ponto" aria-hidden="true"></span>
+        <span>{hero.video.rotulo}</span>
+        <span class="video__trilho" aria-hidden="true"></span>
+        <span class="video__duracao">{hero.video.duracao}</span>
+      </figcaption>
+      <div class="video__tela">
+        <video
+          src={hero.video.src}
+          preload="none"
+          playsinline
+          aria-label={hero.video.descricao}
+          data-video
+        ></video>
+        <button
+          class="video__capa"
+          type="button"
+          data-video-play
+          aria-label={`Reproduzir: ${hero.video.chamada}`}
+        >
+          <img src={hero.video.capa} alt="" width="540" height="960" loading="lazy" decoding="async" />
+          <span class="video__play" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22">
+              <path d="M8 5.5v13l11-6.5z" fill="currentColor"></path>
+            </svg>
+          </span>
+          <span class="video__chamada">{hero.video.chamada}</span>
+        </button>
+      </div>
+    </figure>
   </div>
 </section>
 
 <script>
   import "../../scripts/anim-hero";
+
+  // vídeo do celular: só carrega ao tocar no play (preload="none"); depois ficam os controles nativos
+  const quadro = document.querySelector<HTMLElement>("[data-hero-video]");
+  const video = quadro?.querySelector<HTMLVideoElement>("[data-video]");
+  const capa = quadro?.querySelector<HTMLButtonElement>("[data-video-play]");
+  if (video && capa) {
+    capa.addEventListener("click", () => {
+      capa.hidden = true;
+      video.controls = true;
+      void video.play();
+    });
+  }
 </script>
 
 <style>
@@ -170,7 +215,126 @@ const conectivo = hero.tese.conectivo.split(" ");
     mix-blend-mode: screen;
   }
 
+  /* vídeo institucional: só no celular/tablet. Quadro igual ao card de Resultados */
+  .hero__video {
+    display: none;
+    gap: 14px;
+    width: 100%;
+    max-width: 400px;
+    justify-self: center;
+    padding: 14px;
+    border: 1px solid rgb(255 255 255 / 0.08);
+    border-radius: 20px;
+    background:
+      radial-gradient(120% 70% at 50% 0%, rgb(168 204 21 / 0.07), transparent 70%), rgb(255 255 255 / 0.015);
+  }
+  .video__cap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-inline: 4px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--texto);
+  }
+  .video__ponto {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--lima);
+    box-shadow: 0 0 10px var(--lima);
+  }
+  .video__trilho {
+    flex: 1;
+    height: 1px;
+    background: rgb(255 255 255 / 0.12);
+  }
+  .video__duracao {
+    color: var(--texto-2);
+    font-variant-numeric: tabular-nums;
+  }
+  .video__tela {
+    position: relative;
+    display: grid;
+    aspect-ratio: 9 / 16;
+    width: min(100%, 72svh * 9 / 16); /* largura fixa: não muda quando o vídeo carrega */
+    margin-inline: auto;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #000;
+  }
+  .video__tela > * {
+    grid-area: 1 / 1;
+  }
+  .video__tela video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .video__capa {
+    position: relative;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    color: inherit;
+  }
+  .video__capa[hidden] {
+    display: none;
+  }
+  .video__capa img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .video__capa::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgb(3 3 3 / 0.85), transparent 45%);
+  }
+  .video__play {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    padding-left: 3px;
+    border-radius: 50%;
+    background: var(--lima);
+    color: var(--bg);
+    box-shadow: 0 0 0 8px rgb(168 204 21 / 0.18);
+    transition: transform 0.25s var(--ease);
+  }
+  .video__capa:hover .video__play,
+  .video__capa:focus-visible .video__play {
+    transform: scale(1.06);
+  }
+  .video__chamada {
+    position: absolute;
+    z-index: 1;
+    inset: auto 16px 16px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--branco);
+    text-align: center;
+  }
+
   @media (max-width: 900px) {
+    /* celular/tablet: sem o palco animado; entra o vídeo */
+    .hero__cena {
+      display: none;
+    }
+    .hero__video {
+      display: grid;
+    }
     .hero {
       min-height: auto;
       padding-block: 96px 48px;

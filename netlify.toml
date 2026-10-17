@@ -34,3 +34,9 @@
 #   to = "https://DOMINIO/:splat"
 #   status = 301
 #   force = true
+
+# Vídeo da hero (nome fixo): cache de 1 semana
+[[headers]]
+  for = "/video/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"

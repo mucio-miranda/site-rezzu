@@ -48,6 +48,15 @@ export const hero = {
     descricao:
       "Ilustração em dois capítulos: primeiro um perfil de rede social se montando dentro de um celular, cercado por um radar, com as marcações posicionamento, empresário e João Pessoa; depois barras de crescimento subindo, testes sendo validados e moedas caindo numa carteira.",
   },
+  /** celular: no lugar do palco animado, o vídeo institucional num quadro igual aos cards de Resultados */
+  video: {
+    rotulo: "Conheça",
+    duracao: "0:45",
+    chamada: "Assista: o que o Grupo REZZU entrega",
+    src: "/video/rezzu-institucional.mp4",
+    capa: "/video/rezzu-institucional-capa.jpg",
+    descricao: "Vídeo institucional do Grupo REZZU, com um dos fundadores apresentando a assessoria.",
+  },
 } as const;
 
 /**
