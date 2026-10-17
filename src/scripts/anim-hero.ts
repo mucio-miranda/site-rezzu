@@ -29,7 +29,7 @@ const POP = { duration: 0.35, ease: "back.out(1.6)" };
 const ENTRA = { duration: 0.6, ease: "power3.out" };
 const DESENHA = { duration: 0.9, ease: "power2.inOut" };
 const CRESCE = { duration: 0.7, ease: "back.out(1.2)" };
-const ESPERA = 3.4; // tempo de cada capítulo montado na tela
+const ESPERA = 1.4; // tempo de cada capítulo montado na tela (2 s a menos a pedido: ciclo mais curto)
 const ORBITA = { cx: 320, cy: 320, r: 244, volta: 36 }; // igual à CenaPosicionamento; volta em segundos
 
 /** prepara um contorno SVG para "se desenhar": devolve o comprimento para usar em strokeDashoffset */
