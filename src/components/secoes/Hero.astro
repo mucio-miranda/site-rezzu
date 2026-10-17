@@ -183,6 +183,19 @@ const conectivo = hero.tese.conectivo.split(" ");
       max-width: 440px;
       justify-self: center;
     }
+    /* celular: texto da hero centralizado */
+    .hero__texto,
+    .tese {
+      justify-items: center;
+      text-align: center;
+    }
+    .tese__linha,
+    .hero__ctas {
+      justify-content: center;
+    }
+    .tese [data-hero-pop] {
+      transform-origin: 50% 70%;
+    }
   }
 
   /* esconde o que vai animar SÓ quando o JS de animação está ativo (classe posta no <head>) */
