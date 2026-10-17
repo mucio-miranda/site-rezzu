@@ -30,8 +30,8 @@ import { navegacao, ctaPrincipal } from "../../content/home";
 
     <button class="header__menu" type="button" aria-expanded="false" aria-controls="menu-principal" data-menu>
       <span class="sr-only">Abrir menu</span>
-      <span class="header__menu-linha"></span>
-      <span class="header__menu-linha"></span>
+      <span class="header__menu-linha header__menu-linha--a"></span>
+      <span class="header__menu-linha header__menu-linha--b"></span>
     </button>
   </div>
 </header>
@@ -135,16 +135,25 @@ import { navegacao, ctaPrincipal } from "../../content/home";
       cursor: pointer;
     }
     .header__menu-linha {
-      width: 18px;
+      width: 20px;
       height: 2px;
       background: var(--branco);
-      transition: transform 0.3s var(--ease);
+      transition:
+        transform 0.35s var(--ease),
+        background-color 0.35s var(--ease);
     }
-    .header--aberto .header__menu-linha:first-of-type {
-      transform: translateY(4px) rotate(45deg);
+    /* aberto: o X do logo. A diagonal do Z (branca, /, ~49°) passa por cima da lâmina (lima, \, ~38°) */
+    .header__menu-linha--a {
+      position: relative;
+      z-index: 1;
     }
-    .header--aberto .header__menu-linha:last-of-type {
-      transform: translateY(-4px) rotate(-45deg);
+    .header--aberto .header__menu-linha--a {
+      transform: translateY(4px) rotate(-49deg);
+      box-shadow: 0 0 0 1.5px var(--bg); /* recorte na lâmina, como no logo */
+    }
+    .header--aberto .header__menu-linha--b {
+      transform: translateY(-4px) rotate(38deg);
+      background: var(--lima);
     }
     .header__nav {
       position: fixed;
