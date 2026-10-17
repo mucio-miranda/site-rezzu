@@ -1,0 +1,160 @@
+---
+/**
+ * 02 · Resultados: a prova logo depois da promessa. Título em texto cinético + 3 números aprovados,
+ * cada um com uma mini cena vetorial (tempo · moedas · views). Acionada pelo scroll, sem fixar a seção.
+ * O valor final está no HTML; a animação conta de 0 até ele. Animação: src/scripts/anim-resultados.ts.
+ */
+import CabecalhoSecao from "../ui/CabecalhoSecao.astro";
+import PisoGrade from "../motion/PisoGrade.astro";
+import CenaNumero from "../motion/CenaNumero.astro";
+import { resultados } from "../../content/home";
+
+const total = String(resultados.numeros.length).padStart(2, "0");
+---
+
+<section id="resultados" class="resultados" data-resultados aria-labelledby="resultados-titulo">
+  <PisoGrade horizonte={68} class="resultados__piso" />
+
+  <div class="container">
+    <CabecalhoSecao id="resultados-titulo" sobretitulo={resultados.sobretitulo} {...resultados.titulo} />
+
+    <ul class="resultados__lista" role="list">
+      {resultados.numeros.map((n, i) => (
+        <li class="card" data-res-card>
+          <div class="card__cap" aria-hidden="true">
+            <span class="card__ponto" />
+            <span>{n.rotulo}</span>
+            <span class="card__trilho">
+              <span class="card__progresso" data-res-progresso />
+            </span>
+            <span class="card__contador">
+              {String(i + 1).padStart(2, "0")} / {total}
+            </span>
+          </div>
+          <div class="card__cena">
+            <CenaNumero tipo={n.cena} />
+          </div>
+          <p class="card__numero">
+            <span>{n.prefixo}</span>
+            <span data-res-valor={n.valor}>{n.valor}</span>
+            <span class="card__sufixo">{n.sufixo}</span>
+          </p>
+          <p class="card__legenda">{n.legenda}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<script>
+  import "../../scripts/anim-resultados";
+</script>
+
+<style>
+  .resultados {
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+    padding-block: var(--secao-respiro);
+  }
+  .resultados > :global(.resultados__piso) {
+    z-index: -1;
+    opacity: 0.55;
+  }
+  .resultados__lista {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(14px, 1.6vw, 24px);
+  }
+  .card {
+    display: grid;
+    align-content: start;
+    gap: 14px;
+    padding: clamp(20px, 2vw, 28px);
+    border: 1px solid rgb(255 255 255 / 0.08);
+    border-radius: 20px;
+    background:
+      radial-gradient(120% 70% at 50% 0%, rgb(168 204 21 / 0.07), transparent 70%), rgb(255 255 255 / 0.015);
+    transition:
+      border-color 0.3s var(--ease),
+      translate 0.3s var(--ease); /* translate (não transform): o GSAP anima o transform */
+  }
+  .card:hover {
+    border-color: rgb(168 204 21 / 0.35);
+    translate: 0 -4px;
+  }
+
+  /* mini cabeçalho de capítulo: ● RÓTULO ——— 01 / 03 */
+  .card__cap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--texto);
+  }
+  .card__ponto {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--lima);
+    box-shadow: 0 0 10px var(--lima);
+  }
+  .card__trilho {
+    flex: 1;
+    height: 1px;
+    background: rgb(255 255 255 / 0.12);
+    position: relative;
+  }
+  .card__progresso {
+    position: absolute;
+    inset: 0;
+    background: var(--lima);
+    transform-origin: 0 50%;
+  }
+  .card__contador {
+    color: var(--texto-2);
+  }
+  .card__cena {
+    padding-block: 8px 4px;
+  }
+
+  /* flex: os espaços entre os <span> não contam; o sufixo ganha o seu próprio respiro */
+  .card__numero {
+    display: flex;
+    align-items: baseline;
+    font-family: var(--f-display);
+    font-size: clamp(3rem, 2rem + 2.6vw, 4.5rem);
+    line-height: 0.9;
+    color: var(--lima);
+    letter-spacing: 0.01em;
+    font-variant-numeric: tabular-nums;
+  }
+  .card__sufixo {
+    margin-left: 0.18em;
+  }
+  .card__legenda {
+    font-size: var(--t-apoio);
+    color: var(--texto);
+    line-height: 1.5;
+  }
+
+  @media (max-width: 900px) {
+    .resultados__lista {
+      grid-template-columns: 1fr;
+      max-width: 480px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .card {
+      transition: none;
+    }
+    .card:hover {
+      translate: none;
+    }
+  }
+</style>

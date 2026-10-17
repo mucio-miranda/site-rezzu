@@ -1,0 +1,89 @@
+---
+/**
+ * Botão-pílula da REZZU. `primario` = fundo lima (CTA de conversão); `secundario` = contorno.
+ * `evento` vira data-evento (o módulo de rastreamento da Fase 2 escuta esses cliques).
+ */
+interface Props {
+  href: string;
+  variante?: "primario" | "secundario";
+  seta?: "direita" | "baixo" | false;
+  evento?: string;
+  class?: string;
+  [atributo: string]: unknown;
+}
+const { href, variante = "primario", seta = "direita", evento, class: cls, ...resto } = Astro.props;
+---
+
+<a href={href} class:list={["botao", `botao--${variante}`, cls]} data-evento={evento} {...resto}>
+  <span>
+    <slot />
+  </span>
+  {seta && (
+    <svg class:list={["botao__seta", `botao__seta--${seta}`]} viewBox="0 0 20 20" aria-hidden="true">
+      <path
+        d="M4 10h11M10.5 5.5 15 10l-4.5 4.5"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  )}
+</a>
+
+<style>
+  .botao {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 28px;
+    border-radius: var(--raio-pilula);
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1;
+    white-space: nowrap;
+    transition:
+      background-color 0.25s var(--ease),
+      border-color 0.25s var(--ease),
+      transform 0.25s var(--ease),
+      box-shadow 0.25s var(--ease);
+  }
+  .botao--primario {
+    background: var(--lima);
+    color: var(--bg);
+  }
+  .botao--primario:hover {
+    background: var(--lima-luz);
+    box-shadow: 0 0 32px rgb(168 204 21 / 0.35);
+    transform: translateY(-2px);
+  }
+  .botao--secundario {
+    color: var(--branco);
+    border: 1px solid rgb(255 255 255 / 0.22);
+  }
+  .botao--secundario:hover {
+    border-color: var(--lima);
+    transform: translateY(-2px);
+  }
+  .botao__seta {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.25s var(--ease);
+  }
+  .botao__seta--baixo {
+    transform: rotate(90deg);
+  }
+  .botao:hover .botao__seta--direita {
+    transform: translateX(3px);
+  }
+  .botao:hover .botao__seta--baixo {
+    transform: rotate(90deg) translateX(3px);
+  }
+  @media (max-width: 480px) {
+    .botao {
+      padding: 16px 22px;
+      font-size: 0.9375rem;
+    }
+  }
+</style>

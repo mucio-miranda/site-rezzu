@@ -1,0 +1,58 @@
+---
+/**
+ * Cabeçalho de seção: sobretítulo + título em texto cinético (MOTION.md §1.2 e §2.3).
+ * Título todo em Bebas, num tamanho só: conectivo em branco, palavra de sentido em lima.
+ * Animação (ao rolar até ele): palavras em corte seco → sentido com pop. Script: src/scripts/anim-cabecalho.ts.
+ */
+import Sobretitulo from "./Sobretitulo.astro";
+
+interface Props {
+  id: string;
+  sobretitulo: string;
+  conectivo: string;
+  sentido: string;
+  class?: string;
+}
+const { id, sobretitulo, conectivo, sentido, class: cls } = Astro.props;
+const palavras = conectivo.split(" ");
+---
+
+<header class:list={["cabecalho", cls]} data-cabecalho>
+  <Sobretitulo data-cab-fade>{sobretitulo}</Sobretitulo>
+  <h2 id={id} class="cabecalho__titulo">
+    {palavras.map((p) => (
+      <span class="voz-impacto" data-cab-batida>
+        {p}
+      </span>
+    ))}
+    <span class="voz-sentido" data-cab-pop>
+      {sentido}
+    </span>
+  </h2>
+</header>
+
+<script>
+  import "../../scripts/anim-cabecalho";
+</script>
+
+<style>
+  .cabecalho {
+    display: grid;
+    gap: 18px;
+    justify-items: start;
+    margin-bottom: clamp(36px, 6vh, 64px);
+  }
+  .cabecalho__titulo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 0.2em;
+    max-width: 14em;
+    font-size: var(--t-h2);
+  }
+  .cabecalho__titulo > span {
+    display: inline-block;
+    font-size: inherit;
+    line-height: 0.92;
+  }
+</style>

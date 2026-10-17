@@ -1,6 +1,8 @@
 /// <reference types="astro/client" />
 
 interface ImportMetaEnv {
+  /** ID do Web Project do Adobe Fonts com a Proxima Nova (ex.: abc1def). Vazio = Montserrat. */
+  readonly PUBLIC_ADOBE_FONTS_KIT?: string;
   /** Meta Pixel (ex.: 123456789012345). Vazio = desligado. */
   readonly PUBLIC_META_PIXEL_ID?: string;
   /** Google Ads (ex.: AW-123456789). Vazio = desligado. */

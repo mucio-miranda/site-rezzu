@@ -1,0 +1,175 @@
+---
+/**
+ * Escada do Método REZZU em SVG neon (MOTION.md §3): 5 degraus em perspectiva leve, bola (a marca do cliente)
+ * e porta no topo. Peças animáveis: [data-esc-degrau="i"], [data-esc-bola], [data-esc-porta].
+ * Sem JS, aparece no estado final: todos os degraus acesos, bola no topo e porta acesa.
+ * Animação: src/scripts/anim-metodo.ts (as coordenadas da bola saem de data-cx/data-cy de cada degrau).
+ */
+interface Props {
+  total: number;
+}
+const { total } = Astro.props;
+
+const CHAO = 470;
+const L = 100; // largura da frente do degrau
+const P = { x: 24, y: -16 }; // profundidade (face de cima)
+const degraus = Array.from({ length: total }, (_, i) => {
+  const x = 70 + i * L;
+  const topo = 420 - i * 70;
+  return {
+    i,
+    x,
+    topo,
+    frente: `M${x} ${topo}h${L}V${CHAO}h${-L}z`,
+    cima: `M${x} ${topo}l${P.x} ${P.y}h${L}l${-P.x} ${-P.y}z`,
+    // centro da bola: no meio da face de cima, apoiada nela
+    cx: x + L / 2 + P.x / 2,
+    cy: topo + P.y / 2 - 17,
+  };
+});
+const ultimo = degraus[total - 1];
+// lateral direita do último degrau (fecha o volume)
+const lado = `M${ultimo.x + L} ${ultimo.topo}l${P.x} ${P.y}V${CHAO + P.y}l${-P.x} ${-P.y}z`;
+const dois = (n: number) => String(n).padStart(2, "0");
+---
+
+<svg class="esc" viewBox="0 0 640 500" aria-hidden="true">
+  <!-- chão -->
+  <path d={`M30 ${CHAO}H620`} stroke="var(--lima)" stroke-width="1.5" opacity="0.35"></path>
+
+  <!-- porta no topo (chegada) -->
+  <g data-esc-porta transform={`translate(${ultimo.x + 34} ${ultimo.topo - 112})`}>
+    <rect class="esc__porta-luz" x="-8" y="-8" width="72" height="112" rx="10"></rect>
+    <rect
+      class="esc__porta"
+      width="56"
+      height="96"
+      rx="6"
+      fill="rgb(168 204 21 / 0.12)"
+      stroke="var(--lima)"
+      stroke-width="2"
+    ></rect>
+    <circle cx="44" cy="50" r="3" fill="var(--lima)"></circle>
+  </g>
+
+  <!-- degraus -->
+  {degraus.map((d) => (
+    <g class="esc__degrau" data-esc-degrau={d.i} data-cx={d.cx} data-cy={d.cy}>
+      <path class="esc__frente" d={d.frente} />
+      <path class="esc__cima" d={d.cima} />
+      <text class="esc__num" x={d.x + L / 2} y={d.topo + 46} text-anchor="middle">
+        {dois(d.i + 1)}
+      </text>
+    </g>
+  ))}
+  <path class="esc__lado" d={lado}></path>
+
+  <!-- bola (a marca do cliente) + sombra -->
+  <ellipse
+    data-esc-sombra
+    cx={ultimo.cx}
+    cy={ultimo.topo + P.y / 2}
+    rx="18"
+    ry="5"
+    fill="rgb(0 0 0 / 0.55)"
+  ></ellipse>
+  <g data-esc-bola transform={`translate(${ultimo.cx} ${ultimo.cy})`}>
+    <g class="neon">
+      <circle r="17" fill="var(--lima-luz)"></circle>
+      <circle r="17" fill="url(#esc-bola-brilho)"></circle>
+    </g>
+  </g>
+
+  <defs>
+    <radialGradient id="esc-bola-brilho" cx="35%" cy="30%" r="70%">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.7"></stop>
+      <stop offset="0.45" stop-color="#fff" stop-opacity="0"></stop>
+    </radialGradient>
+  </defs>
+</svg>
+
+<style>
+  .esc {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .neon {
+    filter: var(--brilho);
+  }
+
+  /* degrau: apagado → aceso. O JS marca o <svg> com data-js e cada degrau com data-aceso/data-atual;
+     sem JS (ou com "reduzir movimento" antes do JS), tudo fica aceso */
+  .esc__frente {
+    fill: rgb(168 204 21 / 0.1);
+    stroke: var(--lima);
+    stroke-width: 1.5;
+    transition:
+      fill 0.4s var(--ease),
+      stroke 0.4s var(--ease);
+  }
+  .esc__cima {
+    fill: var(--lima);
+    stroke: var(--lima);
+    stroke-width: 1.5;
+    transition: fill 0.4s var(--ease);
+  }
+  .esc__num {
+    font-family: var(--f-display);
+    font-size: 34px;
+    fill: var(--lima);
+    transition: fill 0.4s var(--ease);
+  }
+  .esc__degrau {
+    filter: var(--brilho);
+  }
+  .esc__lado {
+    fill: rgb(168 204 21 / 0.06);
+    stroke: rgb(168 204 21 / 0.3);
+    stroke-width: 1.5;
+  }
+  .esc[data-js] .esc__degrau:not([data-aceso]) {
+    filter: none;
+  }
+  .esc[data-js] .esc__degrau:not([data-aceso]) .esc__frente {
+    fill: rgb(168 204 21 / 0.04);
+    stroke: rgb(168 204 21 / 0.3);
+  }
+  .esc[data-js] .esc__degrau:not([data-aceso]) .esc__cima {
+    fill: rgb(168 204 21 / 0.14);
+    stroke: rgb(168 204 21 / 0.3);
+  }
+  .esc[data-js] .esc__degrau:not([data-aceso]) .esc__num {
+    fill: rgb(168 204 21 / 0.35);
+  }
+  /* degrau atual: face de cima mais clara */
+  .esc__degrau[data-atual] .esc__cima {
+    fill: var(--lima-luz);
+  }
+
+  /* porta: apagada → acesa no último degrau */
+  .esc__porta-luz {
+    fill: rgb(200 240 58 / 0.25);
+    filter: blur(14px);
+    transition: opacity 0.6s var(--ease);
+  }
+  .esc__porta {
+    fill: rgb(200 240 58 / 0.55);
+    transition: fill 0.6s var(--ease);
+  }
+  .esc[data-js] [data-esc-porta]:not([data-aceso]) .esc__porta-luz {
+    opacity: 0;
+  }
+  .esc[data-js] [data-esc-porta]:not([data-aceso]) .esc__porta {
+    fill: rgb(168 204 21 / 0.03);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .esc__frente,
+    .esc__cima,
+    .esc__num,
+    .esc__porta,
+    .esc__porta-luz {
+      transition: none;
+    }
+  }
+</style>

@@ -1,0 +1,55 @@
+---
+/**
+ * Piso de grade em perspectiva + brilho radial verde (fundo das cenas-capítulo, MOTION.md §1.3).
+ * CSS puro. Colocar como primeiro filho de um container com position: relative.
+ */
+interface Props {
+  class?: string;
+  /** posição vertical do horizonte (0–100%) */
+  horizonte?: number;
+  [atributo: string]: unknown;
+}
+const { class: cls, horizonte = 58, ...resto } = Astro.props;
+---
+
+<div class:list={["piso", cls]} style={`--horizonte:${horizonte}%`} aria-hidden="true" {...resto}>
+  <div class="piso__brilho"></div>
+  <div class="piso__grade"></div>
+</div>
+
+<style>
+  .piso {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    /* funde com a próxima seção, sem corte reto no pé */
+    mask-image: linear-gradient(to bottom, #000 72%, transparent);
+  }
+  .piso__brilho {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(42% 38% at 66% calc(var(--horizonte) - 6%), rgb(168 204 21 / 0.16), transparent 70%),
+      radial-gradient(70% 50% at 50% 100%, rgb(168 204 21 / 0.07), transparent 70%);
+  }
+  .piso__grade {
+    position: absolute;
+    left: -50%;
+    right: -50%;
+    top: var(--horizonte);
+    height: 140%;
+    background-image:
+      linear-gradient(rgb(168 204 21 / 0.22) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(168 204 21 / 0.22) 1px, transparent 1px);
+    background-size: 64px 64px;
+    transform: perspective(520px) rotateX(68deg);
+    transform-origin: 50% 0;
+    /* some no horizonte e nas laterais */
+    mask-image:
+      linear-gradient(to bottom, transparent, #000 18%, #000 45%, transparent 85%),
+      linear-gradient(90deg, transparent, #000 30%, #000 70%, transparent);
+    mask-composite: intersect;
+    -webkit-mask-composite: source-in;
+  }
+</style>

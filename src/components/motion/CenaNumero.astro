@@ -1,0 +1,147 @@
+---
+/**
+ * Mini cenas dos números de Resultados (MOTION.md §3), em SVG neon como as cenas da hero.
+ *  tempo  · 8 marcos crescendo numa linha do tempo, ligados por uma linha de luz
+ *  moedas · 3 pilhas de moedas subindo, com brilhos
+ *  views  · botão de play com ondas expandindo e partículas subindo
+ * Peças animáveis: [data-mc="..."]. Sem JS, aparece montada. Animação: src/scripts/anim-resultados.ts.
+ */
+interface Props {
+  tipo: "tempo" | "moedas" | "views";
+}
+const { tipo } = Astro.props;
+
+const BASE = 146;
+const marcos = Array.from({ length: 8 }, (_, i) => ({ x: 40 + i * 34, topo: BASE - (16 + i * 9) }));
+const curva = marcos.map((m) => `${m.x} ${m.topo}`).join(" L");
+
+const pilhas = [
+  { x: 100, n: 3 },
+  { x: 160, n: 5 },
+  { x: 220, n: 7 },
+];
+const moedas = pilhas.flatMap((p) => Array.from({ length: p.n }, (_, i) => ({ x: p.x, y: 150 - i * 10 })));
+
+const particulas = [
+  { x: 112, y: 70, s: 0.8 },
+  { x: 214, y: 58, s: 1 },
+  { x: 236, y: 112, s: 0.7 },
+  { x: 92, y: 124, s: 0.9 },
+];
+---
+
+<svg class="mc" viewBox="0 0 320 180" aria-hidden="true" data-mc-tipo={tipo}>
+  {tipo === "tempo" && (
+    <>
+      <path data-mc="linha" d={`M20 ${BASE}H300`} stroke="var(--lima)" stroke-width="2" opacity="0.45" />
+      <g class="neon">
+        {marcos.map((m, i) => (
+          <g data-mc="marco">
+            <path d={`M${m.x} ${BASE}V${m.topo}`} stroke="var(--lima)" stroke-width="2" opacity="0.55" />
+            <circle cx={m.x} cy={m.topo} r={i === 7 ? 7 : 4.5} fill="var(--lima)" />
+          </g>
+        ))}
+      </g>
+      <path
+        data-mc="curva"
+        class="neon"
+        d={`M${curva}`}
+        fill="none"
+        stroke="var(--lima-luz)"
+        stroke-width="2.5"
+        stroke-linecap="round"
+      />
+      <circle
+        data-mc="pulso"
+        cx={marcos[7].x}
+        cy={marcos[7].topo}
+        r="7"
+        fill="none"
+        stroke="var(--lima)"
+        stroke-width="2"
+      />
+    </>
+  )}
+  {tipo === "moedas" && (
+    <>
+      <ellipse cx="160" cy="158" rx="118" ry="12" fill="rgb(168 204 21 / 0.08)" />
+      <g class="neon">
+        {moedas.map((m) => (
+          <g data-mc="moeda">
+            <path d={`M${m.x - 26} ${m.y}v6a26 8 0 0 0 52 0v-6z`} fill="#5d7409" />
+            <ellipse cx={m.x} cy={m.y} rx="26" ry="8" fill="var(--lima)" stroke="#030303" stroke-width="1" />
+            <ellipse
+              cx={m.x}
+              cy={m.y}
+              rx="15"
+              ry="4.5"
+              fill="none"
+              stroke="#030303"
+              stroke-width="1"
+              opacity="0.35"
+            />
+          </g>
+        ))}
+      </g>
+      {[
+        { x: 262, y: 68, s: 1 },
+        { x: 58, y: 100, s: 0.75 },
+        { x: 270, y: 128, s: 0.6 },
+      ].map((b) => (
+        <g transform={`translate(${b.x} ${b.y}) scale(${b.s})`}>
+          <g data-mc="brilho" class="neon">
+            <path d="M0 -10L2.2 -2.2L10 0L2.2 2.2L0 10L-2.2 2.2L-10 0L-2.2 -2.2z" fill="var(--lima-luz)" />
+          </g>
+        </g>
+      ))}
+    </>
+  )}
+  {tipo === "views" && (
+    <>
+      {[0, 1, 2].map(() => (
+        <circle
+          data-mc="onda"
+          cx="160"
+          cy="92"
+          r="34"
+          fill="none"
+          stroke="var(--lima)"
+          stroke-width="2"
+          opacity="0"
+        />
+      ))}
+      <g data-mc="play" class="neon">
+        <circle
+          cx="160"
+          cy="92"
+          r="34"
+          fill="rgb(168 204 21 / 0.12)"
+          stroke="var(--lima)"
+          stroke-width="2.5"
+        />
+        <path d="M150 76l26 16-26 16z" fill="var(--lima)" />
+      </g>
+      {particulas.map((p) => (
+        <g transform={`translate(${p.x} ${p.y}) scale(${p.s})`}>
+          <g data-mc="particula" class="neon">
+            <path
+              d="M0 6s-7-4.2-7-8.4a3.9 3.9 0 0 1 7-2.1 3.9 3.9 0 0 1 7 2.1C7 1.8 0 6 0 6z"
+              fill="var(--lima)"
+            />
+          </g>
+        </g>
+      ))}
+    </>
+  )}
+</svg>
+
+<style>
+  .mc {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .neon {
+    filter: var(--brilho);
+  }
+</style>
