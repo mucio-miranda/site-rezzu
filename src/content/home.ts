@@ -42,6 +42,7 @@ export const hero = {
       local: "João Pessoa · PB",
     },
     faturamento: {
+      rotulo: "Faturamento",
       testes: ["Teste 01", "Teste 02", "Teste 03"],
       moeda: "R$",
     },

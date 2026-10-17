@@ -109,6 +109,7 @@ if (!raiz || reduzir || celular) {
       .from(c2("teste"), { opacity: 0, scale: 0.6, transformOrigin: "0% 50%", ...POP, stagger: 0.1 }, t + 0.2)
       .from(seta ?? [], { strokeDashoffset: Lseta, ...DESENHA }, t + 0.85)
       .from(c2("seta-ponta"), { opacity: 0, scale: 0, transformOrigin: "50% 50%", ...POP }, t + 1.7)
+      .from(c2("pilula"), { opacity: 0, scale: 0.6, transformOrigin: "0% 50%", ...POP }, t + 1.85)
       // vazia (contorno) → validada (lima + ✔)
       .from(
         c2("teste-ok"),

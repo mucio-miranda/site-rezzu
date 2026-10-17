@@ -7,10 +7,12 @@
  * Sem números inventados: é ilustração de crescimento, sem eixo nem valores. Animação: src/scripts/anim-hero.ts.
  */
 interface Props {
+  /** pílula ✔ do capítulo, como a "Posicionamento" do capítulo 01 */
+  rotulo: string;
   testes: readonly string[];
   moeda: string;
 }
-const { testes, moeda } = Astro.props;
+const { rotulo, testes, moeda } = Astro.props;
 
 // barras em pseudo-3D: frente + lateral + topo; base comum em y = 470
 const BASE = 470;
@@ -69,6 +71,24 @@ const brilhos = [
     <g transform="translate(554 96) rotate(-52)">
       <g data-fat="seta-ponta" class="neon">
         <path d="M2 0L-16 -10L-16 10z" fill="var(--branco)"></path>
+      </g>
+    </g>
+
+    <!-- pílula do capítulo: ✔ FATURAMENTO (par da "Posicionamento" do capítulo 01) -->
+    <g transform="translate(286 40)">
+      <g data-fat="pilula">
+        <rect width="134" height="30" rx="15" fill="var(--lima)"></rect>
+        <circle cx="16" cy="15" r="8" fill="none" stroke="#030303" stroke-width="2"></circle>
+        <path
+          d="M12.5 15.2l2.4 2.4 4.6-4.8"
+          fill="none"
+          stroke="#030303"
+          stroke-width="2"
+          stroke-linecap="round"
+        ></path>
+        <text x="32" y="19.5" class="cena__txt cena__txt--escuro">
+          {rotulo}
+        </text>
       </g>
     </g>
 
