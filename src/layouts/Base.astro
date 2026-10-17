@@ -13,17 +13,47 @@ interface Props {
   description?: string;
   /** imagem de compartilhamento em /public/og/ (1200x630) */
   og?: string;
+  /** texto alternativo da imagem de compartilhamento */
+  ogAlt?: string;
   noindex?: boolean;
 }
 
-const { title, description = site.descricao, og = "/og/padrao.jpg", noindex = false } = Astro.props;
+const {
+  title,
+  description = site.descricao,
+  og = "/og/padrao.jpg",
+  ogAlt = site.ogAlt,
+  noindex = false,
+} = Astro.props;
 const tituloCompleto = title
   ? `${title} | ${site.nome}`
   : `${site.nome} · Assessoria de marketing em ${site.cidade}`;
-const canonical = new URL(Astro.url.pathname, Astro.site);
+// build em formato "file": a home sai como /index.html e as páginas como /med.html; o endereço público não tem .html
+const canonical = new URL(Astro.url.pathname.replace(/(index)?\.html$/, ""), Astro.site);
 // Proxima Nova (licença web via Adobe Fonts). Vazio = usa a fonte local/Montserrat.
 const adobeKit = import.meta.env.PUBLIC_ADOBE_FONTS_KIT;
 const ogUrl = new URL(og, Astro.site);
+// dados estruturados (schema.org): a REZZU como empresa local. Só dados confirmados; os PENDENTES ficam de fora
+const sameAs = Object.values(site.redes).filter(Boolean);
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: site.nome,
+  description: site.descricao,
+  url: new URL("/", Astro.site).href,
+  logo: new URL("/marca/rezzu-logo.png", Astro.site).href,
+  image: ogUrl.href,
+  areaServed: `${site.cidade}, ${site.uf}`,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: site.cidade,
+    addressRegion: site.uf,
+    addressCountry: "BR",
+  },
+  ...(site.contato.email ? { email: site.contato.email } : {}),
+  ...(site.contato.whatsapp ? { telephone: `+${site.contato.whatsapp}` } : {}),
+  ...(sameAs.length ? { sameAs } : {}),
+};
 ---
 
 <!doctype html>
@@ -37,6 +67,9 @@ const ogUrl = new URL(og, Astro.site);
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <meta name="theme-color" content="#030303" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="author" content={site.nome} />
+    <meta name="format-detection" content="telephone=no" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     {adobeKit && (
       <>
@@ -52,8 +85,16 @@ const ogUrl = new URL(og, Astro.site);
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogUrl} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogAlt} />
     <meta name="twitter:card" content="summary_large_image" />
-
+    <meta name="twitter:title" content={tituloCompleto} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogUrl} />
+    <meta name="twitter:image:alt" content={ogAlt} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
     {site.metaVerificacao && <meta name="facebook-domain-verification" content={site.metaVerificacao} />}
 
     <!-- Animações: esconde os elementos animáveis só se a animação vai rodar; destrava sozinho em 3 s se o JS falhar -->

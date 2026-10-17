@@ -11,6 +11,9 @@ export const site = {
   uf: "PB",
   idioma: "pt-BR",
   assinatura: "O futuro da sua empresa começa na decisão que você toma agora.",
+  /** texto alternativo da imagem de compartilhamento (public/og/padrao.jpg, gerada por SITE/scripts/15_og_imagem.py) */
+  ogAlt:
+    "REZZU: entregamos o que o empresário precisa, posicionamento e faturamento. Assessoria de marketing 360° em João Pessoa, PB.",
 
   contato: {
     whatsapp: "", // PENDENTE: só dígitos com DDI e DDD, ex.: "5583999999999"
