@@ -5,8 +5,8 @@
 
 export const navegacao = [
   { rotulo: "Resultados", href: "#resultados" },
-  { rotulo: "Método", href: "#metodo" },
   { rotulo: "Sobre", href: "#sobre" },
+  { rotulo: "Método", href: "#metodo" },
   { rotulo: "Nichos", href: "#nichos" },
   { rotulo: "Contato", href: "#contato" },
 ] as const;
