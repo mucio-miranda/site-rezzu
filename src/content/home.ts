@@ -77,14 +77,14 @@ export const resultados = {
       sufixo: "anos",
       legenda: "de mercado, em João Pessoa",
     },
-    // PENDENTE: confirmar se é faturamento gerado para os clientes ou da própria REZZU (legenda do Figma)
+    // confirmado pelo usuário em 18/10/2026: faturamento mensal dos clientes
     {
       cena: "moedas",
       rotulo: "Faturamento",
       prefixo: "+R$",
       valor: 700,
       sufixo: "mil",
-      legenda: "faturados pelos nossos clientes",
+      legenda: "faturados mensalmente pelos nossos clientes",
     },
     {
       cena: "views",
