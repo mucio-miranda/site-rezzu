@@ -70,13 +70,16 @@ if (raiz && !reduzir) {
 
       const fim = pos[i];
       if (primeira) {
+        gsap.set(corpoBola, { scaleX: 1, scaleY: 1 });
         Object.assign(b, fim);
         pousar(b.x, b.y, b.y + 17);
         return;
       }
 
       // salto em arco (bezier quadrática) do ponto atual até o degrau
+      // se um salto anterior for interrompido no meio da "amassadinha", a bola volta ao tamanho exato
       salto?.kill();
+      gsap.set(corpoBola, { scaleX: 1, scaleY: 1 });
       const ini = { ...b };
       const pico = Math.min(ini.y, fim.y) - 64;
       const t = { v: 0 };
@@ -94,7 +97,7 @@ if (raiz && !reduzir) {
             pousar(b.x, b.y, chao, chao - 17 - b.y);
           },
         })
-        // amassadinha ao pousar
+        // amassadinha ao pousar; termina sempre em escala 1 (mesma altura e largura em todo degrau)
         .to(corpoBola, {
           scaleY: 0.82,
           scaleX: 1.12,
@@ -103,7 +106,8 @@ if (raiz && !reduzir) {
           yoyo: true,
           repeat: 1,
           ease: "power1.out",
-        });
+        })
+        .set(corpoBola, { scaleX: 1, scaleY: 1 });
     }
 
     irPara(0);
