@@ -123,3 +123,25 @@ export const metodo = {
   descricaoCena:
     "Ilustração: escada de cinco degraus em neon verde; uma bola sobe degrau por degrau até uma porta iluminada no topo.",
 } as const;
+
+/**
+ * 05 · Sobre: humanizar (fundadores). PENDENTE: confirmar a história com Gabriel e Thyago (ARQUITETURA.md §13, item 5).
+ * O texto abaixo vem da análise de posicionamento e é proposta; não publicar sem a confirmação.
+ * Números: só os aprovados (+8 anos).
+ */
+export const sobre = {
+  sobretitulo: "Sobre o Grupo REZZU",
+  titulo: { conectivo: "Um time, uma obsessão: marketing que", sentido: "paga as contas." },
+  paragrafos: [
+    "A REZZU nasceu em João Pessoa atendendo negócios de todos os tipos. Com o tempo, a maior parte da carteira passou a ser de saúde e alimentação, e a especialização virou estrutura: REZZU Med, REZZU Food e, em breve, REZZU Jurídico.",
+    "Os fundadores acompanham cada conta de perto. Estratégia, roteiro, gravação, design e tráfego ficam dentro de casa, sob a mesma responsabilidade: fazer o investimento do cliente voltar para o caixa.",
+  ],
+  fatos: [
+    { valor: "+8 anos", rotulo: "de mercado" },
+    { valor: "Produção própria", rotulo: "do roteiro ao tráfego" },
+    { valor: "João Pessoa", rotulo: "Paraíba" },
+  ],
+  legendaFoto: "Gabriel e Thyago, fundadores do Grupo REZZU",
+  altFoto:
+    "Os dois fundadores do Grupo REZZU, de camisa preta, em pé lado a lado e de braços cruzados, iluminados por uma luz verde-limão vinda da esquerda.",
+} as const;
