@@ -113,4 +113,5 @@ Proxima Nova na web via Adobe Fonts (`PUBLIC_ADOBE_FONTS_KIT`); sem o kit, fallb
 | Dor (nova, opcional) | "Dinheiro fora em agência tradicional" em **P&B**, virando cor ao rolar |
 | Método | **Escada SVG neon** em palco *sticky* (não prende a rolagem): cada etapa que chega ao meio da tela acende o degrau, a bola salta em arco até ele e o capítulo troca `01/05 … 05/05`; no 5º, a porta acende. Celular: palco fixo no topo, etapas rolando por baixo (feito: `CenaEscada`, `Metodo`) |
 | Sobre | Foto dos fundadores (recorte) com **luz lima de recorte** que acende atrás e anel se abrindo; a foto sai do escuro; parallax leve da foto × texto; título em texto cinético; parágrafos do desfoque para a nitidez; fatos sobem um a um (feito: `Sobre`) |
+| Nichos | Cards REZZU Med · Food · Jurídico com os ícones 3D (cruz, cloche, balança); entram em sequência e o ícone sobe do escuro; no hover o feixe de luz acende, o card sobe 4 px e o ícone brilha; Jurídico "em breve", esmaecido e sem clique (feito: `Nichos`) |
 | CTA | **Assinatura do logo** (raio + anel + partículas) + botão |
