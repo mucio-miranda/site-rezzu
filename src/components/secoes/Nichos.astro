@@ -1,0 +1,262 @@
+---
+/**
+ * 06 · Nichos: autoidentificação → página do nicho (ARQUITETURA.md §6).
+ * Cards com o ícone 3D de cada braço (cruz · cloche · balança, feitos no Photoshop). No hover: o feixe de luz
+ * acende, o card sobe 4 px e o lima do ícone brilha. Jurídico: "em breve", esmaecido e sem clique.
+ * Enquanto as LPs não existem, o botão leva ao diagnóstico e guarda o nicho escolhido (sessionStorage).
+ * Animação de entrada: src/scripts/anim-nichos.ts. Sem JS ou com "reduzir movimento": tudo visível.
+ */
+import { Image } from "astro:assets";
+import CabecalhoSecao from "../ui/CabecalhoSecao.astro";
+import PisoGrade from "../motion/PisoGrade.astro";
+import med from "../../assets/nichos/med.webp";
+import food from "../../assets/nichos/food.webp";
+import juridico from "../../assets/nichos/juridico.webp";
+import { nichos, ctaPrincipal } from "../../content/home";
+
+const icones = { med, food, juridico } as const;
+---
+
+<section id="nichos" class="nichos" data-nichos aria-labelledby="nichos-titulo">
+  <PisoGrade horizonte={70} class="nichos__piso" />
+
+  <div class="container">
+    <CabecalhoSecao id="nichos-titulo" sobretitulo={nichos.sobretitulo} {...nichos.titulo} />
+
+    <ul class="nichos__lista" role="list">
+      {nichos.itens.map((n) => (
+        <li class:list={["nicho", { "nicho--breve": n.emBreve }]} data-nicho-card>
+          <div class="nicho__icone" aria-hidden="true">
+            <span class="nicho__feixe" />
+            <Image
+              src={icones[n.id]}
+              alt=""
+              widths={[320, 520]}
+              sizes="(max-width: 900px) 60vw, 300px"
+              loading="lazy"
+            />
+          </div>
+          <p class="nicho__publico">{n.publico}</p>
+          <h3 class="nicho__nome">{n.nome}</h3>
+          <p class="nicho__texto">{n.texto}</p>
+          {n.emBreve ? (
+            <span class="nicho__breve">
+              <span class="nicho__ponto" />
+              {n.botao}
+            </span>
+          ) : (
+            <a class="nicho__link" href={ctaPrincipal.href} data-evento="clique_nicho" data-nicho={n.nicho}>
+              {n.botao}
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <path
+                  d="M4 10h11M10.5 5.5 15 10l-4.5 4.5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </a>
+          )}
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<script>
+  import "../../scripts/anim-nichos";
+</script>
+
+<style>
+  .nichos {
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+    padding-block: var(--secao-respiro);
+  }
+  .nichos > :global(.nichos__piso) {
+    z-index: -1;
+    opacity: 0.4;
+  }
+  .nichos__lista {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(14px, 1.6vw, 24px);
+  }
+
+  .nicho {
+    position: relative;
+    display: grid;
+    align-content: start;
+    gap: 10px;
+    padding: clamp(20px, 2vw, 28px);
+    border: 1px solid rgb(255 255 255 / 0.08);
+    border-radius: 20px;
+    background: rgb(255 255 255 / 0.015);
+    transition:
+      border-color 0.3s var(--ease),
+      translate 0.3s var(--ease); /* translate (não transform): o GSAP anima o transform */
+  }
+  .nicho:not(.nicho--breve):hover,
+  .nicho:not(.nicho--breve):focus-within {
+    border-color: rgb(168 204 21 / 0.4);
+    translate: 0 -4px;
+  }
+
+  /* ícone 3D + feixe que acende no hover */
+  .nicho__icone {
+    position: relative;
+    margin: -8px -8px 6px;
+    aspect-ratio: 1;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #000;
+  }
+  .nicho__icone :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.85);
+    transition:
+      filter 0.4s var(--ease),
+      scale 0.6s var(--ease);
+  }
+  .nicho__feixe {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(38% 70% at 50% 0%, rgb(214 242 90 / 0.32), transparent 70%);
+    mix-blend-mode: screen;
+    opacity: 0;
+    transition: opacity 0.4s var(--ease);
+  }
+  .nicho:not(.nicho--breve):hover .nicho__feixe,
+  .nicho:not(.nicho--breve):focus-within .nicho__feixe {
+    opacity: 1;
+  }
+  .nicho:not(.nicho--breve):hover .nicho__icone :global(img),
+  .nicho:not(.nicho--breve):focus-within .nicho__icone :global(img) {
+    filter: brightness(1.08) saturate(1.15);
+    scale: 1.03;
+  }
+
+  .nicho__publico {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--lima);
+  }
+  .nicho__nome {
+    font-family: var(--f-display);
+    font-size: clamp(1.75rem, 1.3rem + 1.1vw, 2.375rem);
+    line-height: 0.95;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+  }
+  .nicho__texto {
+    font-size: var(--t-apoio);
+    line-height: 1.6;
+    color: var(--texto);
+    min-height: 3.2em;
+  }
+  .nicho__link,
+  .nicho__breve {
+    margin-top: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+  .nicho__link {
+    color: var(--lima);
+    justify-self: start;
+  }
+  .nicho__link svg {
+    width: 18px;
+    height: 18px;
+    transition: translate 0.25s var(--ease);
+  }
+  .nicho__link:hover svg,
+  .nicho__link:focus-visible svg {
+    translate: 4px 0;
+  }
+  /* o card inteiro é clicável (o link estica por cima) */
+  .nicho__link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+  .nicho__link:focus-visible {
+    outline: none;
+  }
+  .nicho:focus-within {
+    outline: 2px solid var(--lima);
+    outline-offset: 3px;
+  }
+
+  /* em breve: esmaecido, sem interação */
+  .nicho--breve {
+    opacity: 0.55;
+  }
+  .nicho--breve .nicho__icone :global(img) {
+    filter: grayscale(0.6) brightness(0.7);
+  }
+  .nicho__breve {
+    color: var(--texto-2);
+    letter-spacing: 0.04em;
+  }
+  .nicho__ponto {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--texto-2);
+  }
+
+  @media (max-width: 900px) {
+    .nichos__lista {
+      grid-template-columns: 1fr;
+      max-width: 480px;
+    }
+    .nicho {
+      grid-template-columns: 112px 1fr;
+      column-gap: 18px;
+      align-items: center;
+    }
+    .nicho__icone {
+      grid-row: span 4;
+      margin: 0;
+      align-self: start;
+    }
+    .nicho__texto {
+      min-height: 0;
+    }
+    .nicho {
+      grid-template-columns: 92px 1fr;
+      column-gap: 16px;
+    }
+    .nicho__link,
+    .nicho__breve {
+      font-size: 0.875rem;
+      white-space: nowrap;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .nicho,
+    .nicho__icone :global(img),
+    .nicho__feixe {
+      transition: none;
+    }
+    .nicho:hover {
+      translate: none;
+    }
+  }
+</style>

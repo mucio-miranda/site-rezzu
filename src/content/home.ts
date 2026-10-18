@@ -145,3 +145,42 @@ export const sobre = {
   altFoto:
     "Os dois fundadores do Grupo REZZU, de camisa preta, em pé lado a lado e de braços cruzados, iluminados por uma luz verde-limão vinda da esquerda.",
 } as const;
+
+/**
+ * 06 · Nichos: autoidentificação. As LPs /med e /food ainda não existem: por enquanto o botão leva ao
+ * diagnóstico com o nicho já marcado (sessionStorage "rezzu-nicho", lido pelo formulário quando ele existir).
+ * Copy da análise de posicionamento (proposta, validar).
+ */
+export const nichos = {
+  sobretitulo: "Nichos",
+  titulo: { conectivo: "Especialistas no", sentido: "seu mercado." },
+  itens: [
+    {
+      id: "med",
+      nome: "REZZU Med",
+      publico: "Saúde",
+      texto: "Clínicas e profissionais de saúde que querem agenda cheia sem ferir a ética.",
+      botao: "Conhecer a REZZU Med",
+      nicho: "saude",
+      emBreve: false,
+    },
+    {
+      id: "food",
+      nome: "REZZU Food",
+      publico: "Alimentação",
+      texto: "Restaurantes, pizzarias e deliveries que querem pedido, não curtida.",
+      botao: "Conhecer a REZZU Food",
+      nicho: "alimentacao",
+      emBreve: false,
+    },
+    {
+      id: "juridico",
+      nome: "REZZU Jurídico",
+      publico: "Advocacia",
+      texto: "Escritórios e advogados que querem autoridade e o cliente certo, dentro das regras da OAB.",
+      botao: "Em breve",
+      nicho: "juridico",
+      emBreve: true,
+    },
+  ],
+} as const;
