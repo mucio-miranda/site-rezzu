@@ -15,15 +15,15 @@ if (raiz && !reduzir) {
   gsap.registerPlugin(ScrollTrigger);
   const q = gsap.utils.selector(raiz);
 
-  const entrada = gsap.timeline({ scrollTrigger: { trigger: raiz, start: "top 72%", once: true } });
+  const entrada = gsap.timeline({ scrollTrigger: { trigger: raiz, start: "top 92%", once: true } });
   entrada
     .from(
       q("[data-sobre-img]"),
       {
         opacity: 0,
         y: 30,
-        filter: "brightness(0.15)",
-        duration: 1.2,
+        filter: "brightness(0.5)",
+        duration: 0.6,
         ease: "power2.out",
         clearProps: "filter",
       },

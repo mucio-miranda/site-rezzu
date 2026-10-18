@@ -12,7 +12,8 @@ import { Image } from "astro:assets";
 import CabecalhoSecao from "../ui/CabecalhoSecao.astro";
 import PisoGrade from "../motion/PisoGrade.astro";
 import foto from "../../assets/fundadores/fundadores-ia.webp";
-import fundoZ from "../../assets/fundadores/fundo-z-meio-tom.webp";
+// PNG de 16 cores (59 KB): o meio-tom em pontos fica 3x mais leve que em WebP
+import fundoZ from "../../assets/fundadores/fundo-z-meio-tom.png";
 import { sobre } from "../../content/home";
 ---
 
@@ -24,22 +25,24 @@ import { sobre } from "../../content/home";
   <div class="container sobre__grade">
     <figure class="sobre__foto" data-sobre-foto>
       <!-- fundo de baixa opacidade: o Z da marca em meio-tom, atrás dos fundadores -->
-      <Image
+      <img
         class="sobre__fundo"
-        src={fundoZ}
+        src={fundoZ.src}
+        width={fundoZ.width}
+        height={fundoZ.height}
         alt=""
-        widths={[600, 1000, 1400]}
-        sizes="(max-width: 900px) 90vw, 46vw"
-        loading="lazy"
+        decoding="async"
         data-sobre-fundo
       />
       <div class="sobre__img" data-sobre-img>
         <Image
           src={foto}
           alt={sobre.altFoto}
-          widths={[420, 640, 900, 1200]}
-          sizes="(max-width: 900px) 86vw, 44vw"
-          loading="lazy"
+          widths={[420, 640, 900, 1024]}
+          sizes="(max-width: 900px) 92vw, min(600px, 44vw)"
+          loading="eager"
+          fetchpriority="low"
+          quality={78}
         />
       </div>
       <!-- label flutuante em vidro, com a luz lima da esquerda batendo na borda -->
