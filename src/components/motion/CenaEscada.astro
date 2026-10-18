@@ -21,7 +21,12 @@ const degraus = Array.from({ length: total }, (_, i) => {
     x,
     topo,
     frente: `M${x} ${topo}h${L}V${CHAO}h${-L}z`,
-    cima: `M${x} ${topo}l${P.x} ${P.y}h${L}l${-P.x} ${-P.y}z`,
+    // face de cima: nos degraus intermediários termina na frente do degrau seguinte (x + L), sem invadir o
+    // espelho dele; só o último mostra a face inteira (com a quina da direita)
+    cima:
+      i < total - 1
+        ? `M${x} ${topo}l${P.x} ${P.y}H${x + L}V${topo}z`
+        : `M${x} ${topo}l${P.x} ${P.y}h${L}l${-P.x} ${-P.y}z`,
     // centro da bola: no meio da face de cima, apoiada nela
     cx: x + L / 2 + P.x / 2,
     cy: topo + P.y / 2 - 17,
