@@ -1,14 +1,17 @@
 /**
  * 03 · Depoimentos. Sem CMS: edite aqui (ARQUITETURA.md §4.1).
  *
- * ⚠ PROVISÓRIOS: textos de exemplo, NÃO são de clientes reais. Não publicar assim.
- * Para trocar pelos reais (pendência 4 da ARQUITETURA): texto + nome + negócio + foto
- * + AUTORIZAÇÃO POR ESCRITO do cliente para uso de nome e imagem (LGPD).
- * Ao trocar, mude `provisorio` para false: o selo "provisório" some do card.
+ * REAIS (19/10/2026): falas transcritas das legendas dos vídeos de depoimento publicados no @rezzugroup
+ * (pasta REZZU\Depoimentos). Trechos editados só para caber no card (cortes marcados com "…"), sem mudar o sentido.
+ * Foto: quadro do próprio vídeo. LGPD: os clientes gravaram e autorizaram a publicação no Instagram da REZZU;
+ * o ideal é ter também a autorização por escrito para uso no site.
  *
- * Roteiro de cada depoimento (o card anima nessa ordem, do P&B para a cor, como no vídeo):
- *   antes (a dor) → virada (o que a REZZU fez) → resultado (o que mudou). Sem números inventados.
+ * Roteiro de cada card (anima nessa ordem, do P&B para a cor): antes → virada → resultado (sublinhado).
+ * 4º vídeo (20260922_DdmrJY_pBKC, clínica "IDA"): falta o nome da cliente para entrar aqui.
  */
+import ednilma from "../assets/depoimentos/ednilma-barbosa.webp";
+import gracinara from "../assets/depoimentos/gracinara.webp";
+import docVet from "../assets/depoimentos/gabriel-docvet.webp";
 
 export interface Depoimento {
   provisorio: boolean;
@@ -22,6 +25,8 @@ export interface Depoimento {
   negocio: string;
   /** foto em src/assets/depoimentos/ (quadrada, mín. 160 px); sem foto, usa as iniciais */
   foto?: ImageMetadata;
+  /** link do vídeo do depoimento (Instagram) */
+  video?: string;
 }
 
 export const depoimentosCabecalho = {
@@ -31,30 +36,38 @@ export const depoimentosCabecalho = {
 
 export const depoimentos: Depoimento[] = [
   {
-    provisorio: true,
+    provisorio: false,
     selo: "REZZU MED",
-    antes: "A clínica vivia de indicação e a agenda oscilava todo mês.",
-    virada: "A REZZU reposicionou o perfil e passou a cuidar dos vídeos e do tráfego.",
-    resultado: "Hoje chega paciente que já conhece o nosso trabalho.",
-    nome: "Nome do cliente",
-    negocio: "Clínica · Especialidade · João Pessoa",
+    antes:
+      "Todo profissional precisa entender que o posicionamento faz toda a diferença na hora de um paciente chegar até você.",
+    virada: "Na REZZU a gente encontrou a parceria, a responsabilidade e o trabalho que esperava.",
+    resultado: "Dá um pulinho no meu Instagram e você vai ver a grande diferença do antes e do depois.",
+    nome: "Dra. Ednilma Barbosa",
+    negocio: "@draednilmabarbosa · Saúde e estética",
+    foto: ednilma,
+    video: "https://www.instagram.com/reel/DeSjqQTp0R2/",
   },
   {
-    provisorio: true,
-    selo: "REZZU FOOD",
-    antes: "A gente postava todo dia, mas o salão não enchia.",
-    virada: "Com roteiro, gravação e anúncio na mesma mão,",
-    resultado: "o movimento apareceu e o delivery virou canal de venda.",
-    nome: "Nome do cliente",
-    negocio: "Restaurante · Segmento · João Pessoa",
+    provisorio: false,
+    selo: "REZZU MED",
+    antes: "Estamos juntos há pouco tempo, mas já posso sentir o compromisso dos meninos.",
+    virada:
+      "Eu pego no pé deles mesmo, e ainda assim continuam atenciosos, gentis e fazendo um trabalho de alta performance.",
+    resultado: "Nós vamos crescer muito ainda juntos.",
+    nome: "Dra. Gracinara Lima",
+    negocio: "@dragracinaralima · Saúde",
+    foto: gracinara,
+    video: "https://www.instagram.com/reel/DdrxgwepRok/",
   },
   {
-    provisorio: true,
+    provisorio: false,
     selo: "REZZU GROUP",
-    antes: "Já tinha passado por agência que só entregava relatório bonito.",
-    virada: "A REZZU montou a estratégia comigo e acompanhou de perto.",
-    resultado: "O resultado apareceu no caixa, não só nas curtidas.",
-    nome: "Nome do cliente",
-    negocio: "Empresa · Segmento · João Pessoa",
+    antes: "Sem marketing, o empresário não cresce. A gente não tem a ideia pra fazer conteúdo, vídeos…",
+    virada: "O pessoal da REZZU tá comigo há quase três meses.",
+    resultado: "O engajamento no Instagram cresceu e o faturamento melhorou. Indico sempre.",
+    nome: "Gabriel Dantas",
+    negocio: "Médico veterinário · Doc Vet",
+    foto: docVet,
+    video: "https://www.instagram.com/reel/DctdC5XB-Zb/",
   },
 ];
