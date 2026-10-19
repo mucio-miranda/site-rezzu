@@ -31,8 +31,9 @@ const icones = { med, food, juridico } as const;
             <Image
               src={icones[n.id]}
               alt=""
-              widths={[320, 520]}
-              sizes="(max-width: 900px) 60vw, 300px"
+              widths={[240, 480, 760, 1100]}
+              sizes="(max-width: 900px) 92px, min(400px, 28vw)"
+              quality={88}
               loading="lazy"
             />
           </div>
