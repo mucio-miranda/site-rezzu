@@ -20,4 +20,11 @@ export default defineConfig({
   image: {
     responsiveStyles: true,
   },
+  vite: {
+    // pré-empacota o GSAP já na partida do `npm run dev`. Sem isso o Vite só descobre o GSAP quando a página
+    // pede, re-otimiza no meio do caminho e o navegador recebe 504 "Outdated Optimize Dep" (animações paradas).
+    optimizeDeps: {
+      include: ["gsap", "gsap/ScrollTrigger"],
+    },
+  },
 });

@@ -9,6 +9,7 @@
   },
   "scripts": {
     "dev": "astro dev",
+    "dev:limpo": "astro dev --force",
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
