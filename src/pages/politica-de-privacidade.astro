@@ -1,0 +1,172 @@
+---
+/**
+ * /politica-de-privacidade (ARQUITETURA.md §12.4). RASCUNHO: revisar com a REZZU ou um advogado antes do
+ * lançamento. Dados do controlador vêm de src/content/site.ts (campos PENDENTES aparecem como "a definir").
+ */
+import Base from "../layouts/Base.astro";
+import Header from "../components/layout/Header.astro";
+import { site } from "../content/site";
+
+const def = (v: string) => v || "a definir";
+const VERSAO = "1.0 (rascunho)";
+const ATUALIZADA = "19/10/2026";
+---
+
+<Base title="Política de Privacidade" description="Como o REZZU group trata seus dados pessoais (LGPD).">
+  <Header />
+  <main id="conteudo" class="politica">
+    <article class="container politica__texto">
+      <p class="politica__meta">
+        Versão {VERSAO} · Atualizada em {ATUALIZADA}
+      </p>
+      <h1>
+        Política de <span class="voz-sentido">Privacidade</span>
+      </h1>
+      <p>
+        Esta política explica como o {site.nome} trata os dados pessoais de quem visita este site e de quem
+        pede o diagnóstico gratuito, conforme a Lei Geral de Proteção de Dados (Lei 13.709/2018, LGPD).
+      </p>
+
+      <h2>1. Quem é o controlador</h2>
+      <p>
+        {def(site.legal.razaoSocial)} (nome fantasia {site.nome}), CNPJ {def(site.legal.cnpj)}, com sede em{" "}
+        {site.cidade},{site.uf}. Contato do encarregado de dados (DPO): {def(site.legal.emailEncarregadoLgpd)}
+        .
+      </p>
+
+      <h2>2. Quais dados coletamos e para quê</h2>
+      <div class="politica__tabela">
+        <table>
+          <thead>
+            <tr>
+              <th>Dado</th>
+              <th>Finalidade</th>
+              <th>Base legal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                Nome, WhatsApp, empresa, nicho, faturamento mensal (faixa) e @ do Instagram, informados no
+                formulário
+              </td>
+              <td>Entrar em contato e realizar o diagnóstico gratuito; apresentar nossos serviços</td>
+              <td>Consentimento (art. 7º, I)</td>
+            </tr>
+            <tr>
+              <td>Origem da visita (parâmetros UTM, gclid, fbclid) e página de envio</td>
+              <td>Saber por qual canal ou anúncio você chegou até nós</td>
+              <td>Legítimo interesse (art. 7º, IX)</td>
+            </tr>
+            <tr>
+              <td>Cookies de medição e de anúncio (quando ativados)</td>
+              <td>Estatísticas de uso e medição de campanhas</td>
+              <td>Consentimento, pelo aviso de cookies</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Não pedimos dados sensíveis (como dados de saúde). Coletamos só o necessário para o contato.</p>
+
+      <h2>3. Com quem compartilhamos</h2>
+      <p>
+        Os envios do formulário são recebidos e armazenados pela Netlify, empresa que hospeda o site. Quando
+        as ferramentas de medição forem ativadas (com o seu consentimento), dados de navegação podem ser
+        tratados pela Meta e pelo Google. Não vendemos seus dados.
+      </p>
+
+      <h2>4. Transferência internacional</h2>
+      <p>
+        A Netlify, a Meta e o Google podem armazenar dados em servidores fora do Brasil. Essas transferências
+        seguem o art. 33 da LGPD, com as garantias contratuais oferecidas por esses fornecedores.
+      </p>
+
+      <h2>5. Por quanto tempo guardamos</h2>
+      <p>
+        Os dados do formulário ficam guardados pelo tempo necessário para o contato comercial e, no máximo,
+        por 12 meses sem relacionamento ativo. Depois disso, são apagados.
+      </p>
+
+      <h2>6. Seus direitos</h2>
+      <p>
+        Você pode, a qualquer momento: confirmar se tratamos seus dados, acessá-los, corrigi-los, pedir a
+        exclusão, a portabilidade, informações sobre compartilhamento e revogar o consentimento. Basta
+        escrever para
+        {def(site.legal.emailEncarregadoLgpd)}. Respondemos em até 15 dias.
+      </p>
+
+      <h2>7. Cookies</h2>
+      <p>
+        Usamos apenas os cookies necessários para o site funcionar. Cookies de medição e de anúncio só são
+        usados se você aceitar no aviso de cookies, e você pode mudar essa escolha quando quiser.
+      </p>
+
+      <h2>8. Alterações</h2>
+      <p>
+        Esta política pode ser atualizada. A versão e a data da última atualização ficam no topo desta página.
+      </p>
+    </article>
+  </main>
+</Base>
+
+<style>
+  .politica {
+    padding-block: 140px 96px;
+  }
+  .politica__texto {
+    display: grid;
+    gap: 16px;
+    max-width: 760px;
+  }
+  .politica__meta {
+    font-size: 0.8125rem;
+    color: var(--texto-2);
+  }
+  h1 {
+    font-family: var(--f-display);
+    font-size: var(--t-h2);
+    line-height: 0.92;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  h2 {
+    margin-top: 18px;
+    font-family: var(--f-display);
+    font-size: 1.75rem;
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--branco);
+  }
+  p,
+  td {
+    line-height: 1.7;
+    color: var(--texto);
+  }
+  .politica__tabela {
+    overflow-x: auto;
+    border: 1px solid var(--linha);
+    border-radius: 16px;
+  }
+  table {
+    width: 100%;
+    min-width: 560px;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+  }
+  th,
+  td {
+    padding: 12px 16px;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid var(--linha);
+  }
+  th {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--lima);
+  }
+  tr:last-child td {
+    border-bottom: 0;
+  }
+</style>

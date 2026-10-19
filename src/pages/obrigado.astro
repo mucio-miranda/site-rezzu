@@ -1,0 +1,118 @@
+---
+/**
+ * /obrigado: confirmação do formulário do diagnóstico (ARQUITETURA.md §7). Aqui dispara a conversão "Lead"
+ * quando o rastreamento for ligado (Fase 2). Fora do Google (noindex) e do sitemap.
+ * WhatsApp: só aparece quando o número estiver em src/content/site.ts (PENDENTE).
+ */
+import Base from "../layouts/Base.astro";
+import Header from "../components/layout/Header.astro";
+import { site } from "../content/site";
+
+const wa = site.contato.whatsapp
+  ? `https://wa.me/${site.contato.whatsapp}?text=${encodeURIComponent(site.contato.whatsappMensagem)}`
+  : "";
+---
+
+<Base title="Recebemos seu pedido" description="Recebemos seu pedido de diagnóstico gratuito." noindex>
+  <Header />
+  <main id="conteudo" class="ok">
+    <div class="container ok__caixa">
+      <span class="ok__icone" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path
+            d="M6 12.5l4 4 8-9"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </span>
+      <h1 class="ok__titulo">
+        Pedido <span class="voz-sentido">recebido.</span>
+      </h1>
+      <p class="ok__texto">
+        Obrigado! Nossa equipe vai falar com você pelo WhatsApp para marcar o seu diagnóstico gratuito.
+        {wa
+          ? " Se preferir, já pode chamar a gente agora:"
+          : " O retorno costuma acontecer em até 1 dia útil."}
+      </p>
+      <div class="ok__acoes">
+        {wa && (
+          <a class="ok__botao" href={wa} target="_blank" rel="noopener" data-evento="clique_whatsapp">
+            Chamar no WhatsApp
+          </a>
+        )}
+        <a class="ok__voltar" href="/">
+          Voltar ao site
+        </a>
+      </div>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .ok {
+    min-height: 100svh;
+    display: grid;
+    place-items: center;
+    padding-block: 140px 80px;
+    background: radial-gradient(60% 50% at 50% 40%, rgb(168 204 21 / 0.12), transparent 70%);
+  }
+  .ok__caixa {
+    display: grid;
+    justify-items: center;
+    gap: 20px;
+    text-align: center;
+    max-width: 640px;
+  }
+  .ok__icone {
+    display: grid;
+    place-items: center;
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    background: var(--lima);
+    color: #050505;
+    box-shadow: 0 0 0 10px rgb(168 204 21 / 0.15);
+  }
+  .ok__icone svg {
+    width: 36px;
+    height: 36px;
+  }
+  .ok__titulo {
+    font-family: var(--f-display);
+    font-size: var(--t-h2);
+    line-height: 0.92;
+    text-transform: uppercase;
+  }
+  .ok__texto {
+    font-size: var(--t-apoio);
+    line-height: 1.7;
+  }
+  .ok__acoes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 8px;
+  }
+  .ok__botao,
+  .ok__voltar {
+    display: inline-flex;
+    align-items: center;
+    height: 54px;
+    padding: 0 28px;
+    border-radius: 999px;
+    font-weight: 700;
+  }
+  .ok__botao {
+    background: var(--lima);
+    color: #050505;
+  }
+  .ok__voltar {
+    border: 1px solid var(--linha);
+    color: var(--branco);
+  }
+</style>
