@@ -5,8 +5,8 @@ import { site } from "./site";
  */
 
 export const navegacao = [
-  { rotulo: "Resultados", href: "#resultados" },
   { rotulo: "Sobre", href: "#sobre" },
+  { rotulo: "Resultados", href: "#resultados" },
   { rotulo: "Método", href: "#metodo" },
   { rotulo: "Nichos", href: "#nichos" },
   { rotulo: "Contato", href: "#diagnostico" },
