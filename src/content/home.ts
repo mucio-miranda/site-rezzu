@@ -34,7 +34,6 @@ export const hero = {
   apoio:
     "Sua marca no lugar certo, com produção própria do roteiro ao tráfego. E o resultado aparecendo no caixa, não só nas curtidas.",
   ctaPrimario: { rotulo: "Quero meu diagnóstico gratuito", href: "#diagnostico" },
-  ctaSecundario: { rotulo: "Ver o Método REZZU", href: "#metodo" },
   /** palco da hero: os 2 capítulos do vídeo se alternando (01 celular · 02 barras) */
   cena: {
     posicionamento: {
