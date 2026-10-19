@@ -147,8 +147,11 @@ import { sobre } from "../../content/home";
   .sobre__legenda {
     position: absolute;
     z-index: 2;
-    left: 4%;
+    /* centralizada com a foto dos fundadores */
+    left: 50%;
+    translate: -50% 0;
     bottom: 13%;
+    white-space: nowrap;
     display: inline-flex;
     align-items: center;
     gap: 10px;
@@ -232,7 +235,6 @@ import { sobre } from "../../content/home";
       width: min(92%, 460px);
     }
     .sobre__legenda {
-      left: 6%;
       bottom: 10%;
       font-size: 0.75rem;
     }
