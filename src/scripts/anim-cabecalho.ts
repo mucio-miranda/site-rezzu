@@ -14,7 +14,7 @@ if (cabecalhos.length && !reduzir) {
   cabecalhos.forEach((cab) => {
     const q = gsap.utils.selector(cab);
     gsap
-      .timeline({ scrollTrigger: { trigger: cab, start: "top 80%", once: true } })
+      .timeline({ scrollTrigger: { trigger: cab, start: "top 80%", toggleActions: "play none none none" } })
       .from(q("[data-cab-fade]"), { opacity: 0, y: 12, duration: 0.6, ease: "power3.out" })
       .from(q("[data-cab-batida]"), { opacity: 0, duration: 0.01, stagger: 0.08 }, 0.15)
       .from(

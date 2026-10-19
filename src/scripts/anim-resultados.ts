@@ -117,7 +117,7 @@ if (raiz && !reduzir) {
     const contador = { v: 0 };
 
     const tl = gsap.timeline({
-      scrollTrigger: { trigger: card, start: "top 85%", once: true },
+      scrollTrigger: { trigger: card, start: "top 85%", toggleActions: "play none none none" },
       delay: i * 0.12, // os 3 lado a lado entram em sequência
     });
     tl.from(card, { opacity: 0, y: 32, ...ENTRA })

@@ -15,7 +15,7 @@ if (raiz && !reduzir) {
   gsap.registerPlugin(ScrollTrigger);
   const q = gsap.utils.selector(raiz);
 
-  const entrada = gsap.timeline({ scrollTrigger: { trigger: raiz, start: "top 92%", once: true } });
+  const entrada = gsap.timeline({ scrollTrigger: { trigger: raiz, start: "top 92%", toggleActions: "play none none none" } });
   entrada
     .from(
       q("[data-sobre-img]"),

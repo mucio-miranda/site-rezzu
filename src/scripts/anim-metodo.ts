@@ -140,7 +140,7 @@ if (raiz && !reduzir) {
       y: 30,
       duration: 0.8,
       ease: "power3.out",
-      scrollTrigger: { trigger: raiz, start: "top 70%", once: true },
+      scrollTrigger: { trigger: raiz, start: "top 70%", toggleActions: "play none none none" },
     });
   }
 }

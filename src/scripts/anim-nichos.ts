@@ -28,7 +28,7 @@ if (raiz && !reduzir) {
     const q = gsap.utils.selector(card);
     gsap
       .timeline({
-        scrollTrigger: { trigger: card, start: "top 88%", once: true },
+        scrollTrigger: { trigger: card, start: "top 88%", toggleActions: "play none none none" },
         delay: lado ? i * 0.14 : 0,
       })
       .from(card, { opacity: 0, y: 28, duration: 0.55, ease: "power3.out", clearProps: "opacity" })

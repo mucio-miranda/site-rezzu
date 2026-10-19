@@ -13,7 +13,7 @@ if (raiz && !reduzir) {
   gsap.registerPlugin(ScrollTrigger);
   const q = gsap.utils.selector(raiz);
   gsap
-    .timeline({ scrollTrigger: { trigger: raiz, start: "top 75%", once: true } })
+    .timeline({ scrollTrigger: { trigger: raiz, start: "top 75%", toggleActions: "play none none none" } })
     .from(
       q("[data-cta-portal]"),
       { filter: "brightness(0.15)", scale: 1.06, duration: 1.4, ease: "power2.out", clearProps: "filter" },
