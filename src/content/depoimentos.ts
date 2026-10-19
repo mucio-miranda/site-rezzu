@@ -43,7 +43,7 @@ export const depoimentos: Depoimento[] = [
     virada: "Na REZZU a gente encontrou a parceria, a responsabilidade e o trabalho que esperava.",
     resultado: "Dá um pulinho no meu Instagram e você vai ver a grande diferença do antes e do depois.",
     nome: "Dra. Ednilma Barbosa",
-    negocio: "@draednilmabarbosa · Saúde e estética",
+    negocio: "@draednilmabarbosa · Saúde",
     foto: ednilma,
     video: "https://www.instagram.com/reel/DeSjqQTp0R2/",
   },
