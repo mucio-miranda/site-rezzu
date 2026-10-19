@@ -70,9 +70,10 @@ import { navegacao, ctaPrincipal } from "../../content/home";
     border-bottom: 1px solid transparent;
   }
   .header--rolado {
-    background: rgb(3 3 3 / 0.72);
-    backdrop-filter: blur(14px) saturate(140%);
-    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    /* vidro mais fosco: blur forte e fundo um pouco mais transparente para o desfoque aparecer */
+    background: rgb(3 3 3 / 0.55);
+    backdrop-filter: blur(28px) saturate(160%);
+    -webkit-backdrop-filter: blur(28px) saturate(160%);
     border-color: var(--linha);
   }
   .header__barra {
@@ -163,7 +164,8 @@ import { navegacao, ctaPrincipal } from "../../content/home";
       gap: 28px;
       padding: 32px var(--gutter) 40px;
       background: rgb(3 3 3 / 0.96);
-      backdrop-filter: blur(14px);
+      backdrop-filter: blur(28px) saturate(160%);
+      -webkit-backdrop-filter: blur(28px) saturate(160%);
       border-bottom: 1px solid var(--linha);
       transform: translateY(-8px);
       opacity: 0;
