@@ -9,7 +9,7 @@ export const navegacao = [
   { rotulo: "Sobre", href: "#sobre" },
   { rotulo: "Método", href: "#metodo" },
   { rotulo: "Nichos", href: "#nichos" },
-  { rotulo: "Contato", href: "#contato" },
+  { rotulo: "Contato", href: "#diagnostico" },
 ] as const;
 
 export const ctaPrincipal = {
@@ -187,4 +187,33 @@ export const nichos = {
       emBreve: true,
     },
   ],
+} as const;
+
+/**
+ * 07 · CTA: conversão. Formulário do diagnóstico (Netlify Forms, ARQUITETURA.md §7 e §12.3) → /obrigado.
+ * Copy da análise de posicionamento (proposta, validar). Faixas de faturamento: sugestão, confirmar com a REZZU.
+ */
+export const cta = {
+  sobretitulo: "Diagnóstico gratuito",
+  titulo: { conectivo: "A porta está", sentido: "aberta." },
+  apoio:
+    "Em 45 minutos olhamos seu perfil, sua comunicação e seus gargalos e te entregamos um plano claro, mesmo que você não feche com a gente.",
+  entregas: [
+    "Análise do seu posicionamento e do seu perfil",
+    "Os gargalos que travam o seu faturamento hoje",
+    "Um plano de ação claro, por escrito",
+  ],
+  formulario: {
+    titulo: "Agende seu diagnóstico",
+    aviso: "Leva menos de 1 minuto. Retornamos pelo WhatsApp.",
+    nichos: ["Saúde", "Alimentação", "Jurídico", "Outro"],
+    faturamento: [
+      "Até R$ 20 mil",
+      "De R$ 20 mil a R$ 50 mil",
+      "De R$ 50 mil a R$ 100 mil",
+      "Acima de R$ 100 mil",
+    ],
+    consentimento: "Concordo em ser contatado pela REZZU e li a",
+    botao: "Agendar meu diagnóstico",
+  },
 } as const;

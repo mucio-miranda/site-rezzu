@@ -1,0 +1,465 @@
+---
+/**
+ * 07 · CTA (Conversão): "A porta está aberta. A decisão é sua." Fecha a metáfora da escada do Método.
+ * 2 colunas: à esquerda o texto e o formulário de vidro; à direita a porta de luz em alta resolução
+ * (recorte vertical do PSD 07-cta-portal, 1148x1400). No celular a porta vira faixa acima do conteúdo.
+ * Formulário: Netlify Forms (name="diagnostico", honeypot anti-spam, consentimento LGPD obrigatório) → /obrigado.
+ * Campos ocultos: UTMs, gclid, fbclid e página de origem (preenchidos por src/scripts/form-diagnostico.ts).
+ * Motion (ARQUITETURA.md §6): a porta acende ao entrar, poeira de luz sobe devagar, o botão pulsa 1 vez.
+ * Sem JS: formulário funciona normalmente (envio nativo do navegador).
+ */
+import { Image } from "astro:assets";
+import CabecalhoSecao from "../ui/CabecalhoSecao.astro";
+import portal from "../../assets/cta/portal-vertical.webp";
+import { cta } from "../../content/home";
+
+const ocultos = [
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_term",
+  "utm_content",
+  "gclid",
+  "fbclid",
+  "pagina",
+];
+const poeira = Array.from({ length: 18 }, (_, i) => ({
+  x: (i * 37) % 100,
+  d: 6 + ((i * 13) % 7),
+  a: (i * 0.7) % 6,
+  s: 2 + (i % 3),
+}));
+---
+
+<section id="diagnostico" class="cta" data-cta aria-labelledby="cta-titulo">
+  <div class="container cta__grade">
+    <div class="cta__conteudo">
+      <div class="cta__texto">
+        <CabecalhoSecao id="cta-titulo" sobretitulo={cta.sobretitulo} {...cta.titulo} />
+        <p class="cta__apoio" data-cta-entra>
+          {cta.apoio}
+        </p>
+        <ul class="cta__entregas" role="list">
+          {cta.entregas.map((e) => (
+            <li data-cta-entra>
+              <svg viewBox="0 0 16 16" aria-hidden="true">
+                <circle cx="8" cy="8" r="6.6" fill="none" stroke="currentColor" stroke-width="1.6" />
+                <path
+                  d="M4.5 8.4l2.4 2.4 4.6-4.8"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                />
+              </svg>
+              {e}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <form
+        class="form"
+        name="diagnostico"
+        method="POST"
+        action="/obrigado"
+        data-netlify="true"
+        netlify-honeypot="campo-bot"
+        data-form-diagnostico
+        data-cta-entra
+      >
+        <input type="hidden" name="form-name" value="diagnostico" />
+        {ocultos.map((n) => (
+          <input type="hidden" name={n} value="" data-oculto={n} />
+        ))}
+        <p class="form__bot" aria-hidden="true">
+          <label>
+            Não preencha: <input name="campo-bot" tabindex="-1" autocomplete="off" />
+          </label>
+        </p>
+
+        <p class="form__titulo">{cta.formulario.titulo}</p>
+        <p class="form__aviso">{cta.formulario.aviso}</p>
+
+        <div class="form__grade">
+          <label class="campo">
+            <span>Nome</span>
+            <input
+              name="nome"
+              type="text"
+              autocomplete="name"
+              required
+              minlength="2"
+              placeholder="Seu nome"
+            />
+          </label>
+          <label class="campo">
+            <span>WhatsApp</span>
+            <input
+              name="whatsapp"
+              type="tel"
+              inputmode="tel"
+              autocomplete="tel-national"
+              required
+              pattern="[\d\s()+-]{10,20}"
+              placeholder="(83) 99999-9999"
+              data-whatsapp
+            />
+          </label>
+          <label class="campo">
+            <span>Empresa ou negócio</span>
+            <input
+              name="empresa"
+              type="text"
+              autocomplete="organization"
+              required
+              placeholder="Nome da empresa"
+            />
+          </label>
+          <label class="campo">
+            <span>@ do Instagram</span>
+            <input name="instagram" type="text" autocapitalize="off" placeholder="@seunegocio" />
+          </label>
+          <label class="campo">
+            <span>Nicho</span>
+            <select name="nicho" required data-nicho>
+              <option value="" disabled selected>
+                Selecione
+              </option>
+              {cta.formulario.nichos.map((n) => (
+                <option value={n}>{n}</option>
+              ))}
+            </select>
+          </label>
+          <label class="campo">
+            <span>Faturamento mensal</span>
+            <select name="faturamento" required>
+              <option value="" disabled selected>
+                Selecione
+              </option>
+              {cta.formulario.faturamento.map((f) => (
+                <option value={f}>{f}</option>
+              ))}
+            </select>
+          </label>
+        </div>
+
+        <label class="form__aceite">
+          <input type="checkbox" name="consentimento" value="sim" required />
+          <span>
+            {cta.formulario.consentimento}{" "}
+            <a href="/politica-de-privacidade" target="_blank" rel="noopener">
+              Política de Privacidade
+            </a>
+            .
+          </span>
+        </label>
+
+        <button class="form__botao" type="submit" data-evento="clique_cta" data-cta-botao>
+          <span>{cta.formulario.botao}</span>
+          <svg viewBox="0 0 20 20" aria-hidden="true">
+            <path
+              d="M4 10h11M10.5 5.5 15 10l-4.5 4.5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+      </form>
+    </div>
+
+    <!-- direita: a porta de luz em alta resolução (recorte vertical do PSD 07-cta-portal) -->
+    <figure class="cta__visual" aria-hidden="true">
+      <Image
+        class="cta__portal"
+        src={portal}
+        alt=""
+        widths={[480, 800, 1148]}
+        sizes="(max-width: 900px) 100vw, 42vw"
+        quality={90}
+        loading="lazy"
+        data-cta-portal
+      />
+      <div class="cta__poeira">
+        {poeira.map((p) => (
+          <i style={`--x:${p.x}%;--d:${p.d}s;--a:-${p.a}s;--s:${p.s}px`} />
+        ))}
+      </div>
+    </figure>
+  </div>
+</section>
+
+<script>
+  import "../../scripts/form-diagnostico";
+  import "../../scripts/anim-cta";
+</script>
+
+<style>
+  .cta {
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+    padding-block: calc(var(--secao-respiro) * 1.4);
+  }
+  /* a porta fica parada na tela enquanto o texto e o formulário rolam ao lado */
+  .cta__visual {
+    position: sticky;
+    top: 104px;
+    margin: 0;
+    align-self: start;
+    height: min(calc(100svh - 140px), 760px);
+    min-height: 520px;
+    overflow: hidden;
+    background: #000;
+    /* bordas somem no fundo da página, nos 4 lados */
+    mask-image:
+      linear-gradient(to right, transparent, #000 12%, #000 88%, transparent),
+      linear-gradient(to bottom, transparent, #000 8%, #000 86%, transparent);
+    mask-composite: intersect;
+  }
+  .cta__visual :global(.cta__portal) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+    object-position: 50% 45%;
+  }
+  .cta__poeira {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .cta__poeira i {
+    position: absolute;
+    bottom: 12%;
+    left: var(--x);
+    width: var(--s);
+    height: var(--s);
+    border-radius: 50%;
+    background: var(--lima-luz);
+    box-shadow: 0 0 8px var(--lima);
+    opacity: 0;
+    animation: poeira var(--d) linear var(--a) infinite;
+  }
+  @keyframes poeira {
+    0% {
+      transform: translateY(0);
+      opacity: 0;
+    }
+    15% {
+      opacity: 0.7;
+    }
+    100% {
+      transform: translateY(-420px) translateX(20px);
+      opacity: 0;
+    }
+  }
+
+  .cta__grade {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    align-items: center;
+    gap: clamp(28px, 4vw, 64px);
+  }
+  .cta__conteudo {
+    display: grid;
+    gap: 32px;
+  }
+  .cta__texto {
+    display: grid;
+    gap: 20px;
+  }
+  .cta__texto :global(.cabecalho) {
+    margin-bottom: 4px;
+  }
+  .cta__apoio {
+    font-size: var(--t-apoio);
+    line-height: 1.7;
+    max-width: 46ch;
+  }
+  .cta__entregas {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+  }
+  .cta__entregas li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--branco);
+    font-weight: 500;
+  }
+  .cta__entregas svg {
+    width: 20px;
+    height: 20px;
+    color: var(--lima);
+    flex: none;
+  }
+
+  /* formulário de vidro: a luz da porta passa por trás */
+  .form {
+    position: relative;
+    display: grid;
+    gap: 18px;
+    padding: clamp(22px, 3vw, 36px);
+    border-radius: 28px;
+    border: 1px solid rgb(255 255 255 / 0.12);
+    background: linear-gradient(160deg, rgb(20 22 16 / 0.72), rgb(6 7 5 / 0.82));
+    -webkit-backdrop-filter: blur(22px) saturate(140%);
+    backdrop-filter: blur(22px) saturate(140%);
+    box-shadow:
+      0 30px 80px rgb(0 0 0 / 0.55),
+      inset 1px 1px 0 rgb(255 255 255 / 0.08);
+  }
+  .form__bot {
+    position: absolute;
+    left: -9999px;
+  }
+  .form__titulo {
+    font-family: var(--f-display);
+    font-size: clamp(1.75rem, 1.3rem + 1vw, 2.25rem);
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--branco);
+  }
+  .form__aviso {
+    margin-top: -10px;
+    font-size: 0.875rem;
+    color: var(--texto-2);
+  }
+  .form__grade {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .campo {
+    display: grid;
+    gap: 7px;
+  }
+  .campo span {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--texto);
+  }
+  .campo input,
+  .campo select {
+    width: 100%;
+    height: 50px;
+    padding: 0 16px;
+    border-radius: 14px;
+    border: 1px solid rgb(255 255 255 / 0.12);
+    background: rgb(255 255 255 / 0.04);
+    color: var(--branco);
+    font: inherit;
+    font-size: 0.9375rem;
+    transition:
+      border-color 0.2s var(--ease),
+      background-color 0.2s var(--ease);
+  }
+  .campo select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 8l5 5 5-5' fill='none' stroke='%23a8cc15' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 16px;
+    padding-right: 40px;
+  }
+  .campo select option {
+    background: #0b0c0a;
+    color: var(--branco);
+  }
+  .campo input::placeholder {
+    color: rgb(255 255 255 / 0.32);
+  }
+  .campo input:focus,
+  .campo select:focus {
+    outline: none;
+    border-color: var(--lima);
+    background-color: rgb(168 204 21 / 0.06);
+  }
+  .campo input:user-invalid,
+  .campo select:user-invalid {
+    border-color: #e0734a;
+  }
+  .form__aceite {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--texto);
+  }
+  .form__aceite input {
+    margin-top: 2px;
+    width: 18px;
+    height: 18px;
+    accent-color: var(--lima);
+    flex: none;
+  }
+  .form__aceite a {
+    color: var(--lima);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .form__botao {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 58px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--lima);
+    color: #050505;
+    font: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+      background-color 0.2s var(--ease),
+      translate 0.2s var(--ease);
+  }
+  .form__botao svg {
+    width: 20px;
+    height: 20px;
+  }
+  .form__botao:hover {
+    background: var(--lima-luz);
+    translate: 0 -2px;
+  }
+  .form__botao[disabled] {
+    opacity: 0.7;
+    cursor: progress;
+  }
+
+  @media (max-width: 900px) {
+    .cta__grade {
+      grid-template-columns: 1fr;
+    }
+    .cta__visual {
+      order: -1;
+      position: relative;
+      top: auto;
+      height: auto;
+      min-height: 0;
+      aspect-ratio: 4 / 3;
+    }
+  }
+  @media (max-width: 560px) {
+    .form__grade {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cta__poeira {
+      display: none;
+    }
+  }
+</style>
