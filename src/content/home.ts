@@ -1,3 +1,4 @@
+import { site } from "./site";
 /**
  * Copy da home. Sem CMS: edite aqui, commit e push (ARQUITETURA.md §4.1).
  * Regras: tom jovem e com dado; nunca inventar números; destaque em lima só na palavra-chave.
@@ -148,7 +149,7 @@ export const sobre = {
 
 /**
  * 06 · Nichos: autoidentificação. As LPs /med e /food ainda não existem: por enquanto o botão leva ao
- * diagnóstico com o nicho já marcado (sessionStorage "rezzu-nicho", lido pelo formulário quando ele existir).
+ * Instagram de cada braço (@rezzu.med e @rezzufood), em nova aba. Quando a LP existir, troque `href`.
  * Copy da análise de posicionamento (proposta, validar).
  */
 export const nichos = {
@@ -162,6 +163,7 @@ export const nichos = {
       texto: "Clínicas e profissionais de saúde que querem agenda cheia sem ferir a ética.",
       botao: "Conhecer a REZZU Med",
       nicho: "saude",
+      href: site.redes.instagramMed,
       emBreve: false,
     },
     {
@@ -171,6 +173,7 @@ export const nichos = {
       texto: "Restaurantes, pizzarias e deliveries que querem pedido, não curtida.",
       botao: "Conhecer a REZZU Food",
       nicho: "alimentacao",
+      href: site.redes.instagramFood,
       emBreve: false,
     },
     {
@@ -180,6 +183,7 @@ export const nichos = {
       texto: "Escritórios e advogados que querem autoridade e o cliente certo, dentro das regras da OAB.",
       botao: "Em breve",
       nicho: "juridico",
+      href: "",
       emBreve: true,
     },
   ],

@@ -23,7 +23,7 @@ export const site = {
 
   redes: {
     instagram: "", // PENDENTE
-    instagramMed: "", // PENDENTE
+    instagramMed: "https://www.instagram.com/rezzu.med",
     instagramFood: "https://www.instagram.com/rezzufood",
   },
 
