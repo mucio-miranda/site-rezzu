@@ -4,12 +4,14 @@
  * do P&B para a cor, como a dor × solução do vídeo (MOTION.md §1.4). Desktop: 3 colunas;
  * celular: carrossel com arraste (scroll-snap nativo). Animação: src/scripts/anim-depoimentos.ts.
  * Conteúdo em src/content/depoimentos.ts: depoimentos reais (vídeos do @rezzugroup), com link para o vídeo.
+ * Vídeos: baixados dos Reels e servidos pelo site (public/videos/depoimentos/<código>.mp4 + capa .webp),
+ * tocados num player próprio, escuro, que só carrega ao clicar no play.
  */
 import { Image } from "astro:assets";
 import CabecalhoSecao from "../ui/CabecalhoSecao.astro";
 import { depoimentos, depoimentosCabecalho } from "../../content/depoimentos";
 
-// código do Reel (instagram.com/reel/CODIGO/...) para montar o player embutido
+// código do Reel (instagram.com/reel/CODIGO/...): é o nome do arquivo em public/videos/depoimentos/
 const codigoReel = (url: string) => url.match(/\/(?:reel|p)\/([\w-]+)/)?.[1] ?? "";
 
 const iniciais = (nome: string) =>
@@ -86,7 +88,7 @@ const iniciais = (nome: string) =>
     ))}
   </ul>
 
-  <!-- modal do vídeo: o player do Instagram só carrega ao clicar no play (sem peso nem cookies antes) -->
+  <!-- modal do vídeo: player próprio; o arquivo só carrega ao clicar no play -->
   <dialog class="video-modal" data-video-modal aria-label="Depoimento em vídeo">
     <div class="video-modal__caixa">
       <div class="video-modal__topo">
@@ -104,7 +106,49 @@ const iniciais = (nome: string) =>
         </button>
       </div>
       <div class="video-modal__tela" data-video-modal-tela>
+        <video class="video-modal__video" data-video playsinline preload="none"></video>
         <span class="video-modal__carregando" aria-hidden="true"></span>
+        <button class="video-modal__play" type="button" data-video-play aria-label="Reproduzir">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M8 5.5v13l10.5-6.5z" fill="currentColor" />
+          </svg>
+        </button>
+        <div class="video-modal__controles">
+          <!-- progresso em linhas horizontais: cada traço é um trecho do vídeo; clique ou arraste para pular -->
+          <div
+            class="video-modal__linhas"
+            data-video-linhas
+            role="slider"
+            tabindex="0"
+            aria-label="Posição do vídeo"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+          >
+            {Array.from({ length: 20 }, () => <span />)}
+          </div>
+          <button class="video-modal__som" type="button" data-video-som aria-label="Desativar som">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor" />
+              <path
+                class="video-modal__onda"
+                d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+              />
+              <path
+                class="video-modal__mudo"
+                d="M16 9.5l5 5M21 9.5l-5 5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   </dialog>
@@ -113,37 +157,83 @@ const iniciais = (nome: string) =>
 <script>
   import "../../scripts/anim-depoimentos";
 
-  // modal do vídeo: abre o Reel do Instagram embutido (iframe /embed) dentro do nosso estilo
+  // modal do vídeo: player próprio (vídeo baixado do Reel, servido pelo site)
   const modal = document.querySelector<HTMLDialogElement>("[data-video-modal]");
   const tela = modal?.querySelector<HTMLElement>("[data-video-modal-tela]");
   const nome = modal?.querySelector<HTMLElement>("[data-video-modal-nome]");
-  if (modal && tela && nome) {
+  const video = modal?.querySelector<HTMLVideoElement>("[data-video]");
+  const linhas = modal?.querySelector<HTMLElement>("[data-video-linhas]");
+  const som = modal?.querySelector<HTMLButtonElement>("[data-video-som]");
+  if (modal && tela && nome && video && linhas && som) {
+    const tracos = Array.from(linhas.children) as HTMLElement[];
     const fechar = () => modal.close();
+
     document.querySelectorAll<HTMLAnchorElement>("[data-dep-video]").forEach((a) =>
       a.addEventListener("click", (e) => {
         const codigo = a.dataset.depVideo;
-        if (!codigo || typeof modal.showModal !== "function") return; // sem suporte: segue o link normal
+        if (!codigo || typeof modal.showModal !== "function") return; // sem suporte: segue o link do Instagram
         e.preventDefault();
         nome.textContent = a.dataset.depNome ?? "";
-        tela.querySelector("iframe")?.remove();
-        tela.classList.remove("video-modal__tela--pronta");
-        const f = document.createElement("iframe");
-        f.src = `https://www.instagram.com/reel/${codigo}/embed/`;
-        f.title = `Depoimento de ${a.dataset.depNome ?? ""}`;
-        f.allow = "autoplay; encrypted-media; picture-in-picture";
-        f.setAttribute("allowfullscreen", "");
-        f.addEventListener("load", () => tela.classList.add("video-modal__tela--pronta"), { once: true });
-        tela.append(f);
+        tela.classList.remove("video-modal__tela--pronta", "video-modal__tela--pausado");
+        video.poster = `/videos/depoimentos/${codigo}.webp`;
+        video.src = `/videos/depoimentos/${codigo}.mp4`;
+        video.muted = false;
         modal.showModal();
+        video.play().catch(() => tela.classList.add("video-modal__tela--pausado"));
       }),
     );
+
+    // estado do player
+    video.addEventListener("playing", () => tela.classList.add("video-modal__tela--pronta"));
+    video.addEventListener("play", () => tela.classList.remove("video-modal__tela--pausado"));
+    video.addEventListener("pause", () => tela.classList.add("video-modal__tela--pausado"));
+    video.addEventListener("timeupdate", () => {
+      const p = video.duration ? video.currentTime / video.duration : 0;
+      const cheios = Math.round(p * tracos.length);
+      tracos.forEach((t, i) => t.classList.toggle("cheio", i < cheios));
+      linhas.setAttribute("aria-valuenow", String(Math.round(p * 100)));
+    });
+    video.addEventListener("volumechange", () => {
+      tela.classList.toggle("video-modal__tela--mudo", video.muted);
+      som.setAttribute("aria-label", video.muted ? "Ativar som" : "Desativar som");
+    });
+
+    // tocar/pausar: clique no vídeo ou no botão central
+    const alternar = () => (video.paused ? video.play() : video.pause());
+    video.addEventListener("click", alternar);
+    modal.querySelector("[data-video-play]")?.addEventListener("click", alternar);
+    som.addEventListener("click", () => (video.muted = !video.muted));
+
+    // pular: clicar/arrastar nas linhas ou setas do teclado
+    const pular = (x: number) => {
+      const r = linhas.getBoundingClientRect();
+      if (video.duration) video.currentTime = Math.min(Math.max((x - r.left) / r.width, 0), 0.999) * video.duration;
+    };
+    linhas.addEventListener("pointerdown", (e) => {
+      linhas.setPointerCapture(e.pointerId);
+      pular(e.clientX);
+    });
+    linhas.addEventListener("pointermove", (e) => {
+      if (linhas.hasPointerCapture(e.pointerId)) pular(e.clientX);
+    });
+    linhas.addEventListener("keydown", (e) => {
+      if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+      e.preventDefault();
+      video.currentTime += e.key === "ArrowRight" ? 5 : -5;
+    });
+
     modal.querySelector("[data-video-modal-fechar]")?.addEventListener("click", fechar);
     // clique fora da caixa fecha
     modal.addEventListener("click", (e) => {
       if (e.target === modal) fechar();
     });
-    // ao fechar, remove o player (para o vídeo parar de tocar)
-    modal.addEventListener("close", () => tela.querySelector("iframe")?.remove());
+    // ao fechar, para o vídeo e solta o arquivo
+    modal.addEventListener("close", () => {
+      video.pause();
+      video.removeAttribute("src");
+      video.load();
+      tracos.forEach((t) => t.classList.remove("cheio"));
+    });
   }
 </script>
 
@@ -266,7 +356,7 @@ const iniciais = (nome: string) =>
   /* aviso de conteúdo provisório: chamativo de propósito, para não ir ao ar assim */
   /* modal do vídeo (vidro escuro, no estilo do site) */
   .video-modal {
-    width: min(92vw, 420px);
+    width: min(92vw, 420px, calc((94svh - 96px) * 9 / 16 + 28px));
     max-height: 94svh;
     margin: auto; /* centraliza (o reset global zera a margem do <dialog>) */
     inset: 0;
@@ -333,29 +423,19 @@ const iniciais = (nome: string) =>
     border-color: var(--lima);
     color: var(--lima);
   }
-  /* o embed do Instagram é claro e mostra curtidas e comentários (não dá para mudar o estilo de um iframe
-     de outro site). A tela recorta o player e deixa à vista só o vídeo (largura × 1,25): o cabeçalho branco
-     (54 px) sobe para fora e o rodapé fica escondido embaixo. Resultado: player escuro, sem curtidas. */
   .video-modal__tela {
     position: relative;
-    display: block;
-    aspect-ratio: 4 / 4.9; /* vídeo do Reel = largura × 1,25; um pouco menos para não vazar o rodapé branco */
-    max-height: calc(94svh - 96px);
+    aspect-ratio: 9 / 16;
     border-radius: 16px;
     overflow: hidden;
     background: #000;
   }
-  .video-modal__tela :global(iframe) {
+  .video-modal__video {
     display: block;
     width: 100%;
-    height: calc(100% + 420px);
-    margin-top: -55px;
-    border: 0;
-    opacity: 0;
-    transition: opacity 0.3s var(--ease);
-  }
-  .video-modal__tela--pronta :global(iframe) {
-    opacity: 1;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
   }
   .video-modal__carregando {
     position: absolute;
@@ -367,9 +447,108 @@ const iniciais = (nome: string) =>
     border: 3px solid rgb(168 204 21 / 0.25);
     border-top-color: var(--lima);
     animation: gira 0.8s linear infinite;
+    pointer-events: none;
   }
-  .video-modal__tela--pronta .video-modal__carregando {
+  .video-modal__tela--pronta .video-modal__carregando,
+  .video-modal__tela--pausado .video-modal__carregando {
     display: none;
+  }
+  .video-modal__play {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    display: grid;
+    place-items: center;
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    border: 1px solid rgb(168 204 21 / 0.5);
+    background: rgb(6 7 5 / 0.55);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    color: var(--lima);
+    cursor: pointer;
+    opacity: 0;
+    scale: 0.9;
+    pointer-events: none;
+    transition:
+      opacity 0.25s var(--ease),
+      scale 0.25s var(--ease);
+  }
+  .video-modal__play svg {
+    width: 28px;
+    height: 28px;
+    margin-left: 3px;
+  }
+  .video-modal__tela--pausado .video-modal__play {
+    opacity: 1;
+    scale: 1;
+    pointer-events: auto;
+  }
+  .video-modal__controles {
+    position: absolute;
+    inset: auto 0 0;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 36px 16px 14px;
+    background: linear-gradient(to top, rgb(0 0 0 / 0.7), transparent);
+  }
+  /* progresso em linhas horizontais: traços curtos que acendem em lima conforme o vídeo avança */
+  .video-modal__linhas {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    height: 24px;
+    cursor: pointer;
+    touch-action: none;
+    border-radius: 4px;
+  }
+  .video-modal__linhas:focus-visible {
+    outline: 2px solid var(--lima);
+    outline-offset: 4px;
+  }
+  .video-modal__linhas span {
+    flex: 1;
+    height: 2px;
+    border-radius: 2px;
+    background: rgb(255 255 255 / 0.28);
+    transition:
+      background-color 0.2s var(--ease),
+      height 0.2s var(--ease);
+  }
+  .video-modal__linhas span.cheio {
+    background: var(--lima);
+    height: 3px;
+  }
+  .video-modal__linhas:hover span {
+    height: 4px;
+  }
+  .video-modal__som {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--branco);
+    cursor: pointer;
+  }
+  .video-modal__som svg {
+    width: 22px;
+    height: 22px;
+  }
+  .video-modal__som:hover {
+    color: var(--lima);
+  }
+  .video-modal__mudo,
+  .video-modal__tela--mudo .video-modal__onda {
+    display: none;
+  }
+  .video-modal__tela--mudo .video-modal__mudo {
+    display: inline;
   }
   @keyframes gira {
     to {
