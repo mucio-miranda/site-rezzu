@@ -1,0 +1,217 @@
+---
+/**
+ * Rodapé: assinatura da marca + navegação, nichos, contato e links legais (ARQUITETURA.md §12).
+ * Dados em src/content/site.ts; campos vazios (PENDENTES) simplesmente não aparecem.
+ */
+import LogoRezzu from "../ui/LogoRezzu.astro";
+import { site } from "../../content/site";
+import { navegacao, ctaPrincipal } from "../../content/home";
+
+const ano = new Date().getFullYear();
+const wa = site.contato.whatsapp
+  ? `https://wa.me/${site.contato.whatsapp}?text=${encodeURIComponent(site.contato.whatsappMensagem)}`
+  : "";
+const nichos = [
+  { rotulo: "REZZU Med", href: site.redes.instagramMed },
+  { rotulo: "REZZU Food", href: site.redes.instagramFood },
+  { rotulo: "REZZU Jurídico · em breve", href: "" },
+];
+const contato = [
+  wa && { rotulo: "WhatsApp", href: wa },
+  site.contato.email && { rotulo: site.contato.email, href: `mailto:${site.contato.email}` },
+  site.redes.instagram && { rotulo: "Instagram", href: site.redes.instagram },
+].filter(Boolean) as { rotulo: string; href: string }[];
+---
+
+<footer class="rodape">
+  <div class="container">
+    <div class="rodape__topo">
+      <div class="rodape__marca">
+        <a href="/" class="rodape__logo" aria-label="REZZU group, início">
+          <LogoRezzu altura={30} />
+        </a>
+        <p class="rodape__assinatura">{site.assinatura}</p>
+        <a class="rodape__cta" href={`/${ctaPrincipal.href}`} data-evento="clique_cta">
+          {ctaPrincipal.rotulo}
+          <svg viewBox="0 0 20 20" aria-hidden="true">
+            <path
+              d="M4 10h11M10.5 5.5 15 10l-4.5 4.5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+        </a>
+      </div>
+
+      <nav class="rodape__col" aria-label="Rodapé">
+        <p class="rodape__titulo">Navegação</p>
+        <ul>
+          {navegacao.map((i) => (
+            <li>
+              <a href={`/${i.href}`}>{i.rotulo}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <div class="rodape__col">
+        <p class="rodape__titulo">Nichos</p>
+        <ul>
+          {nichos.map((n) => (
+            <li>
+              {n.href ? (
+                <a href={n.href} target="_blank" rel="noopener">
+                  {n.rotulo}
+                </a>
+              ) : (
+                <span class="rodape__breve">{n.rotulo}</span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="rodape__col">
+        <p class="rodape__titulo">Contato</p>
+        <ul>
+          {contato.map((c) => (
+            <li>
+              <a href={c.href} target={c.href.startsWith("http") ? "_blank" : undefined} rel="noopener">
+                {c.rotulo}
+              </a>
+            </li>
+          ))}
+          <li>
+            <span>
+              {site.cidade}, {site.uf}
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="rodape__base">
+      <p>{`© ${ano} ${site.legal.razaoSocial || site.nome}${site.legal.cnpj ? ` · CNPJ ${site.legal.cnpj}` : ""}`}</p>
+      <ul class="rodape__legal">
+        <li>
+          <a href="/politica-de-privacidade">Política de Privacidade</a>
+        </li>
+        {site.legal.emailEncarregadoLgpd && (
+          <li>
+            <a href={`mailto:${site.legal.emailEncarregadoLgpd}`}>Encarregado de dados (LGPD)</a>
+          </li>
+        )}
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .rodape {
+    position: relative;
+    border-top: 1px solid var(--linha);
+    padding-block: clamp(56px, 8vh, 88px) 28px;
+    background: radial-gradient(50% 80% at 0% 0%, rgb(168 204 21 / 0.07), transparent 70%), var(--bg);
+  }
+  .rodape__topo {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 1fr));
+    gap: clamp(28px, 4vw, 64px);
+  }
+  .rodape__marca {
+    display: grid;
+    gap: 18px;
+    align-content: start;
+    justify-items: start;
+  }
+  .rodape__logo {
+    color: var(--branco);
+  }
+  .rodape__assinatura {
+    max-width: 30ch;
+    font-family: var(--f-display);
+    font-size: clamp(1.5rem, 1.1rem + 1vw, 2rem);
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--branco);
+  }
+  .rodape__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    color: var(--lima);
+  }
+  .rodape__cta svg {
+    width: 18px;
+    height: 18px;
+    transition: translate 0.25s var(--ease);
+  }
+  .rodape__cta:hover svg {
+    translate: 4px 0;
+  }
+  .rodape__titulo {
+    margin-bottom: 16px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--lima);
+  }
+  .rodape__col ul,
+  .rodape__legal {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+  }
+  .rodape__col a,
+  .rodape__col span,
+  .rodape__legal a {
+    font-size: 0.9375rem;
+    color: var(--texto);
+    transition: color 0.2s var(--ease);
+  }
+  .rodape__col a:hover,
+  .rodape__legal a:hover {
+    color: var(--branco);
+  }
+  .rodape__breve {
+    color: var(--texto-2) !important;
+  }
+  .rodape__base {
+    margin-top: clamp(40px, 6vh, 64px);
+    padding-top: 24px;
+    border-top: 1px solid var(--linha);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px 24px;
+    font-size: 0.8125rem;
+    color: var(--texto-2);
+  }
+  .rodape__legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+  }
+  .rodape__legal a {
+    font-size: 0.8125rem;
+  }
+  @media (max-width: 900px) {
+    .rodape__topo {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .rodape__marca {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (max-width: 480px) {
+    .rodape__col ul {
+      gap: 10px;
+    }
+  }
+</style>
