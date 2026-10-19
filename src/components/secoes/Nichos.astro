@@ -22,56 +22,56 @@ const icones = { med, food, juridico } as const;
 
   <div class="container">
     <CabecalhoSecao id="nichos-titulo" sobretitulo={nichos.sobretitulo} {...nichos.titulo} />
-
-    <ul class="nichos__lista" role="list">
-      {nichos.itens.map((n) => (
-        <li class:list={["nicho", { "nicho--breve": n.emBreve }]} data-nicho-card>
-          <div class="nicho__icone" aria-hidden="true">
-            <span class="nicho__feixe" />
-            <Image
-              src={icones[n.id]}
-              alt=""
-              widths={[240, 480, 760, 1100]}
-              sizes="(max-width: 900px) 92px, min(400px, 28vw)"
-              quality={88}
-              loading="lazy"
-            />
-          </div>
-          <p class="nicho__publico">{n.publico}</p>
-          <h3 class="nicho__nome">{n.nome}</h3>
-          <p class="nicho__texto">{n.texto}</p>
-          {n.emBreve ? (
-            <span class="nicho__breve">
-              <span class="nicho__ponto" />
-              {n.botao}
-            </span>
-          ) : (
-            <a
-              class="nicho__link"
-              href={n.href}
-              target="_blank"
-              rel="noopener"
-              aria-label={`${n.botao} no Instagram (abre em nova aba)`}
-              data-evento="clique_nicho"
-              data-nicho={n.nicho}
-            >
-              {n.botao}
-              <svg viewBox="0 0 20 20" aria-hidden="true">
-                <path
-                  d="M4 10h11M10.5 5.5 15 10l-4.5 4.5"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </a>
-          )}
-        </li>
-      ))}
-    </ul>
   </div>
+
+  <ul class="nichos__lista container" role="list">
+    {nichos.itens.map((n) => (
+      <li class:list={["nicho", { "nicho--breve": n.emBreve }]} data-nicho-card>
+        <div class="nicho__icone" aria-hidden="true">
+          <span class="nicho__feixe" />
+          <Image
+            src={icones[n.id]}
+            alt=""
+            widths={[240, 480, 760, 1100]}
+            sizes="(max-width: 900px) 82vw, min(400px, 28vw)"
+            quality={88}
+            loading="lazy"
+          />
+        </div>
+        <p class="nicho__publico">{n.publico}</p>
+        <h3 class="nicho__nome">{n.nome}</h3>
+        <p class="nicho__texto">{n.texto}</p>
+        {n.emBreve ? (
+          <span class="nicho__breve">
+            <span class="nicho__ponto" />
+            {n.botao}
+          </span>
+        ) : (
+          <a
+            class="nicho__link"
+            href={n.href}
+            target="_blank"
+            rel="noopener"
+            aria-label={`${n.botao} no Instagram (abre em nova aba)`}
+            data-evento="clique_nicho"
+            data-nicho={n.nicho}
+          >
+            {n.botao}
+            <svg viewBox="0 0 20 20" aria-hidden="true">
+              <path
+                d="M4 10h11M10.5 5.5 15 10l-4.5 4.5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </a>
+        )}
+      </li>
+    ))}
+  </ul>
 </section>
 
 <script>
@@ -224,32 +224,27 @@ const icones = { med, food, juridico } as const;
     background: var(--texto-2);
   }
 
+  /* celular: carrossel com arraste (scroll-snap nativo, sem biblioteca), igual aos depoimentos */
   @media (max-width: 900px) {
     .nichos__lista {
-      grid-template-columns: 1fr;
-      max-width: 480px;
+      display: flex;
+      width: auto;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: var(--gutter);
+      padding-inline: var(--gutter);
+      padding-block: 6px 12px;
+      scrollbar-width: none;
+    }
+    .nichos__lista::-webkit-scrollbar {
+      display: none;
     }
     .nicho {
-      grid-template-columns: 112px 1fr;
-      column-gap: 18px;
-      align-items: center;
-    }
-    .nicho__icone {
-      grid-row: span 4;
-      margin: 0;
-      align-self: start;
+      flex: 0 0 min(82%, 340px);
+      scroll-snap-align: start;
     }
     .nicho__texto {
-      min-height: 0;
-    }
-    .nicho {
-      grid-template-columns: 92px 1fr;
-      column-gap: 16px;
-    }
-    .nicho__link,
-    .nicho__breve {
-      font-size: 0.875rem;
-      white-space: nowrap;
+      min-height: 4.8em;
     }
   }
   @media (prefers-reduced-motion: reduce) {
