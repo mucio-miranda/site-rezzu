@@ -216,3 +216,65 @@ export const cta = {
     botao: "Agendar meu diagnóstico",
   },
 } as const;
+
+/**
+ * 08 · Para quem é: filtro (checklist). Inspirado em "Não é para todo mundo. E tá tudo bem."
+ * Copy proposta a partir do posicionamento e dos nichos (validar com a REZZU). Sem números.
+ */
+export const paraQuem = {
+  sobretitulo: "Para quem é",
+  titulo: { conectivo: "Não é pra todo mundo. E tá", sentido: "tudo bem." },
+  apoio:
+    "Trabalhamos com quem entende que posicionamento e faturamento se constroem com compromisso dos dois lados. Se você procura atalho ou milagre de seguidores, aqui não é o lugar.",
+  itens: [
+    "Clínicas, consultórios e profissionais de saúde que querem agenda cheia sem ferir a ética.",
+    "Restaurantes, pizzarias e deliveries que querem pedido, não curtida.",
+    "Empresários que querem um time só cuidando de tudo, do roteiro ao tráfego.",
+    "Marcas que querem ser a referência do seu mercado, e não mais uma no feed.",
+    "Quem enxerga marketing como investimento e quer ver o retorno no caixa.",
+  ],
+} as const;
+
+/**
+ * 09 · FAQ: objeções antes de agendar. Respostas só com o que já está no site (método, diagnóstico, nichos,
+ * produção própria); nada de prazos ou números novos. Copy proposta: validar com a REZZU.
+ * Também vira dados estruturados FAQPage (SEO) no componente Faq.astro.
+ */
+export const faq = {
+  sobretitulo: "Dúvidas frequentes",
+  titulo: { conectivo: "Tire suas dúvidas antes de", sentido: "começar." },
+  apoio: "Não achou a sua? Pergunte no diagnóstico: é gratuito e sem compromisso.",
+  botao: "Quero meu diagnóstico gratuito",
+  perguntas: [
+    {
+      pergunta: "Para quais negócios a REZZU é indicada?",
+      resposta:
+        "Principalmente saúde (REZZU Med) e alimentação (REZZU Food); o REZZU Jurídico chega em breve. Também atendemos outros segmentos: no diagnóstico a gente mostra, com honestidade, se faz sentido para o seu caso.",
+    },
+    {
+      pergunta: "Já tenho alguém cuidando do meu Instagram. Por que a REZZU?",
+      resposta:
+        "Postar não é se posicionar. A REZZU assume estratégia, roteiro, gravação, design e tráfego com um time só, comprometido com o seu faturamento, e não com a quantidade de posts.",
+    },
+    {
+      pergunta: "Como funciona o diagnóstico gratuito?",
+      resposta:
+        "Você preenche o formulário e a gente retorna pelo WhatsApp para marcar. Em 45 minutos olhamos seu perfil, sua comunicação e seus gargalos e entregamos um plano de ação por escrito, mesmo que você não feche com a gente.",
+    },
+    {
+      pergunta: "O que diferencia a REZZU de uma agência comum?",
+      resposta:
+        "Especialização por mercado (Med, Food e Jurídico), produção própria do roteiro ao tráfego, um método em 5 etapas, do diagnóstico à otimização, e os fundadores acompanhando cada conta de perto.",
+    },
+    {
+      pergunta: "Quanto tempo leva para os resultados aparecerem?",
+      resposta:
+        "Depende do ponto de partida e do objetivo. Ações de tráfego costumam gerar movimento mais rápido; posicionamento se constrói mês a mês. No diagnóstico a gente mostra o que esperar no seu caso.",
+    },
+    {
+      pergunta: "Vocês garantem resultado de vendas?",
+      resposta:
+        "Ninguém sério garante número de vendas, porque ele também depende de produto, preço e atendimento. O que a gente garante é método, execução própria e acompanhamento de perto, medindo e ajustando o tempo todo.",
+    },
+  ],
+} as const;

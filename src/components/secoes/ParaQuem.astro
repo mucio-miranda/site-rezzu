@@ -1,0 +1,125 @@
+---
+/**
+ * 08 · Para quem é: filtro de leads em checklist. Esquerda: título + apoio; direita: itens com check lima.
+ * Animação de entrada: src/scripts/anim-para-quem.ts (os itens sobem em sequência e o check se desenha).
+ * Sem JS ou com "reduzir movimento": tudo visível.
+ */
+import CabecalhoSecao from "../ui/CabecalhoSecao.astro";
+import { paraQuem } from "../../content/home";
+---
+
+<section id="para-quem" class="para-quem" data-para-quem aria-labelledby="para-quem-titulo">
+  <div class="para-quem__grade container">
+    <div class="para-quem__texto">
+      <CabecalhoSecao id="para-quem-titulo" sobretitulo={paraQuem.sobretitulo} {...paraQuem.titulo} />
+      <p class="para-quem__apoio" data-pq-apoio>{paraQuem.apoio}</p>
+    </div>
+
+    <ul class="para-quem__lista" role="list">
+      {paraQuem.itens.map((item) => (
+        <li class="pq-item" data-pq-item>
+          <span class="pq-item__check" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path
+                data-pq-traco
+                d="M6.5 12.5l3.5 3.5 7.5-8"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </span>
+          <span class="pq-item__texto">{item}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<script>
+  import "../../scripts/anim-para-quem";
+</script>
+
+<style>
+  .para-quem {
+    position: relative;
+    isolation: isolate;
+    padding-block: var(--secao-respiro);
+    border-top: 1px solid var(--linha);
+    background: radial-gradient(40% 60% at 100% 50%, rgb(168 204 21 / 0.06), transparent 70%);
+  }
+  .para-quem__grade {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    align-items: center;
+    gap: clamp(36px, 6vw, 96px);
+  }
+  .para-quem__texto :global(.cabecalho) {
+    margin-bottom: 22px;
+  }
+  .para-quem__apoio {
+    max-width: 46ch;
+    font-size: var(--t-apoio);
+    line-height: 1.6;
+    color: var(--texto);
+  }
+  .para-quem__lista {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 14px;
+  }
+  .pq-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px 22px;
+    border: 1px solid rgb(255 255 255 / 0.08);
+    border-radius: 16px;
+    background: rgb(255 255 255 / 0.015);
+    transition:
+      border-color 0.3s var(--ease),
+      background-color 0.3s var(--ease);
+  }
+  .pq-item:hover {
+    border-color: rgb(168 204 21 / 0.35);
+    background: rgb(168 204 21 / 0.035);
+  }
+  .pq-item__check {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgb(168 204 21 / 0.14);
+    color: var(--lima);
+    box-shadow: 0 0 18px rgb(168 204 21 / 0.18);
+  }
+  .pq-item__check svg {
+    width: 17px;
+    height: 17px;
+  }
+  .pq-item__texto {
+    padding-top: 3px;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--branco);
+  }
+  @media (max-width: 900px) {
+    .para-quem__grade {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 480px) {
+    .pq-item {
+      padding: 16px 18px;
+      gap: 14px;
+    }
+    .pq-item__texto {
+      font-size: 0.9375rem;
+    }
+  }
+</style>
