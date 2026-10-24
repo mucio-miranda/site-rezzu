@@ -1,8 +1,8 @@
 ---
 /**
  * 07 · CTA (Conversão): "A porta está aberta. A decisão é sua." Fecha a metáfora da escada do Método.
- * 2 colunas: à esquerda o texto e o formulário de vidro; à direita a porta de luz em alta resolução
- * (recorte vertical do PSD 07-cta-portal, 1148x1400). No celular a porta vira faixa acima do conteúdo.
+ * 2 colunas: à esquerda o texto; à direita a porta de luz em alta resolução (recorte vertical do PSD
+ * 07-cta-portal, 1148x1400) com o formulário de vidro na frente dela. No celular empilha: texto, porta + formulário.
  * Formulário: Netlify Forms (name="diagnostico", honeypot anti-spam, consentimento LGPD obrigatório) → /obrigado.
  * Campos ocultos: UTMs, gclid, fbclid e página de origem (preenchidos por src/scripts/form-diagnostico.ts).
  * Motion (ARQUITETURA.md §6): a porta acende ao entrar, poeira de luz sobe devagar, o botão pulsa 1 vez.
@@ -33,7 +33,6 @@ const poeira = Array.from({ length: 18 }, (_, i) => ({
 
 <section id="diagnostico" class="cta" data-cta aria-labelledby="cta-titulo">
   <div class="container cta__grade">
-    <div class="cta__conteudo">
       <div class="cta__texto">
         <CabecalhoSecao id="cta-titulo" sobretitulo={cta.sobretitulo} {...cta.titulo} />
         <p class="cta__apoio" data-cta-entra>
@@ -58,137 +57,137 @@ const poeira = Array.from({ length: 18 }, (_, i) => ({
         </ul>
       </div>
 
-      <form
-        class="form"
-        name="diagnostico"
-        method="POST"
-        action="/obrigado"
-        data-netlify="true"
-        netlify-honeypot="campo-bot"
-        data-form-diagnostico
-        data-cta-entra
-      >
-        <input type="hidden" name="form-name" value="diagnostico" />
-        {ocultos.map((n) => (
-          <input type="hidden" name={n} value="" data-oculto={n} />
-        ))}
-        <p class="form__bot" aria-hidden="true">
-          <label>
-            Não preencha: <input name="campo-bot" tabindex="-1" autocomplete="off" />
-          </label>
-        </p>
+      <!-- direita: a porta de luz (recorte vertical do PSD 07-cta-portal) atrás do formulário de vidro -->
+      <div class="cta__palco">
+        <figure class="cta__visual" aria-hidden="true" data-cta-visual>
+          <Image
+            class="cta__portal"
+            src={portal}
+            alt=""
+            widths={[480, 800, 1148]}
+            sizes="(max-width: 900px) 100vw, 52vw"
+            quality={90}
+            loading="lazy"
+            data-cta-portal
+          />
+          <div class="cta__poeira">
+            {poeira.map((p) => (
+              <i style={`--x:${p.x}%;--d:${p.d}s;--a:-${p.a}s;--s:${p.s}px`} />
+            ))}
+          </div>
+        </figure>
+        <form
+          class="form"
+          name="diagnostico"
+          method="POST"
+          action="/obrigado"
+          data-netlify="true"
+          netlify-honeypot="campo-bot"
+          data-form-diagnostico
+          data-cta-entra
+        >
+          <input type="hidden" name="form-name" value="diagnostico" />
+          {ocultos.map((n) => (
+            <input type="hidden" name={n} value="" data-oculto={n} />
+          ))}
+          <p class="form__bot" aria-hidden="true">
+            <label>
+              Não preencha: <input name="campo-bot" tabindex="-1" autocomplete="off" />
+            </label>
+          </p>
 
-        <p class="form__titulo">{cta.formulario.titulo}</p>
-        <p class="form__aviso">{cta.formulario.aviso}</p>
+          <p class="form__titulo">{cta.formulario.titulo}</p>
+          <p class="form__aviso">{cta.formulario.aviso}</p>
 
-        <div class="form__grade">
-          <label class="campo">
-            <span>Nome</span>
-            <input
-              name="nome"
-              type="text"
-              autocomplete="name"
-              required
-              minlength="2"
-              placeholder="Seu nome"
-            />
-          </label>
-          <label class="campo">
-            <span>WhatsApp</span>
-            <input
-              name="whatsapp"
-              type="tel"
-              inputmode="tel"
-              autocomplete="tel-national"
-              required
-              pattern="[\d\s()+-]{10,20}"
-              placeholder="(83) 99999-9999"
-              data-whatsapp
-            />
-          </label>
-          <label class="campo">
-            <span>Empresa ou negócio</span>
-            <input
-              name="empresa"
-              type="text"
-              autocomplete="organization"
-              required
-              placeholder="Nome da empresa"
-            />
-          </label>
-          <label class="campo">
-            <span>@ do Instagram</span>
-            <input name="instagram" type="text" autocapitalize="off" placeholder="@seunegocio" />
-          </label>
-          <label class="campo">
-            <span>Nicho</span>
-            <select name="nicho" required data-nicho>
-              <option value="" disabled selected>
-                Selecione
-              </option>
-              {cta.formulario.nichos.map((n) => (
-                <option value={n}>{n}</option>
-              ))}
-            </select>
-          </label>
-          <label class="campo">
-            <span>Faturamento mensal</span>
-            <select name="faturamento" required>
-              <option value="" disabled selected>
-                Selecione
-              </option>
-              {cta.formulario.faturamento.map((f) => (
-                <option value={f}>{f}</option>
-              ))}
-            </select>
-          </label>
-        </div>
+          <div class="form__grade">
+            <label class="campo">
+              <span>Nome</span>
+              <input
+                name="nome"
+                type="text"
+                autocomplete="name"
+                required
+                minlength="2"
+                placeholder="Seu nome"
+              />
+            </label>
+            <label class="campo">
+              <span>WhatsApp</span>
+              <input
+                name="whatsapp"
+                type="tel"
+                inputmode="tel"
+                autocomplete="tel-national"
+                required
+                pattern="[\d\s()+-]{10,20}"
+                placeholder="(83) 99999-9999"
+                data-whatsapp
+              />
+            </label>
+            <label class="campo">
+              <span>Empresa ou negócio</span>
+              <input
+                name="empresa"
+                type="text"
+                autocomplete="organization"
+                required
+                placeholder="Nome da empresa"
+              />
+            </label>
+            <label class="campo">
+              <span>@ do Instagram</span>
+              <input name="instagram" type="text" autocapitalize="off" placeholder="@seunegocio" />
+            </label>
+            <label class="campo">
+              <span>Nicho</span>
+              <select name="nicho" required data-nicho>
+                <option value="" disabled selected>
+                  Selecione
+                </option>
+                {cta.formulario.nichos.map((n) => (
+                  <option value={n}>{n}</option>
+                ))}
+              </select>
+            </label>
+            <label class="campo">
+              <span>Faturamento mensal</span>
+              <select name="faturamento" required>
+                <option value="" disabled selected>
+                  Selecione
+                </option>
+                {cta.formulario.faturamento.map((f) => (
+                  <option value={f}>{f}</option>
+                ))}
+              </select>
+            </label>
+          </div>
 
-        <label class="form__aceite">
-          <input type="checkbox" name="consentimento" value="sim" required />
-          <span>
-            {cta.formulario.consentimento}{" "}
-            <a href="/politica-de-privacidade" target="_blank" rel="noopener">
-              Política de Privacidade
-            </a>
-            .
-          </span>
-        </label>
+          <label class="form__aceite">
+            <input type="checkbox" name="consentimento" value="sim" required />
+            <span>
+              {cta.formulario.consentimento}{" "}
+              <a href="/politica-de-privacidade" target="_blank" rel="noopener">
+                Política de Privacidade
+              </a>
+              .
+            </span>
+          </label>
 
-        <button class="form__botao" type="submit" data-evento="clique_cta" data-cta-botao>
-          <span>{cta.formulario.botao}</span>
-          <svg viewBox="0 0 20 20" aria-hidden="true">
-            <path
-              d="M4 10h11M10.5 5.5 15 10l-4.5 4.5"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </button>
-      </form>
-    </div>
-
-    <!-- direita: a porta de luz em alta resolução (recorte vertical do PSD 07-cta-portal) -->
-    <figure class="cta__visual" aria-hidden="true">
-      <Image
-        class="cta__portal"
-        src={portal}
-        alt=""
-        widths={[480, 800, 1148]}
-        sizes="(max-width: 900px) 100vw, 42vw"
-        quality={90}
-        loading="lazy"
-        data-cta-portal
-      />
-      <div class="cta__poeira">
-        {poeira.map((p) => (
-          <i style={`--x:${p.x}%;--d:${p.d}s;--a:-${p.a}s;--s:${p.s}px`} />
-        ))}
+          <button class="form__botao" type="submit" data-evento="clique_cta" data-cta-botao>
+            <span>{cta.formulario.botao}</span>
+            <svg viewBox="0 0 20 20" aria-hidden="true">
+              <path
+                d="M4 10h11M10.5 5.5 15 10l-4.5 4.5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+        </form>
       </div>
-    </figure>
   </div>
 </section>
 
@@ -204,14 +203,21 @@ const poeira = Array.from({ length: 18 }, (_, i) => ({
     overflow: clip;
     padding-block: calc(var(--secao-respiro) * 1.4);
   }
-  /* a porta fica parada na tela enquanto o texto e o formulário rolam ao lado */
+  /* a porta fica atrás do formulário e transborda um pouco em cima e embaixo; a luz passa pelo vidro */
+  .cta__palco {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    align-items: center;
+  }
+  .cta__palco .form {
+    z-index: 1;
+  }
   .cta__visual {
-    position: sticky;
-    top: 104px;
+    position: absolute;
+    inset: -120px -6% -120px;
+    z-index: 0;
     margin: 0;
-    align-self: start;
-    height: min(calc(100svh - 140px), 760px);
-    min-height: 520px;
     overflow: hidden;
     background: #000;
     /* bordas somem no fundo da página, nos 4 lados */
@@ -262,13 +268,9 @@ const poeira = Array.from({ length: 18 }, (_, i) => ({
 
   .cta__grade {
     display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
     align-items: center;
-    gap: clamp(28px, 4vw, 64px);
-  }
-  .cta__conteudo {
-    display: grid;
-    gap: 32px;
+    gap: clamp(32px, 5vw, 80px);
   }
   .cta__texto {
     display: grid;
@@ -443,13 +445,9 @@ const poeira = Array.from({ length: 18 }, (_, i) => ({
     .cta__grade {
       grid-template-columns: 1fr;
     }
+    /* no celular a porta não sobe por cima do texto: só transborda embaixo */
     .cta__visual {
-      order: -1;
-      position: relative;
-      top: auto;
-      height: auto;
-      min-height: 0;
-      aspect-ratio: 4 / 3;
+      inset: 0 -16px -80px;
     }
   }
   @media (max-width: 560px) {
