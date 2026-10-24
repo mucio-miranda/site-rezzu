@@ -5,8 +5,9 @@
   publish = "dist"
 
 [build.environment]
-  # Astro 7 exige Node >= 22.12
-  NODE_VERSION = "22"
+  # Astro 7 exige Node >= 22.12. Versão exata: 22.23.4 corrige a Node2Shell (CVE-2026-111497, out/2026).
+  # Ao atualizar, use sempre a última correção de segurança da linha 22 (nodejs.org/en/blog/vulnerability).
+  NODE_VERSION = "22.23.4"
 
 # Arquivos com hash gerados pelo Astro: cache de 1 ano
 [[headers]]
@@ -27,6 +28,18 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Strict-Transport-Security = "max-age=31536000"
+    # CSP: o navegador só carrega e só envia dados para as origens listadas. Mesmo que um pacote comprometido
+    # injete código, ele não consegue buscar scripts de fora nem mandar dados para outro servidor (connect-src),
+    # nem desviar o formulário (form-action). 'unsafe-inline' fica porque o Astro embute scripts/estilos pequenos
+    # na página e há style="--var" no HTML; o site é estático e não exibe conteúdo de usuário.
+    # Adobe Fonts: use.typekit.net (CSS e fontes) e p.typekit.net (contador de uso da licença).
+    # QUANDO ENTRAR O RASTREAMENTO (após o banner LGPD), acrescentar:
+    #   Meta Pixel → script-src https://connect.facebook.net; img-src e connect-src https://www.facebook.com
+    #   Google Ads/GA4 → script-src https://www.googletagmanager.com; img-src e connect-src
+    #     https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com
+    #     https://googleads.g.doubleclick.net https://www.google.com https://www.googleadservices.com
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://use.typekit.net https://p.typekit.net; font-src 'self' https://use.typekit.net; img-src 'self' data: https://p.typekit.net; media-src 'self'; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
 
 # Quando houver domínio próprio, descomentar e ajustar (www -> raiz):
 # [[redirects]]
@@ -35,7 +48,7 @@
 #   status = 301
 #   force = true
 
-# Vídeo da hero (nome fixo): cache de 1 semana
+# Vídeo institucional (nome fixo): cache de 1 semana
 [[headers]]
   for = "/video/*"
   [headers.values]
