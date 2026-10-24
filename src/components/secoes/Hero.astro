@@ -1,14 +1,18 @@
 ---
 /**
- * 01 · Hero (Impacto): a tese da REZZU em tipografia cinética (3 vozes) + cena do celular (capítulo 01).
- * Linguagem de motion: MOTION.md. Animação: src/scripts/anim-hero.ts.
+ * 01 · Hero (Impacto): a tese da REZZU em tipografia cinética (3 vozes) + foto dos fundadores (V2: veio do Sobre).
+ * Foto: gerada com IA a partir da foto do ensaio (prompt em SITE/ASSETS/prompts-ia/fundadores-sobre.md), luz lima da
+ * esquerda, recortada no Photoshop (Selecionar assunto). Atrás, o Z da marca em meio-tom.
+ * Linguagem de motion: MOTION.md. Animação: src/scripts/anim-hero.ts (a foto sai do escuro e a luz se abre).
  * Sem JS ou com "reduzir movimento", tudo aparece montado.
  */
+import { Image } from "astro:assets";
 import Botao from "../ui/Botao.astro";
 import Sobretitulo from "../ui/Sobretitulo.astro";
 import PisoGrade from "../motion/PisoGrade.astro";
-import CenaPosicionamento from "../motion/CenaPosicionamento.astro";
-import CenaFaturamento from "../motion/CenaFaturamento.astro";
+import foto from "../../assets/fundadores/fundadores-ia-v2.webp";
+// PNG de 16 cores (59 KB): o meio-tom em pontos fica 3x mais leve que em WebP
+import fundoZ from "../../assets/fundadores/fundo-z-meio-tom.png";
 import { hero } from "../../content/home";
 
 const conectivo = hero.tese.conectivo.split(" ");
@@ -16,6 +20,8 @@ const conectivo = hero.tese.conectivo.split(" ");
 
 <section class="hero" data-hero aria-labelledby="hero-titulo">
   <PisoGrade horizonte={60} data-anim data-hero-piso />
+  <!-- luz lima vinda da esquerda: ocupa a seção toda e acompanha a largura da tela -->
+  <span class="hero__luz" data-anim data-hero-luz aria-hidden="true"></span>
 
   <div class="hero__grade container">
     <div class="hero__texto">
@@ -57,45 +63,28 @@ const conectivo = hero.tese.conectivo.split(" ");
       </div>
     </div>
 
-    <!-- palco: capítulo 01 (celular) e 02 (barras) se alternando, como no vídeo -->
-    <div class="hero__cena palco" data-anim data-hero-cena role="img" aria-label={hero.cena.descricao}>
-      <div class="palco__cenas">
-        <CenaPosicionamento {...hero.cena.posicionamento} />
-        <CenaFaturamento {...hero.cena.faturamento} />
-        <div class="palco__clarao" data-palco-clarao aria-hidden="true"></div>
-      </div>
-    </div>
-
-    <!-- celular: vídeo institucional no lugar do palco (quadro no estilo dos cards de Resultados) -->
-    <figure class="hero__video" data-hero-video>
-      <figcaption class="video__cap">
-        <span class="video__ponto" aria-hidden="true"></span>
-        <span>{hero.video.rotulo}</span>
-        <span class="video__trilho" aria-hidden="true"></span>
-        <span class="video__duracao">{hero.video.duracao}</span>
-      </figcaption>
-      <div class="video__tela">
-        <video
-          src={hero.video.src}
-          preload="none"
-          playsinline
-          aria-label={hero.video.descricao}
-          data-video
-        ></video>
-        <button
-          class="video__capa"
-          type="button"
-          data-video-play
-          aria-label={`Reproduzir: ${hero.video.chamada}`}
-        >
-          <img src={hero.video.capa} alt="" width="540" height="960" loading="lazy" decoding="async" />
-          <span class="video__play" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="22" height="22">
-              <path d="M8 5.5v13l11-6.5z" fill="currentColor"></path>
-            </svg>
-          </span>
-          <span class="video__chamada">{hero.video.chamada}</span>
-        </button>
+    <figure class="hero__foto" data-hero-foto>
+      <!-- fundo de baixa opacidade: o Z da marca em meio-tom, atrás dos fundadores -->
+      <img
+        class="hero__fundo"
+        src={fundoZ.src}
+        width={fundoZ.width}
+        height={fundoZ.height}
+        alt=""
+        decoding="async"
+        data-anim
+        data-hero-fundo
+      />
+      <div class="hero__img" data-anim data-hero-img>
+        <Image
+          src={foto}
+          alt={hero.altFoto}
+          widths={[420, 640, 900, 1024]}
+          sizes="(max-width: 900px) 92vw, 480px"
+          loading="eager"
+          fetchpriority="high"
+          quality={78}
+        />
       </div>
     </figure>
   </div>
@@ -103,18 +92,6 @@ const conectivo = hero.tese.conectivo.split(" ");
 
 <script>
   import "../../scripts/anim-hero";
-
-  // vídeo do celular: só carrega ao tocar no play (preload="none"); depois ficam os controles nativos
-  const quadro = document.querySelector<HTMLElement>("[data-hero-video]");
-  const video = quadro?.querySelector<HTMLVideoElement>("[data-video]");
-  const capa = quadro?.querySelector<HTMLButtonElement>("[data-video-play]");
-  if (video && capa) {
-    capa.addEventListener("click", () => {
-      capa.hidden = true;
-      video.controls = true;
-      void video.play();
-    });
-  }
 </script>
 
 <style>
@@ -123,7 +100,8 @@ const conectivo = hero.tese.conectivo.split(" ");
     isolation: isolate;
     overflow: clip;
     /* compacta: não estica até a tela toda em monitores altos */
-    min-height: clamp(600px, 88svh, 820px);
+    --altura: clamp(600px, 88svh, 820px);
+    min-height: var(--altura);
     display: grid;
     align-items: center;
     padding-block: 104px 56px;
@@ -133,7 +111,7 @@ const conectivo = hero.tese.conectivo.split(" ");
   }
   .hero__grade {
     display: grid;
-    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     align-items: center;
     gap: clamp(24px, 4vw, 64px);
   }
@@ -179,170 +157,93 @@ const conectivo = hero.tese.conectivo.split(" ");
     flex-wrap: wrap;
     gap: 14px;
   }
-  /* palco: cenas empilhadas no mesmo lugar */
-  .palco {
-    display: grid;
-    gap: clamp(8px, 2vh, 20px);
-    width: 100%;
-    max-width: 560px;
-    justify-self: end;
-  }
-  .palco__cenas {
-    position: relative;
-    display: grid;
-  }
-  /* :global porque as cenas são outros componentes (o escopo do Astro não as alcança) */
-  .palco__cenas > :global(*) {
-    grid-area: 1 / 1;
-  }
-  /* sem JS, só o capítulo 01 aparece */
-  .palco__cenas > :global([data-cap="1"]) {
-    visibility: hidden;
-  }
-  /* clarão de troca de capítulo (como o film burn do vídeo) */
-  .palco__clarao {
+
+  /* luz lima (cor da marca) vindo da borda esquerda da tela: tamanho em vw para escalar do notebook ao
+     ultrawide, e some suave em todas as direções (sem corte na borda da seção nem da foto) */
+  .hero__luz {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
     pointer-events: none;
-    opacity: 0;
-    background: radial-gradient(
-      closest-side,
-      rgb(200 240 58 / 0.55),
-      rgb(168 204 21 / 0.12) 60%,
-      transparent
-    );
-    mix-blend-mode: screen;
-  }
-
-  /* vídeo institucional: só no celular/tablet. Quadro igual ao card de Resultados */
-  .hero__video {
-    display: none;
-    gap: 14px;
-    width: 100%;
-    max-width: 400px;
-    justify-self: center;
-    padding: 14px;
-    border: 1px solid rgb(255 255 255 / 0.08);
-    border-radius: 20px;
     background:
-      radial-gradient(120% 70% at 50% 0%, rgb(168 204 21 / 0.07), transparent 70%), rgb(255 255 255 / 0.015);
-  }
-  .video__cap {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding-inline: 4px;
-    font-size: 0.6875rem;
-    font-weight: 600;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--texto);
-  }
-  .video__ponto {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--lima);
-    box-shadow: 0 0 10px var(--lima);
-  }
-  .video__trilho {
-    flex: 1;
-    height: 1px;
-    background: rgb(255 255 255 / 0.12);
-  }
-  .video__duracao {
-    color: var(--texto-2);
-    font-variant-numeric: tabular-nums;
-  }
-  .video__tela {
-    position: relative;
-    display: grid;
-    aspect-ratio: 9 / 16;
-    width: min(100%, 72svh * 9 / 16); /* largura fixa: não muda quando o vídeo carrega */
-    margin-inline: auto;
-    overflow: hidden;
-    border-radius: 12px;
-    background: #000;
-  }
-  .video__tela > * {
-    grid-area: 1 / 1;
-  }
-  .video__tela video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .video__capa {
-    position: relative;
-    display: grid;
-    place-items: center;
-    padding: 0;
-    border: 0;
-    background: none;
-    cursor: pointer;
-    color: inherit;
-  }
-  .video__capa[hidden] {
-    display: none;
-  }
-  .video__capa img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .video__capa::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgb(3 3 3 / 0.85), transparent 45%);
-  }
-  .video__play {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    place-items: center;
-    width: 64px;
-    height: 64px;
-    padding-left: 3px;
-    border-radius: 50%;
-    background: var(--lima);
-    color: var(--bg);
-    box-shadow: 0 0 0 8px rgb(168 204 21 / 0.18);
-    transition: transform 0.25s var(--ease);
-  }
-  .video__capa:hover .video__play,
-  .video__capa:focus-visible .video__play {
-    transform: scale(1.06);
-  }
-  .video__chamada {
-    position: absolute;
-    z-index: 1;
-    inset: auto 16px 16px;
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--branco);
-    text-align: center;
+      radial-gradient(
+        ellipse min(62vw, 1100px) 70% at 0% 46%,
+        rgb(168 204 21 / 0.2),
+        rgb(168 204 21 / 0.07) 45%,
+        transparent 75%
+      ),
+      radial-gradient(ellipse min(30vw, 520px) 40% at 0% 42%, rgb(168 204 21 / 0.16), transparent 70%);
+    mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+    transform-origin: 0 46%;
   }
 
+  /* foto do tamanho da hero: as cabeças logo abaixo do menu e as pernas somem no pé com o degradê
+     (a foto passa um pouco das bordas de cima e de baixo, onde já está transparente). As margens negativas
+     somam a sobra (1,5x − 1x a altura + os paddings): a foto não estica a hero nem empurra o texto */
+  .hero__foto {
+    --desloca: 40px;
+    position: relative;
+    margin: calc(-104px - var(--altura) * 0.122) 0 calc(-56px - var(--altura) * 0.383);
+    align-self: end;
+    display: grid;
+    justify-items: center;
+  }
+  /* Z da marca em meio-tom, atrás dos fundadores, do tamanho da foto */
+  .hero__fundo {
+    position: absolute;
+    left: calc(50% - var(--desloca));
+    top: 48%;
+    width: auto;
+    height: 96%;
+    max-width: none;
+    translate: -50% -50%;
+    opacity: 0.2;
+    pointer-events: none;
+    /* bordas somem: sem o retângulo de pontos aparente */
+    mask-image: radial-gradient(closest-side, #000 55%, transparent 100%);
+  }
+  .hero__img {
+    position: relative;
+    /* a altura da hero manda: a foto (2:3) fica com ~1,5x a altura dela (cabeças a ~14% do topo); invade o vão da
+       grade e anda um pouco para a esquerda (--desloca), sem chegar no texto */
+    width: min(calc(var(--altura) * 1.003), 100% + 200px);
+    max-width: none;
+    left: calc(var(--desloca) * -1);
+    mask-image: linear-gradient(to bottom, #000 56%, transparent 74%); /* some antes do pé da hero */
+  }
+  .hero__img :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* notebook pequeno/tablet: a coluna da foto volta a ser a menor, senão o título quebra em mais linhas */
+  @media (max-width: 1180px) {
+    .hero__grade {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    }
+    /* menos espaço ao lado: a foto não invade tanto nem anda para a esquerda (o texto está mais perto) */
+    .hero__foto {
+      --desloca: 0px;
+    }
+    .hero__img {
+      width: min(calc(var(--altura) * 1.003), 100% + 96px);
+    }
+  }
   @media (max-width: 900px) {
-    /* celular/tablet: sem o palco animado; entra o vídeo */
-    .hero__cena {
-      display: none;
-    }
-    .hero__video {
-      display: grid;
-    }
     .hero {
       min-height: auto;
       padding-block: 96px 48px;
     }
     .hero__grade {
       grid-template-columns: 1fr;
-      gap: 40px;
+      gap: 32px;
     }
-    .palco {
-      max-width: 440px;
-      justify-self: center;
+    .hero__foto {
+      margin: 0 0 -48px;
+    }
+    .hero__img {
+      width: min(92%, 440px);
     }
     /* celular: texto da hero centralizado */
     .hero__texto,

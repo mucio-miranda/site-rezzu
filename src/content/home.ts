@@ -34,30 +34,9 @@ export const hero = {
   apoio:
     "Sua marca no lugar certo, com produção própria do roteiro ao tráfego. E o resultado aparecendo no caixa, não só nas curtidas.",
   ctaPrimario: { rotulo: "Quero meu diagnóstico gratuito", href: "#diagnostico" },
-  /** palco da hero: os 2 capítulos do vídeo se alternando (01 celular · 02 barras) */
-  cena: {
-    posicionamento: {
-      posicao: "Posicionamento",
-      publico: "Empresário",
-      local: "João Pessoa · PB",
-    },
-    faturamento: {
-      rotulo: "Faturamento",
-      testes: ["Teste 01", "Teste 02", "Teste 03"],
-      moeda: "R$",
-    },
-    descricao:
-      "Ilustração em dois capítulos: primeiro um perfil de rede social se montando dentro de um celular, cercado por um radar, com as marcações posicionamento, empresário e João Pessoa; depois barras de crescimento subindo, testes sendo validados e moedas caindo numa carteira.",
-  },
-  /** celular: no lugar do palco animado, o vídeo institucional num quadro igual aos cards de Resultados */
-  video: {
-    rotulo: "Conheça",
-    duracao: "0:45",
-    chamada: "Assista: o que o Grupo REZZU entrega",
-    src: "/video/rezzu-institucional.mp4",
-    capa: "/video/rezzu-institucional-capa.jpg",
-    descricao: "Vídeo institucional do Grupo REZZU, com um dos fundadores apresentando a assessoria.",
-  },
+  /** foto dos fundadores (V2: veio do Sobre; sem a legenda de vidro) */
+  altFoto:
+    "Os dois fundadores do Grupo REZZU, de camisa preta, em pé lado a lado e de braços cruzados, iluminados por uma luz verde-limão vinda da esquerda.",
 } as const;
 
 /**
@@ -141,9 +120,30 @@ export const sobre = {
     { valor: "Produção própria", rotulo: "do roteiro ao tráfego" },
     { valor: "João Pessoa", rotulo: "Paraíba" },
   ],
-  legendaFoto: "Gabriel e Thyago, fundadores do Grupo REZZU",
-  altFoto:
-    "Os dois fundadores do Grupo REZZU, de camisa preta, em pé lado a lado e de braços cruzados, iluminados por uma luz verde-limão vinda da esquerda.",
+  /** palco do Sobre (V2: veio da hero): os 2 capítulos do vídeo se alternando (01 celular · 02 barras) */
+  cena: {
+    posicionamento: {
+      posicao: "Posicionamento",
+      publico: "Empresário",
+      local: "João Pessoa · PB",
+    },
+    faturamento: {
+      rotulo: "Faturamento",
+      testes: ["Teste 01", "Teste 02", "Teste 03"],
+      moeda: "R$",
+    },
+    descricao:
+      "Ilustração em dois capítulos: primeiro um perfil de rede social se montando dentro de um celular, cercado por um radar, com as marcações posicionamento, empresário e João Pessoa; depois barras de crescimento subindo, testes sendo validados e moedas caindo numa carteira.",
+  },
+  /** celular: no lugar do palco animado, o vídeo institucional num quadro igual aos cards de Resultados */
+  video: {
+    rotulo: "Conheça",
+    duracao: "0:45",
+    chamada: "Assista: o que o Grupo REZZU entrega",
+    src: "/video/rezzu-institucional.mp4",
+    capa: "/video/rezzu-institucional-capa.jpg",
+    descricao: "Vídeo institucional do Grupo REZZU, com um dos fundadores apresentando a assessoria.",
+  },
 } as const;
 
 /**
